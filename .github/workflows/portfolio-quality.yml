@@ -1,0 +1,42 @@
+name: Portfolio Quality Checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check assets/js/config.js
+          node --check assets/js/supabase-client.js
+          node --check assets/js/portfolio-enhancements.js
+          node --check admin/admin.js
+      - name: Validate live feed JSON
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("data/live-feed.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert isinstance(data.get("videos"), list), "videos must be a list"
+          ids = [v.get("id") for v in data["videos"]]
+          assert len(ids) == len(set(ids)), "duplicate video IDs"
+          assert all(isinstance(v.get("title"), str) and v.get("id") for v in data["videos"]), "invalid video item"
+          assert isinstance(data.get("ibc24_narayanpur", []), list), "news must be a list"
+          print("Feed JSON OK:", len(ids), "videos")
+          PY
