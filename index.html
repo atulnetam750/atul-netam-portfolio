@@ -622,7 +622,7 @@
       </div>
     </section>
 
-    <!-- QUICK STATS STRIP -->
+    <!-- QUICK STATS & AUTO-SYNC STATUS STRIP -->
     <div class="quick-stats-strip">
       <div class="q-stat-item">
         <div class="q-stat-icon">📹</div>
@@ -639,10 +639,10 @@
         </div>
       </div>
       <div class="q-stat-item">
-        <div class="q-stat-icon">📰</div>
+        <div class="q-stat-icon">🔄</div>
         <div>
-          <div class="q-stat-num">2</div>
-          <div class="q-stat-lbl">रीजनल डिजिटल मीडिया पोर्टल्स</div>
+          <div class="q-stat-num" id="liveSyncStatus" style="color:#4ade80;font-size:1.15rem">LIVE SYNC</div>
+          <div class="q-stat-lbl" id="lastUpdatedMeta">ऑटो-अपडेट: सक्रिय</div>
         </div>
       </div>
       <div class="q-stat-item">
@@ -1009,11 +1009,14 @@
   <!-- FOOTER -->
   <footer>
     <p>© 2026 अतुल नेताम (Atul Netam) • कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network) • नारायणपुर, बस्तर (छ.ग.)</p>
+    <p style="font-size:0.68rem;color:var(--text-subtle);margin-top:4px;" id="footerSyncStatus">
+      ⚡ ऑटो-अपडेट सिस्टम सक्रिय • GitHub API & लाइव सिंक इनेबल्ड
+    </p>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT WITH AUTO-UPDATE MECHANISM -->
   <script>
-    // Progress Line
+    // 1. Progress Line
     window.addEventListener('scroll', () => {
       const winScroll = document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -1021,7 +1024,7 @@
       document.getElementById('progress-line').style.width = scrolled + '%';
     });
 
-    // Video Switcher Function
+    // 2. Video Switcher Function
     function playVid(videoId, title, meta, badge, element) {
       const player = document.getElementById('mainYtPlayer');
       if (player) {
@@ -1034,6 +1037,36 @@
       document.querySelectorAll('.pl-item').forEach(i => i.classList.remove('active'));
       if (element) element.classList.add('active');
     }
+
+    // 3. Real-time Auto-Update Sync Mechanism (GitHub API & Live Clock)
+    async function checkAutoUpdates() {
+      try {
+        const repo = 'atulnetam750/atul-netam-portfolio';
+        const res = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=1`, { cache: 'no-cache' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            const commitDate = new Date(data[0].commit.committer.date);
+            const formatted = commitDate.toLocaleDateString('hi-IN', {
+              day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            const statusEl = document.getElementById('lastUpdatedMeta');
+            if (statusEl) {
+              statusEl.textContent = `अपडेट: ${formatted}`;
+            }
+            const footerEl = document.getElementById('footerSyncStatus');
+            if (footerEl) {
+              footerEl.textContent = `⚡ सिस्टम ऑटो-सिंक: नवीनतम डेटा लाइव (${formatted}) • ऑटोमेशन सक्रिय`;
+            }
+          }
+        }
+      } catch (e) {
+        console.log('Auto sync checked');
+      }
+    }
+    checkAutoUpdates();
+    // Auto-refresh metadata every 5 minutes in background
+    setInterval(checkAutoUpdates, 300000);
   </script>
 </body>
 </html>
