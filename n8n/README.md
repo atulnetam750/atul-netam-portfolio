@@ -14,3 +14,15 @@ This folder contains the workflow design notes for connecting the portfolio to n
 - Do not expose an unauthenticated workflow webhook that can send messages or modify data.
 - Require an approval step before publishing public content.
 - Keep contact data private; only send the minimum fields needed for notification.
+
+## Importable contact alert template
+
+Import `contact-alert-workflow.json` into n8n, then:
+1. Create an HTTP Header Auth credential and set a long random header value.
+2. Attach that credential to the Contact Webhook node.
+3. Add your Telegram credential and set your private chat ID in the Telegram Notification node.
+4. In Supabase, configure a Database Webhook for INSERT on `public.contact_messages` to call the n8n Production webhook URL.
+5. Send the same header value from the Supabase webhook configuration.
+6. Test with a dummy contact record, then activate the workflow.
+
+The exported workflow is intentionally inactive and contains credential placeholders. Do not activate it until both credentials are configured. Treat contact form details as private; only send notifications to your own private channel.
