@@ -15,6 +15,36 @@
   <link rel="manifest" href="./manifest.webmanifest"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="keywords" content="Atul Netam, Atul Netam IBC24, Narayanpur Journalist, Bastar Sandesh, AVS Bastar, Video Journalist Chhattisgarh"/>
+
+  <!-- Google SEO Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Atul Netam",
+    "alternateName": "अतुल नेताम",
+    "jobTitle": "Cameraman & Video Journalist",
+    "worksFor": {
+      "@type": "NewsMediaOrganization",
+      "name": "IBC24 News Network"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Narayanpur",
+      "addressRegion": "Chhattisgarh",
+      "postalCode": "494661",
+      "addressCountry": "IN"
+    },
+    "url": "https://atulnetam750.github.io/atul-netam-portfolio/",
+    "sameAs": [
+      "https://instagram.com/atul.netam",
+      "https://x.com/Atulnetam21",
+      "https://linkedin.com/in/atul-singh-netam-933ab6211",
+      "https://github.com/atulnetam750"
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -238,6 +268,44 @@
     @media (max-width: 600px) {
       .gh-repos-grid, .wa-form-grid { grid-template-columns: 1fr; }
     }
+
+    /* Weather Pill & Digital Press Card Modal */
+    .weather-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 12px; height: 100%; background: rgba(245, 192, 66, 0.08);
+      border-left: 1px solid var(--border); color: var(--gold-light);
+      font-size: 0.7rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+    }
+    .id-card-btn {
+      background: rgba(245, 192, 66, 0.12); border: 1px solid var(--border-gold);
+      color: var(--gold-light); font-size: 0.74rem; font-weight: 700;
+      padding: 5px 11px; border-radius: 20px; cursor: pointer; transition: var(--ease);
+      white-space: nowrap; font-family: inherit;
+    }
+    .id-card-btn:hover { background: var(--gold); color: #000; }
+
+    #id-modal {
+      position: fixed; inset: 0; z-index: 10005;
+      background: rgba(4, 5, 9, 0.84); backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    #id-modal.open { display: flex; }
+    .id-modal-card {
+      background: linear-gradient(155deg, #171a26 0%, #0d0f17 100%);
+      border: 1px solid var(--border-gold); border-radius: 20px;
+      max-width: 350px; width: 100%; padding: 24px 20px; text-align: center;
+      position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(245,192,66,0.16);
+    }
+    .id-modal-close {
+      position: absolute; top: 12px; right: 14px; background: none; border: none;
+      color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1;
+    }
+    .id-modal-close:hover { color: #fff; }
+    .id-qr-box {
+      background: #fff; padding: 10px; border-radius: 14px;
+      width: 156px; height: 156px; margin: 14px auto; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .id-qr-box img { width: 100%; height: 100%; display: block; }
 
     /* ── LIVE TICKER ── */
     .top-live-bar {
@@ -689,6 +757,11 @@
         <span><b>अतुल नेताम</b> — कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News) | अबूझमाड़ व बस्तर कवरेज</span>
       </div>
     </div>
+    <div class="weather-pill" id="liveWeatherClock">
+      <span id="live-weather">☁️ नारायणपुर...</span>
+      <span style="opacity:0.4">|</span>
+      <span id="live-clock">--:--</span>
+    </div>
   </div>
 
   <!-- 2. COMPACT HEADER -->
@@ -706,6 +779,9 @@
         <li><a href="#my-details">मेरा विवरण / संपर्क</a></li>
       </ul>
       <div class="nav-right">
+        <button class="id-card-btn" onclick="toggleIdModal()" title="डिजिटल प्रेस एवं विजिटिंग कार्ड">
+          🪪 डिजिटल कार्ड
+        </button>
         <button class="sync-pill" onclick="syncLiveData(true)" title="ताज़ा डेटा सिंक करें">
           🔄 <span id="navSyncBadge">ऑटो-सिंक चालू</span>
         </button>
@@ -1082,10 +1158,15 @@
             </div>
             <form id="whatsapp-auto-form">
               <div class="wa-form-grid">
-                <input type="text" id="wa-sender-name" class="wa-input" required placeholder="आपका नाम (Name)"/>
-                <input type="text" id="wa-sender-subject" class="wa-input" required placeholder="विषय (खबर / प्रोजेक्ट)"/>
+                <input type="text" id="wa-sender-name" class="wa-input" required placeholder="आपका नाम / संस्था"/>
+                <select id="wa-sender-subject" class="wa-input">
+                  <option value="समाचार कवरेज (News Tip)">समाचार कवरेज (News Tip)</option>
+                  <option value="वीडियो / वेडिंग शूटिंग">वीडियो / वेडिंग शूटिंग</option>
+                  <option value="AI / वेबसाइट प्रोजेक्ट">AI / वेबसाइट प्रोजेक्ट</option>
+                  <option value="अन्य संपर्क">अन्य संपर्क</option>
+                </select>
               </div>
-              <textarea id="wa-sender-message" rows="2" class="wa-input" required placeholder="अपना संदेश यहाँ लिखें..." style="margin-bottom:8px;resize:vertical"></textarea>
+              <textarea id="wa-sender-message" rows="2" class="wa-input" required placeholder="अपना संदेश या लोकेशन विस्तार से लिखें..." style="margin-bottom:8px;resize:vertical"></textarea>
               <button type="submit" class="wa-submit-btn">💬 WhatsApp पर तुरंत भेजें ↗</button>
             </form>
           </div>
@@ -1096,7 +1177,9 @@
             <a href="tel:+917587776030" class="c-btn">📞 +91 7587776030</a>
             <a href="tel:+917489300076" class="c-btn">📞 +91 7489300076</a>
             <a href="https://wa.me/917587776030" target="_blank" rel="noopener noreferrer" class="c-btn alt">💬 WhatsApp</a>
-            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ atulnetam5@gmail.com</a>
+            <button type="button" onclick="toggleIdModal()" class="c-btn alt" style="cursor:pointer">🪪 QR प्रेस कार्ड</button>
+            <button type="button" onclick="downloadVCard()" class="c-btn alt" style="cursor:pointer">📇 नंबर सेव (.vcf)</button>
+            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ Email</a>
           </div>
           <form id="contactForm" class="portfolio-contact-form">
             <label for="contactName">आपका नाम</label>
@@ -1122,6 +1205,26 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- DIGITAL PRESS & VISITING CARD MODAL -->
+  <div id="id-modal" onclick="if(event.target===this) toggleIdModal()">
+    <div class="id-modal-card">
+      <button type="button" class="id-modal-close" onclick="toggleIdModal()" aria-label="Close">&times;</button>
+      <span style="display:inline-block;background:var(--red);color:#fff;font-size:0.65rem;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;">Digital Press & Business Card</span>
+      <h3 style="font-size:1.3rem;font-weight:800;color:#fff;margin-top:10px;">अतुल नेताम (Atul Netam)</h3>
+      <p style="font-size:0.78rem;color:var(--gold);font-weight:700;margin-top:2px;">Cameraman & Video Journalist • IBC24 News</p>
+      <div class="id-qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://atulnetam750.github.io/atul-netam-portfolio/" alt="Atul Netam Portfolio QR Code"/>
+      </div>
+      <p style="font-size:0.76rem;color:#d1d5db;line-height:1.5;margin-bottom:14px;">
+        📞 +91 75877 76030 | +91 74893 00076<br/>
+        📍 बंगालापारा, वार्ड क्र. 4, नारायणपुर, बस्तर (छ.ग.) – 494661
+      </p>
+      <button type="button" onclick="downloadVCard()" class="c-btn" style="width:100%;justify-content:center;padding:10px 14px;font-size:0.82rem;cursor:pointer;border:none;">
+        📇 फोन में नंबर सेव करें (Save Contact .vcf)
+      </button>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -1715,10 +1818,65 @@
       });
     }
 
+    // 7. Live Clock & Narayanpur Weather (Open-Meteo Free API)
+    function updateLiveClock() {
+      const el = document.getElementById('live-clock');
+      if (el) {
+        el.textContent = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+    }
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+
+    async function loadNarayanpurWeather() {
+      const el = document.getElementById('live-weather');
+      if (!el) return;
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.7167&longitude=81.25&current_weather=true');
+        const data = await res.json();
+        if (data?.current_weather?.temperature !== undefined) {
+          el.textContent = `🌡️ नारायणपुर: ${Math.round(data.current_weather.temperature)}°C`;
+        }
+      } catch (e) {
+        el.textContent = '📍 नारायणपुर, बस्तर';
+      }
+    }
+
+    // 8. Digital Press Card Modal & One-Click vCard (.vcf) Contact Download
+    function toggleIdModal() {
+      const modal = document.getElementById('id-modal');
+      if (modal) modal.classList.toggle('open');
+    }
+    function downloadVCard() {
+      const vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'N:Netam;Atul;;;',
+        'FN:Atul Netam (IBC24)',
+        'ORG:IBC24 News Network',
+        'TITLE:Video Journalist & Cameraman',
+        'TEL;TYPE=CELL,VOICE:+917587776030',
+        'TEL;TYPE=WORK,VOICE:+917489300076',
+        'EMAIL:atulnetam5@gmail.com',
+        'URL:https://atulnetam750.github.io/atul-netam-portfolio/',
+        'ADR:;;Bangalapara Ward No 4;Narayanpur;Chhattisgarh;494661;India',
+        'END:VCARD'
+      ].join('\n');
+      const blob = new Blob([vcard], { type: 'text/vcard' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Atul_Netam_IBC24.vcf';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('संपर्क फ़ाइल (.vcf) डाउनलोड हो रही है!');
+    }
+
     // Initial boot, connectivity recovery, and low-impact background refresh.
     syncLiveData(false);
     loadGitHubProjects();
-    window.addEventListener('online', () => { syncLiveData(true); loadGitHubProjects(); });
+    loadNarayanpurWeather();
+    window.addEventListener('online', () => { syncLiveData(true); loadGitHubProjects(); loadNarayanpurWeather(); });
     window.addEventListener('offline', () => showToast('आप ऑफलाइन हैं — सेव डेटा उपलब्ध है'));
     window.setInterval(() => {
       if (!document.hidden && navigator.onLine) { syncLiveData(false); loadGitHubProjects(); }
