@@ -175,6 +175,70 @@
     #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
     #backToTop:hover { background: var(--gold); color: #000; transform: translateY(-2px); }
 
+    /* Auto-Synced Live GitHub Repos & WhatsApp Auto-Form */
+    .gh-section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 16px; margin-bottom: 18px;
+    }
+    .gh-repos-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    .gh-repo-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 12px 14px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: var(--ease);
+    }
+    .gh-repo-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .gh-repo-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .gh-lang-badge {
+      background: rgba(245, 192, 66, 0.14); border: 1px solid var(--border-gold);
+      color: var(--gold-light); font-size: 0.65rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 6px;
+    }
+    .gh-repo-name {
+      font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .gh-repo-desc {
+      font-size: 0.74rem; color: var(--text-muted); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .gh-repo-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.72rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 7px;
+    }
+    .gh-repo-foot a { color: var(--gold); text-decoration: none; font-weight: 700; }
+    .gh-repo-foot a:hover { text-decoration: underline; }
+
+    /* Direct WhatsApp Form */
+    .wa-form-box {
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+    }
+    .wa-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .wa-input {
+      width: 100%; background: rgba(9, 10, 15, 0.75); border: 1px solid var(--border);
+      color: #fff; font-size: 0.78rem; padding: 8px 11px; border-radius: var(--r-sm);
+      font-family: inherit; outline: none; transition: var(--ease);
+    }
+    .wa-input:focus { border-color: var(--gold); }
+    .wa-submit-btn {
+      width: 100%; background: linear-gradient(135deg, #16a34a, #059669);
+      color: #fff; border: none; padding: 9px 14px; border-radius: var(--r-sm);
+      font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: var(--ease); box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28);
+    }
+    .wa-submit-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    @media (max-width: 960px) {
+      .gh-repos-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .gh-repos-grid, .wa-form-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── LIVE TICKER ── */
     .top-live-bar {
       background: #131620;
@@ -981,6 +1045,17 @@
       </div>
     </div>
 
+    <!-- LIVE GITHUB PROJECTS (AUTO-SYNCED FROM GITHUB API) -->
+    <section class="gh-section fx-reveal" id="github-projects">
+      <div class="section-head">
+        <h2 class="sec-title">लाइव टेक प्रोजेक्ट्स — GitHub ऑटो-सिंक (<span id="ghRepoCount">--</span>)</h2>
+        <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" class="sec-action">GitHub प्रोफ़ाइल ↗</a>
+      </div>
+      <div class="gh-repos-grid" id="githubProjectsGrid">
+        <div class="gh-repo-card" style="color:var(--text-muted);font-size:0.8rem;">GitHub रिपोज़िटरीज़ लोड हो रही हैं...</div>
+      </div>
+    </section>
+
     <!-- SECTION 5 (AT THE VERY BOTTOM): PERSONAL DETAILS & CONTACT ("Mera detail sabse niche mein rahega") -->
     <section class="bottom-profile-section fx-reveal" id="my-details">
       <div class="section-head" style="border-color:rgba(245,192,66,0.2)">
@@ -1000,11 +1075,28 @@
             <span class="bm-pill">📍 <b>कार्य क्षेत्र:</b> नारायणपुर, बस्तर, छत्तीसगढ़</span>
             <span class="bm-pill">🎥 <b>कार्य:</b> वीडियो जर्नलिज्म, फोटोग्राफी एवं डिजिटल मीडिया</span>
           </div>
+          <!-- Automated Direct WhatsApp Message Form -->
+          <div class="wa-form-box">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--gold-light);margin-bottom:6px;">
+              💬 सीधे WhatsApp संदेश भेजें (Instant Auto-Send to +91 7587776030):
+            </div>
+            <form id="whatsapp-auto-form">
+              <div class="wa-form-grid">
+                <input type="text" id="wa-sender-name" class="wa-input" required placeholder="आपका नाम (Name)"/>
+                <input type="text" id="wa-sender-subject" class="wa-input" required placeholder="विषय (खबर / प्रोजेक्ट)"/>
+              </div>
+              <textarea id="wa-sender-message" rows="2" class="wa-input" required placeholder="अपना संदेश यहाँ लिखें..." style="margin-bottom:8px;resize:vertical"></textarea>
+              <button type="submit" class="wa-submit-btn">💬 WhatsApp पर तुरंत भेजें ↗</button>
+            </form>
+          </div>
         </div>
         <div class="bottom-contact-panel">
           <div style="font-size:0.78rem;font-weight:700;color:var(--gold);text-transform:uppercase">सीधे कॉल, व्हाट्सएप व प्रोफाइल्स:</div>
           <div class="contact-nums">
-            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ Professional Email</a>
+            <a href="tel:+917587776030" class="c-btn">📞 +91 7587776030</a>
+            <a href="tel:+917489300076" class="c-btn">📞 +91 7489300076</a>
+            <a href="https://wa.me/917587776030" target="_blank" rel="noopener noreferrer" class="c-btn alt">💬 WhatsApp</a>
+            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ atulnetam5@gmail.com</a>
           </div>
           <form id="contactForm" class="portfolio-contact-form">
             <label for="contactName">आपका नाम</label>
@@ -1355,7 +1447,7 @@
       document.querySelectorAll('a[href^="tel:"]').forEach(tel => {
         tel.setAttribute('href', tel.getAttribute('href').replace(/[^\d+:]/g, ''));
       });
-      document.querySelectorAll('.ab-kpi-card, .ibc-card, .proj-item, .tl-card, .skill-card, .kpi-chip').forEach(card => {
+      document.querySelectorAll('.ab-kpi-card, .ibc-card, .proj-item, .tl-card, .skill-card, .kpi-chip, .gh-repo-card').forEach(card => {
         card.classList.add('glow-card');
       });
     }
@@ -1569,12 +1661,67 @@
       });
     })();
 
+    // 5. Auto-Fetch Live GitHub Repositories (Atul Netam - atulnetam750)
+    async function loadGitHubProjects() {
+      const grid = document.getElementById('githubProjectsGrid');
+      const countEl = document.getElementById('ghRepoCount');
+      if (!grid) return;
+      try {
+        const res = await fetch('https://api.github.com/users/atulnetam750/repos?sort=updated&per_page=6');
+        const repos = await res.json();
+        if (Array.isArray(repos) && repos.length > 0) {
+          if (countEl) countEl.textContent = String(repos.length);
+          grid.innerHTML = repos.map(repo => {
+            const desc = escapeHTML(repo.description || 'AI, न्यूज़ ऑटोमेशन एवं डिजिटल प्रोजेक्ट — अतुल नेताम (Atul Netam)');
+            const lang = escapeHTML(repo.language || 'Web / Code');
+            const name = escapeHTML(repo.name);
+            const repoUrl = safeNewsUrl(repo.html_url);
+            const liveUrl = safeNewsUrl(repo.homepage || repo.html_url);
+            return `
+              <div class="gh-repo-card glow-card">
+                <div>
+                  <div class="gh-repo-top">
+                    <span class="gh-lang-badge">${lang}</span>
+                    <span style="font-size:0.72rem;color:var(--gold)">★ ${Number(repo.stargazers_count) || 0}</span>
+                  </div>
+                  <div class="gh-repo-name">${name}</div>
+                  <div class="gh-repo-desc">${desc}</div>
+                </div>
+                <div class="gh-repo-foot">
+                  <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted)">GitHub कोड</a>
+                  <a href="${liveUrl}" target="_blank" rel="noopener noreferrer">खोलें ↗</a>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (e) {
+        grid.innerHTML = `<div class="gh-repo-card"><div class="gh-repo-name">atul-netam-portfolio</div><div class="gh-repo-desc">IBC24 बस्तर न्यूज़ हब व लाइव एनालिटिक्स पोर्टफोलियो</div><div class="gh-repo-foot"><a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer">GitHub देखें ↗</a></div></div>`;
+      }
+    }
+
+    // 6. Direct WhatsApp Auto-Send Form (+91 7587776030)
+    const waForm = document.getElementById('whatsapp-auto-form');
+    if (waForm) {
+      waForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('wa-sender-name').value.trim();
+        const subject = document.getElementById('wa-sender-subject').value.trim();
+        const message = document.getElementById('wa-sender-message').value.trim();
+        const phone = '917587776030';
+        const text = `*नया पोर्टफोलियो संदेश (Atul Netam)*%0A%0A*नाम:* ${encodeURIComponent(name)}%0A*विषय:* ${encodeURIComponent(subject)}%0A*संदेश:* ${encodeURIComponent(message)}`;
+        window.open(`https://wa.me/${phone}?text=${text}`, '_blank', 'noopener,noreferrer');
+        showToast('WhatsApp चैट खुल रही है!');
+      });
+    }
+
     // Initial boot, connectivity recovery, and low-impact background refresh.
     syncLiveData(false);
-    window.addEventListener('online', () => syncLiveData(true));
+    loadGitHubProjects();
+    window.addEventListener('online', () => { syncLiveData(true); loadGitHubProjects(); });
     window.addEventListener('offline', () => showToast('आप ऑफलाइन हैं — सेव डेटा उपलब्ध है'));
     window.setInterval(() => {
-      if (!document.hidden && navigator.onLine) syncLiveData(false);
+      if (!document.hidden && navigator.onLine) { syncLiveData(false); loadGitHubProjects(); }
     }, 300000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && navigator.onLine) syncLiveData(false);
