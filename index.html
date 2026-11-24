@@ -666,7 +666,7 @@
         <div class="video-screen-container">
           <div class="video-player-embed">
             <iframe id="mainYtPlayer"
-              src="https://www.youtube-nocookie.com/embed/rZQpZJmWoqc?rel=0"
+              src="https://www.youtube-nocookie.com/embed/rZQpZJmWoqc?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&controls=1"
               title="IBC24 Video Report"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen>
@@ -1024,11 +1024,11 @@
       document.getElementById('progress-line').style.width = scrolled + '%';
     });
 
-    // 2. Video Switcher Function
+    // 2. Video Switcher Function (Ad-Minimizing Clean Embed)
     function playVid(videoId, title, meta, badge, element) {
       const player = document.getElementById('mainYtPlayer');
       if (player) {
-        player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+        player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&controls=1`;
       }
       document.getElementById('npTitle').textContent = title;
       document.getElementById('npMeta').textContent = meta;
