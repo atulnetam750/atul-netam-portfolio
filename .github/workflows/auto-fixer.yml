@@ -1,10 +1,10 @@
-name: Auto Health Check & Auto Fixer
+name: Auto Update, Sync & Auto Fixer
 
 on:
   schedule:
-    # Runs automatically every 6 hours
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+    # Automatically fetches IBC24 Narayanpur news & YouTube Analytics every 2 hours
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
   push:
     branches: [ master ]
 
@@ -14,36 +14,36 @@ permissions:
   id-token: write
 
 jobs:
-  health-check-and-fix:
+  auto-update-and-fix:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Auto Fixer & Link Validator
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run IBC24 & YouTube Live Auto-Sync
         run: |
-          echo "Starting Auto Fixer Suite..."
-          
-          # Check index.html exists
-          if [ ! -f index.html ]; then
-            echo "Error: index.html missing! Recreating template..."
+          python3 .github/scripts/auto_sync.py
+
+      - name: Auto Fixer & Integrity Check
+        run: |
+          echo "Running Auto-Fixer checks..."
+          if [ ! -f index.html ] || [ ! -f data/live-feed.json ]; then
+            echo "Required files missing!"
             exit 1
           fi
-
-          # Fix image paths if broken
-          if [ -f atul-photo.jpg ]; then
-            echo "Image asset verified: atul-photo.jpg present."
+          python3 -c "import json; d=json.load(open('data/live-feed.json')); print('Validated JSON:', len(d.get('videos',[])), 'videos,', len(d.get('ibc24_narayanpur',[])), 'news')"
+          # Ensure no banned old phone number exists
+          if grep -q "9406175560" index.html; then
+            sed -i 's/+91 9406175560//g; s/9406175560//g' index.html
           fi
 
-          # Clean any trailing whitespace or formatting bugs
-          sed -i -e '$a\' index.html
-
-          # Update auto-sync timestamp in file if needed
-          CURRENT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "Auto-sync check completed at $CURRENT_DATE"
-
-      - name: Auto Commit Fixes
+      - name: Auto Commit Updated Feed & Fixes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automated Health Check & Auto-Fix [skip ci]"
+          commit_message: "Auto-sync IBC24 Narayanpur news & YouTube analytics [skip ci]"
           branch: master
