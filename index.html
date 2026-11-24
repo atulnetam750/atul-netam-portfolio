@@ -3,29 +3,34 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>Atul Netam — IBC24 Video Journalist | Bastar</title>
-  <meta name="description" content="Atul Netam — Official Portfolio. Cameraman & Video Journalist at IBC24, Narayanpur, Bastar. High-impact ground reporting from Chhattisgarh."/>
-  <meta name="theme-color" content="#050505"/>
+  <title>अतुल सिंह नेताम (Atul Netam) — IBC24 वीडियो जर्नलिस्ट | टेक & डिजिटल क्रिएटर</title>
+  <meta name="description" content="अतुल सिंह नेताम (Atul Netam) का आधिकारिक पोर्टफोलियो। कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network), संस्थापक बस्तर संदेश, डिजिटल क्रिएटर एवं रीजनल टेक डेवलपर, नारायणपुर, बस्तर (छ.ग.)।"/>
+  <meta name="theme-color" content="#070709"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet"/>
   
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#070708;
-      --bg-card:rgba(18,17,14,0.72);
-      --bg-card-hover:rgba(28,24,18,0.92);
+      --bg:#070709;
+      --bg-surface:#0f0e0b;
+      --bg-card:rgba(18,17,13,0.78);
+      --bg-card-hover:rgba(28,25,18,0.95);
       --gold:#e5b83b;
-      --gold-light:#ffd768;
-      --gold-glow:rgba(229,184,59,0.35);
-      --gold-subtle:rgba(229,184,59,0.12);
-      --gold-border:rgba(229,184,59,0.24);
+      --gold-light:#ffde7a;
+      --gold-deep:#b28416;
+      --gold-glow:rgba(229,184,59,0.38);
+      --gold-border:rgba(229,184,59,0.25);
+      --gold-subtle:rgba(229,184,59,0.1);
       --text:#f8f6f0;
       --text-muted:#a69f8c;
       --accent-red:#e53935;
+      --accent-blue:#29b6f6;
+      --accent-green:#66bb6a;
       --font-display:'Bebas Neue',sans-serif;
       --font-body:'Plus Jakarta Sans',sans-serif;
+      --font-hindi:'Noto Sans Devanagari',sans-serif;
       --font-title:'Cinzel',serif;
       --radius:16px;
       --trans:all 0.35s cubic-bezier(0.16,1,0.3,1);
@@ -41,17 +46,7 @@
       position:relative;
     }
 
-    /* Ambient Background Gradients */
-    .ambient-canvas{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 10% 20%, rgba(229,184,59,0.06) 0%, transparent 40%),
-        radial-gradient(circle at 90% 60%, rgba(229,57,53,0.04) 0%, transparent 40%),
-        radial-gradient(circle at 50% 90%, rgba(229,184,59,0.05) 0%, transparent 45%);
-    }
+    /* Interactive Background Canvas */
     #interactive-canvas{
       position:fixed;
       inset:0;
@@ -63,17 +58,17 @@
 
     /* Scrollbar */
     ::-webkit-scrollbar{width:6px}
-    ::-webkit-scrollbar-track{background:#070708}
-    ::-webkit-scrollbar-thumb{background:linear-gradient(to bottom, var(--gold), #8f701c);border-radius:4px}
+    ::-webkit-scrollbar-track{background:#070709}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(to bottom, var(--gold), #7a5d11);border-radius:4px}
 
     /* Top Progress Bar */
     #progress-bar{
-      position:fixed;top:0;left:0;height:3px;width:0%;
-      background:linear-gradient(90deg, #d49a17, #ffd768, #ff4d4d);
+      position:fixed;top:0;left:0;height:3.5px;width:0%;
+      background:linear-gradient(90deg, #d49a17, #ffde7a, #e53935);
       z-index:9999;box-shadow:0 0 14px var(--gold-glow);
     }
 
-    /* Custom Cursor / Spotlight */
+    /* Custom Cursor Spotlight */
     #spotlight{
       position:fixed;width:450px;height:450px;
       border-radius:50%;
@@ -84,15 +79,15 @@
       transition:transform 0.08s ease-out;
     }
 
-    /* ─── TICKER ─── */
+    /* ─── LIVE TICKER ─── */
     .breaking-bar{
       position:sticky;top:0;z-index:1000;
-      background:linear-gradient(90deg, #947113, #e5b83b, #b8860b);
+      background:linear-gradient(90deg, #8a650d, #e5b83b, #b8860b);
       color:#000;
       display:flex;align-items:center;
       overflow:hidden;
       height:36px;
-      box-shadow:0 2px 20px rgba(0,0,0,0.8);
+      box-shadow:0 2px 20px rgba(0,0,0,0.85);
     }
     .breaking-tag{
       background:#000;
@@ -103,7 +98,7 @@
       text-transform:uppercase;
       padding:0 18px;
       height:100%;
-      display:flex;align-items:center;gap:6px;
+      display:flex;align-items:center;gap:7px;
       flex-shrink:0;
       z-index:2;
     }
@@ -119,7 +114,7 @@
       display:flex;overflow:hidden;width:100%;white-space:nowrap;
     }
     .ticker-content{
-      display:flex;animation:scrollTicker 32s linear infinite;
+      display:flex;animation:scrollTicker 35s linear infinite;
       font-size:0.78rem;font-weight:700;
     }
     .ticker-content span{margin-right:45px;display:inline-flex;align-items:center;gap:8px}
@@ -129,9 +124,9 @@
     /* ─── NAVIGATION ─── */
     nav{
       position:sticky;top:36px;z-index:999;
-      background:rgba(8,8,10,0.85);
+      background:rgba(8,8,10,0.88);
       backdrop-filter:blur(24px);
-      border-bottom:1px solid rgba(229,184,59,0.12);
+      border-bottom:1px solid rgba(229,184,59,0.15);
       padding:0 5vw;
       height:68px;
       display:flex;align-items:center;justify-content:space-between;
@@ -142,28 +137,27 @@
     }
     .brand-name{
       font-family:var(--font-display);
-      font-size:1.9rem;
+      font-size:1.85rem;
       letter-spacing:3px;
-      line-height:0.9;
+      line-height:0.95;
       background:linear-gradient(135deg, #fff 30%, var(--gold-light) 90%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
     }
     .brand-sub{
-      font-size:0.6rem;
-      letter-spacing:3px;
+      font-size:0.58rem;
+      letter-spacing:2px;
       text-transform:uppercase;
       color:var(--gold);
-      font-weight:600;
+      font-weight:700;
     }
-    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links{display:flex;gap:1.8rem;list-style:none}
     .nav-links a{
       color:var(--text-muted);
       text-decoration:none;
       font-size:0.82rem;
       font-weight:600;
-      letter-spacing:1px;
-      text-transform:uppercase;
+      letter-spacing:0.8px;
       transition:var(--trans);
       position:relative;
       padding:6px 0;
@@ -181,7 +175,7 @@
     .cta-button{
       background:linear-gradient(135deg, var(--gold), #b8860b);
       color:#050505;
-      font-weight:700;
+      font-weight:800;
       font-size:0.8rem;
       text-decoration:none;
       padding:9px 20px;
@@ -206,18 +200,18 @@
       transition:var(--trans);border-radius:2px;
     }
 
-    /* ─── MOBILE DRAWER ─── */
+    /* Mobile Drawer */
     .mobile-drawer{
-      position:fixed;inset:0;background:rgba(5,5,6,0.96);
+      position:fixed;inset:0;background:rgba(5,5,7,0.97);
       backdrop-filter:blur(25px);z-index:9998;
       display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:2rem;opacity:0;pointer-events:none;transition:var(--trans);
+      gap:1.8rem;opacity:0;pointer-events:none;transition:var(--trans);
     }
     .mobile-drawer.open{opacity:1;pointer-events:auto}
     .mobile-drawer a{
       font-family:var(--font-display);
-      font-size:2.2rem;
-      letter-spacing:3px;
+      font-size:2rem;
+      letter-spacing:2px;
       color:var(--text);
       text-decoration:none;
       transition:var(--trans);
@@ -231,7 +225,7 @@
     /* ─── HERO SECTION ─── */
     .hero{
       min-height:calc(100vh - 104px);
-      padding:4rem 5vw 3rem;
+      padding:3.5rem 5vw 3rem;
       display:grid;
       grid-template-columns:1.2fr 0.8fr;
       align-items:center;
@@ -244,36 +238,36 @@
       background:rgba(229,184,59,0.1);
       border:1px solid var(--gold-border);
       padding:6px 16px;border-radius:30px;
-      font-size:0.75rem;font-weight:600;
-      color:var(--gold-light);letter-spacing:1.5px;
-      text-transform:uppercase;margin-bottom:1.2rem;
+      font-size:0.75rem;font-weight:700;
+      color:var(--gold-light);letter-spacing:1px;
+      margin-bottom:1.2rem;
     }
     .hero-title{
       font-family:var(--font-display);
-      font-size:clamp(4.5rem, 8vw, 8.5rem);
-      line-height:0.86;
+      font-size:clamp(4.2rem, 8vw, 8rem);
+      line-height:0.88;
       letter-spacing:2px;
-      margin-bottom:1rem;
+      margin-bottom:0.8rem;
     }
     .hero-title .glow-gold{
-      background:linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8860b 100%);
+      background:linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 55%, #b8860b 100%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       text-shadow:0 0 35px rgba(229,184,59,0.25);
     }
     .hero-tagline{
-      font-family:var(--font-title);
-      font-size:clamp(1rem, 2vw, 1.35rem);
-      color:var(--text-muted);
-      letter-spacing:1px;
-      margin-bottom:1.6rem;
+      font-family:var(--font-hindi);
+      font-size:clamp(1rem, 2vw, 1.25rem);
+      color:var(--gold-light);
+      font-weight:700;
+      margin-bottom:1.4rem;
     }
     .hero-desc{
-      font-size:1.02rem;
+      font-size:0.98rem;
       color:#c8c0ae;
       line-height:1.8;
-      max-width:540px;
-      margin-bottom:2.2rem;
+      max-width:550px;
+      margin-bottom:2rem;
     }
     .hero-desc strong{color:#fff;font-weight:600}
     
@@ -284,7 +278,7 @@
       border:1px solid rgba(255,255,255,0.14);
       font-weight:600;font-size:0.85rem;
       text-decoration:none;
-      padding:12px 24px;border-radius:30px;
+      padding:11px 22px;border-radius:30px;
       transition:var(--trans);
       display:inline-flex;align-items:center;gap:8px;
     }
@@ -295,14 +289,14 @@
       transform:translateY(-2px);
     }
 
-    /* ─── 3D FLOATING PRESS ID CARD ─── */
+    /* ─── 3D PRESS CARD ─── */
     .id-card-wrapper{
       perspective:1200px;
       display:flex;justify-content:center;
     }
     .id-3d-card{
-      width:100%;max-width:360px;
-      background:linear-gradient(160deg, #1b1710 0%, #0d0c0a 100%);
+      width:100%;max-width:370px;
+      background:linear-gradient(160deg, #1b1710 0%, #0c0b09 100%);
       border:1px solid var(--gold-border);
       border-radius:24px;
       padding:2.2rem;
@@ -318,12 +312,12 @@
     .id-3d-card:hover{
       box-shadow:
         0 35px 95px rgba(0,0,0,0.9),
-        0 0 50px rgba(229,184,59,0.22);
+        0 0 50px rgba(229,184,59,0.25);
     }
     .card-top-bar{
       display:flex;align-items:center;justify-content:space-between;
       border-bottom:1px solid rgba(229,184,59,0.15);
-      padding-bottom:1.1rem;margin-bottom:1.5rem;
+      padding-bottom:1.1rem;margin-bottom:1.4rem;
     }
     .card-channel-logo{
       font-family:var(--font-display);
@@ -338,7 +332,7 @@
     }
     .hologram-seal{
       width:44px;height:44px;border-radius:50%;
-      background:linear-gradient(135deg, #ffe082, #d49a17, #ffd54f);
+      background:linear-gradient(135deg, #ffde7a, #d49a17, #ffd54f);
       display:flex;align-items:center;justify-content:center;
       color:#000;font-weight:900;font-size:1.1rem;
       box-shadow:0 0 16px var(--gold-glow);
@@ -358,9 +352,10 @@
     }
     .id-3d-card:hover .card-avatar-box img{transform:scale(1.06)}
     .card-subject-name{
-      font-family:var(--font-display);
-      font-size:1.7rem;letter-spacing:2px;
-      text-align:center;color:#fff;line-height:1;
+      font-family:var(--font-hindi);
+      font-weight:800;
+      font-size:1.5rem;letter-spacing:0.5px;
+      text-align:center;color:#fff;line-height:1.1;
     }
     .card-subject-title{
       text-align:center;font-size:0.75rem;
@@ -375,21 +370,21 @@
       border-bottom:1px solid rgba(229,184,59,0.12);
     }
     .c-meta-item{display:flex;flex-direction:column}
-    .c-lbl{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted)}
+    .c-lbl{font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted)}
     .c-val{font-size:0.82rem;font-weight:700;color:#fff}
     .card-bottom-strip{
       margin-top:1.2rem;display:flex;align-items:center;justify-content:space-between;
     }
     .status-badge{
-      background:rgba(46,125,50,0.2);
+      background:rgba(46,125,50,0.22);
       color:#66bb6a;
-      border:1px solid rgba(76,175,80,0.3);
-      font-size:0.65rem;font-weight:700;letter-spacing:1px;
+      border:1px solid rgba(76,175,80,0.35);
+      font-size:0.65rem;font-weight:700;letter-spacing:0.5px;
       padding:3px 10px;border-radius:10px;text-transform:uppercase;
     }
     .card-id-code{font-size:0.62rem;color:var(--text-muted);letter-spacing:1px;font-family:monospace}
 
-    /* ─── LIVE COUNTER STATS ─── */
+    /* ─── LIVE COUNTERS ─── */
     .stats-section{
       position:relative;z-index:2;
       border-top:1px solid rgba(229,184,59,0.14);
@@ -401,13 +396,12 @@
       display:grid;grid-template-columns:repeat(4,1fr);
     }
     .stat-box{
-      padding:2.8rem 1.5rem;text-align:center;
+      padding:2.5rem 1.5rem;text-align:center;
       border-right:1px solid rgba(229,184,59,0.1);
-      position:relative;overflow:hidden;
       transition:var(--trans);
     }
     .stat-box:last-child{border-right:none}
-    .stat-box:hover{background:rgba(229,184,59,0.04)}
+    .stat-box:hover{background:rgba(229,184,59,0.05)}
     .stat-num{
       font-family:var(--font-display);
       font-size:3.5rem;line-height:1;letter-spacing:1px;
@@ -417,21 +411,22 @@
       margin-bottom:0.4rem;
     }
     .stat-label{
-      font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;
+      font-size:0.75rem;letter-spacing:1px;
       color:var(--text-muted);font-weight:600;
     }
 
-    /* ─── COMMON SECTION HEADERS ─── */
-    section{padding:6rem 5vw;position:relative;z-index:2}
+    /* ─── SECTION COMMONS ─── */
+    section{padding:5.5rem 5vw;position:relative;z-index:2}
     .sec-eyebrow{
       display:inline-flex;align-items:center;gap:8px;
-      font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;
-      color:var(--gold);font-weight:700;margin-bottom:0.5rem;
+      font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);font-weight:800;margin-bottom:0.5rem;
     }
     .sec-title{
-      font-family:var(--font-display);
-      font-size:clamp(2.5rem, 5vw, 4.2rem);
-      letter-spacing:2px;line-height:0.95;
+      font-family:var(--font-hindi);
+      font-weight:800;
+      font-size:clamp(2.2rem, 4.5vw, 3.6rem);
+      line-height:1.15;
       color:#fff;
     }
     .sec-title span{
@@ -442,282 +437,156 @@
       margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem;
     }
 
-    /* ─── INTERACTIVE VIDEO SUITE ─── */
-    .video-suite-grid{
-      display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;
+    /* ─── EXPERIENCE & ROLES ─── */
+    .experience-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1.8rem;
     }
-    .theater-frame{
-      background:#000;
-      border:1px solid var(--gold-border);
-      border-radius:var(--radius);
-      overflow:hidden;
-      box-shadow:0 25px 60px rgba(0,0,0,0.85);
-      position:relative;
-    }
-    .video-responsive{
-      position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
-    }
-    .video-responsive iframe{
-      position:absolute;top:0;left:0;width:100%;height:100%;border:none;
-    }
-    .theater-meta-bar{
-      padding:1.4rem 1.8rem;
-      background:linear-gradient(180deg, #12100b, #090806);
-      display:flex;align-items:center;justify-content:space-between;
-      border-top:1px solid rgba(229,184,59,0.12);
-    }
-    .theater-title{
-      font-family:var(--font-display);
-      font-size:1.6rem;letter-spacing:1px;color:#fff;
-    }
-    .theater-badge{
-      background:rgba(229,57,53,0.15);color:var(--accent-red);
-      border:1px solid rgba(229,57,53,0.3);
-      padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;
-      letter-spacing:1px;text-transform:uppercase;
-    }
-    .playlist-wrapper{
-      display:flex;flex-direction:column;gap:1rem;
-    }
-    .playlist-card{
-      background:var(--bg-card);
-      border:1px solid var(--gold-border);
-      border-radius:14px;
-      padding:1rem 1.2rem;
-      display:flex;gap:1rem;align-items:center;
-      cursor:pointer;
-      transition:var(--trans);
-    }
-    .playlist-card:hover{
-      background:var(--bg-card-hover);
-      transform:translateX(6px);
-      border-color:var(--gold);
-    }
-    .playlist-card.active{
-      background:rgba(229,184,59,0.12);
-      border-color:var(--gold-light);
-      box-shadow:0 0 20px rgba(229,184,59,0.15);
-    }
-    .pl-icon-wrap{
-      width:44px;height:44px;border-radius:10px;
-      background:rgba(229,184,59,0.15);
-      border:1px solid var(--gold-border);
-      display:flex;align-items:center;justify-content:center;
-      color:var(--gold-light);font-size:1.2rem;flex-shrink:0;
-    }
-    .pl-info h4{
-      font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:3px;
-    }
-    .pl-info p{
-      font-size:0.74rem;color:var(--text-muted);
-    }
-
-    /* ─── FEATURED INVESTIGATIONS (CAROUSEL / GRID) ─── */
-    .investigation-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.8rem;
-    }
-    .invest-card{
+    .exp-card{
       background:var(--bg-card);
       border:1px solid rgba(229,184,59,0.18);
       border-radius:var(--radius);
       padding:2rem;
-      position:relative;
-      overflow:hidden;
       transition:var(--trans);
+      position:relative;
       display:flex;flex-direction:column;justify-content:space-between;
     }
-    .invest-card::before{
-      content:'';position:absolute;top:0;left:0;right:0;height:3px;
-      background:linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity:0;transition:var(--trans);
-    }
-    .invest-card:hover{
-      transform:translateY(-8px);
+    .exp-card:hover{
+      transform:translateY(-6px);
       border-color:var(--gold);
       background:var(--bg-card-hover);
       box-shadow:0 20px 45px rgba(0,0,0,0.8), 0 0 25px rgba(229,184,59,0.12);
     }
-    .invest-card:hover::before{opacity:1}
-    .inv-tag{
-      font-size:0.65rem;font-weight:800;letter-spacing:2px;
-      color:var(--gold);text-transform:uppercase;margin-bottom:0.8rem;
+    .exp-header{
+      display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;
     }
-    .inv-title{
-      font-family:var(--font-display);
-      font-size:1.7rem;letter-spacing:1px;color:#fff;line-height:1.1;
-      margin-bottom:0.8rem;
+    .exp-num{
+      font-family:var(--font-display);font-size:2.4rem;color:rgba(229,184,59,0.3);line-height:1;
     }
-    .inv-desc{
-      font-size:0.85rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.5rem;
+    .exp-tag{
+      background:rgba(229,184,59,0.12);color:var(--gold-light);
+      border:1px solid var(--gold-border);padding:3px 10px;border-radius:20px;
+      font-size:0.68rem;font-weight:700;letter-spacing:0.5px;
     }
-    .inv-footer{
-      display:flex;align-items:center;justify-content:space-between;
-      padding-top:1rem;border-top:1px solid rgba(229,184,59,0.12);
-      font-size:0.75rem;color:var(--gold-light);font-weight:600;
+    .exp-role-title{
+      font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:0.4rem;line-height:1.3;
+    }
+    .exp-company{
+      font-size:0.85rem;color:var(--gold-light);font-weight:700;margin-bottom:0.8rem;
+    }
+    .exp-list{
+      list-style:none;margin-top:0.8rem;
+    }
+    .exp-list li{
+      position:relative;padding-left:18px;font-size:0.85rem;color:#c2baa7;
+      margin-bottom:0.5rem;line-height:1.6;
+    }
+    .exp-list li::before{
+      content:'▹';position:absolute;left:0;color:var(--gold);font-size:0.9rem;
     }
 
-    /* ─── ABOUT / PROFILE ─── */
+    /* ─── KEY PROJECTS TABLE / CARDS ─── */
+    .projects-container{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1.6rem;
+    }
+    .project-card{
+      background:var(--bg-card);
+      border:1px solid rgba(229,184,59,0.18);
+      border-radius:var(--radius);
+      padding:1.8rem;
+      transition:var(--trans);
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .project-card:hover{
+      transform:translateY(-6px);
+      border-color:var(--gold);
+      box-shadow:0 20px 45px rgba(0,0,0,0.8);
+      background:var(--bg-card-hover);
+    }
+    .p-cat-badge{
+      font-size:0.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:0.6rem;display:inline-block;
+    }
+    .p-title{
+      font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.6rem;line-height:1.3;
+    }
+    .p-desc{
+      font-size:0.85rem;color:var(--text-muted);line-height:1.65;margin-bottom:1.2rem;
+    }
+    .p-tech{
+      display:flex;flex-wrap:wrap;gap:6px;padding-top:0.9rem;
+      border-top:1px solid rgba(229,184,59,0.12);
+    }
+    .p-tech-pill{
+      background:rgba(255,255,255,0.04);border:1px solid rgba(229,184,59,0.15);
+      color:var(--gold-light);padding:3px 9px;border-radius:12px;font-size:0.68rem;font-weight:600;
+    }
+
+    /* ─── SKILLS & TECH MASTERY ─── */
+    .skills-quad-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.6rem;
+    }
+    .skill-category-card{
+      background:var(--bg-card);
+      border:1px solid var(--gold-border);
+      border-radius:var(--radius);
+      padding:2rem;
+      transition:var(--trans);
+    }
+    .skill-category-card:hover{
+      transform:translateY(-5px);border-color:var(--gold-light);
+      background:var(--bg-card-hover);
+      box-shadow:0 15px 35px rgba(0,0,0,0.7);
+    }
+    .sc-icon{font-size:2.2rem;margin-bottom:0.8rem;display:inline-block}
+    .sc-title{font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:1rem}
+    .sc-tags{display:flex;flex-wrap:wrap;gap:8px}
+    .sc-tag{
+      background:rgba(229,184,59,0.08);border:1px solid rgba(229,184,59,0.18);
+      color:#e8e2d2;padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;
+    }
+
+    /* ─── ABOUT & PROFILE ─── */
     .about-layout{
-      display:grid;grid-template-columns:0.9fr 1.1fr;gap:4.5rem;align-items:center;
+      display:grid;grid-template-columns:0.85fr 1.15fr;gap:4.5rem;align-items:center;
     }
-    .about-media-box{
-      position:relative;
-    }
+    .about-media-box{position:relative}
     .about-media-box .main-photo{
       width:100%;aspect-ratio:3/4;
       border-radius:24px;
       border:1px solid var(--gold-border);
       object-fit:cover;object-position:top;
-      box-shadow:0 30px 70px rgba(0,0,0,0.8);
+      box-shadow:0 30px 70px rgba(0,0,0,0.85);
       position:relative;z-index:2;
     }
     .about-floating-experience{
       position:absolute;bottom:-20px;right:-20px;z-index:3;
       background:linear-gradient(135deg, var(--gold-light), var(--gold));
       color:#000;
-      padding:1.4rem 1.8rem;border-radius:18px;
+      padding:1.3rem 1.6rem;border-radius:18px;
       box-shadow:0 15px 40px rgba(0,0,0,0.6);
       text-align:center;
     }
     .exp-big{font-family:var(--font-display);font-size:2.8rem;line-height:1}
-    .exp-sub{font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+    .exp-sub{font-size:0.62rem;font-weight:800;letter-spacing:1px;text-transform:uppercase}
     .about-bio-body h3{
-      font-family:var(--font-display);
-      font-size:2.6rem;letter-spacing:1.5px;color:#fff;line-height:1.1;
-      margin-bottom:1.5rem;
+      font-size:2rem;font-weight:800;color:#fff;line-height:1.3;
+      margin-bottom:1.4rem;font-family:var(--font-hindi);
     }
     .about-bio-body p{
       color:#c0b7a4;font-size:0.96rem;line-height:1.85;margin-bottom:1.2rem;
     }
-    .expertise-pills{
-      display:flex;flex-wrap:wrap;gap:10px;margin-top:2rem;
-    }
-    .epill{
-      background:rgba(229,184,59,0.08);
-      border:1px solid var(--gold-border);
-      color:var(--gold-light);
-      padding:7px 16px;border-radius:20px;
-      font-size:0.78rem;font-weight:600;
-    }
-
-    /* ─── PRESS CLUB / CREDENTIALS ─── */
-    .press-badge-card{
-      background:linear-gradient(145deg, #14120e, #0a0907);
-      border:1px solid var(--gold-border);
-      border-radius:20px;padding:2.2rem;
-      box-shadow:0 25px 60px rgba(0,0,0,0.7);
-    }
-    .credential-list{display:flex;flex-direction:column;gap:1.2rem}
-    .cred-item{
-      display:flex;gap:1.2rem;align-items:flex-start;
-      padding:1.2rem;background:rgba(255,255,255,0.02);
-      border:1px solid rgba(229,184,59,0.1);border-radius:14px;
-      transition:var(--trans);
-    }
-    .cred-item:hover{
-      border-color:var(--gold);transform:translateX(6px);
-      background:rgba(229,184,59,0.06);
-    }
-    .cred-icon{
-      font-size:1.8rem;color:var(--gold-light);
-    }
-    .cred-text h4{font-size:1rem;color:#fff;font-weight:700;margin-bottom:3px}
-    .cred-text p{font-size:0.8rem;color:var(--text-muted);line-height:1.6}
-
-    /* ─── COVERAGE BEAT ─── */
-    .beat-card-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;
-    }
-    .b-card{
-      background:var(--bg-card);
+    .quick-meta-box{
+      background:rgba(255,255,255,0.02);
       border:1px solid rgba(229,184,59,0.15);
-      border-radius:16px;padding:2rem;
-      transition:var(--trans);
+      border-radius:14px;padding:1.4rem;margin-top:1.8rem;
+      display:grid;grid-template-columns:1fr 1fr;gap:1rem;
     }
-    .b-card:hover{
-      transform:translateY(-6px);
-      border-color:var(--gold);
-      box-shadow:0 20px 40px rgba(0,0,0,0.7);
-    }
-    .b-icon{font-size:2.4rem;margin-bottom:1rem;display:inline-block}
-    .b-title{font-family:var(--font-display);font-size:1.5rem;letter-spacing:1px;color:#fff;margin-bottom:0.5rem}
-    .b-desc{font-size:0.82rem;color:var(--text-muted);line-height:1.65}
-
-    /* ─── TIMELINE / RECOGNITION ─── */
-    .journey-duo{
-      display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start;
-    }
-    .v-timeline{position:relative;padding-left:1.8rem}
-    .v-timeline::before{
-      content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;
-      background:linear-gradient(to bottom, var(--gold), rgba(229,184,59,0.1));
-    }
-    .vt-item{position:relative;padding-bottom:2.5rem;padding-left:1.8rem}
-    .vt-item:last-child{padding-bottom:0}
-    .vt-dot{
-      position:absolute;left:-2.35rem;top:5px;width:14px;height:14px;
-      border-radius:50%;background:var(--gold);
-      box-shadow:0 0 16px var(--gold-glow);
-    }
-    .vt-year{
-      font-family:var(--font-display);font-size:0.85rem;letter-spacing:2px;
-      color:var(--gold);margin-bottom:4px;
-    }
-    .vt-title{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:4px}
-    .vt-desc{font-size:0.82rem;color:var(--text-muted);line-height:1.65}
-
-    /* Awards Grid */
-    .awards-stack{display:flex;flex-direction:column;gap:1.2rem}
-    .award-card-item{
-      background:var(--bg-card);
-      border:1px solid rgba(229,184,59,0.18);
-      border-radius:14px;padding:1.4rem;
-      display:flex;align-items:center;gap:1.2rem;
-      transition:var(--trans);
-    }
-    .award-card-item:hover{
-      transform:translateX(8px);border-color:var(--gold);
-      box-shadow:0 12px 30px rgba(0,0,0,0.6);
-    }
-    .award-trophy{
-      width:48px;height:48px;border-radius:12px;
-      background:rgba(229,184,59,0.12);
-      border:1px solid var(--gold-border);
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.5rem;flex-shrink:0;color:var(--gold-light);
-    }
-    .award-t-name{font-weight:700;font-size:0.95rem;color:#fff;margin-bottom:2px}
-    .award-t-org{font-size:0.72rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:600}
-
-    /* ─── INTERACTIVE MAP VIEW ─── */
-    .map-frame-box{
-      border-radius:var(--radius);overflow:hidden;
-      border:1px solid var(--gold-border);
-      position:relative;
-      box-shadow:0 25px 60px rgba(0,0,0,0.8);
-    }
-    .map-frame-box iframe{
-      width:100%;height:400px;border:none;display:block;
-      filter:grayscale(70%) invert(90%) contrast(120%);
-    }
-    .map-floating-overlay{
-      position:absolute;bottom:25px;left:25px;
-      background:rgba(8,8,10,0.92);
-      backdrop-filter:blur(16px);
-      border:1px solid var(--gold-border);
-      border-radius:14px;padding:1.4rem 1.8rem;
-      max-width:320px;
-    }
-    .map-floating-overlay h4{
-      font-family:var(--font-display);font-size:1.5rem;color:var(--gold-light);letter-spacing:1px;
-    }
-    .map-floating-overlay p{
-      font-size:0.78rem;color:var(--text-muted);margin:4px 0 10px;
-    }
+    .qm-item span{display:block;font-size:0.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px}
+    .qm-item strong{font-size:0.88rem;color:#fff}
 
     /* ─── CONTACT TERMINAL ─── */
     .contact-container{
-      background:linear-gradient(160deg, #12100c 0%, #080808 100%);
+      background:linear-gradient(160deg, #14120e 0%, #080809 100%);
       border:1px solid var(--gold-border);
       border-radius:24px;
       padding:4rem 3rem;
@@ -731,16 +600,16 @@
       background:radial-gradient(circle at 50% 50%, rgba(229,184,59,0.06) 0%, transparent 70%);
       pointer-events:none;
     }
-    .contact-links-deck{
+    .contact-phone-grid{
       display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;
-      margin:2.5rem 0;position:relative;z-index:2;
+      margin:2rem 0;position:relative;z-index:2;
     }
     .contact-pill{
       background:rgba(255,255,255,0.03);
       border:1px solid rgba(229,184,59,0.2);
       color:#fff;text-decoration:none;
-      padding:14px 26px;border-radius:40px;
-      font-size:0.88rem;font-weight:600;
+      padding:13px 24px;border-radius:40px;
+      font-size:0.88rem;font-weight:700;
       display:inline-flex;align-items:center;gap:10px;
       transition:var(--trans);
     }
@@ -752,33 +621,57 @@
       box-shadow:0 10px 25px var(--gold-glow);
     }
 
-    /* ─── FOOTER ─── */
+    /* Social Links Deck */
+    .social-links-deck{
+      display:flex;flex-wrap:wrap;gap:0.8rem;justify-content:center;margin-top:1.5rem;
+      position:relative;z-index:2;
+    }
+    .soc-pill{
+      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.12);
+      color:var(--gold-light);text-decoration:none;padding:8px 16px;border-radius:20px;
+      font-size:0.78rem;font-weight:600;transition:var(--trans);display:inline-flex;align-items:center;gap:6px;
+    }
+    .soc-pill:hover{
+      background:rgba(229,184,59,0.15);border-color:var(--gold);color:#fff;transform:translateY(-2px);
+    }
+
+    /* Map Box */
+    .map-frame-box{
+      border-radius:var(--radius);overflow:hidden;
+      border:1px solid var(--gold-border);
+      position:relative;margin-top:2.5rem;
+      box-shadow:0 20px 50px rgba(0,0,0,0.8);
+    }
+    .map-frame-box iframe{
+      width:100%;height:350px;border:none;display:block;
+      filter:grayscale(60%) invert(90%) contrast(120%);
+    }
+
+    /* Footer */
     footer{
-      border-top:1px solid rgba(229,184,59,0.12);
+      border-top:1px solid rgba(229,184,59,0.15);
       padding:2.5rem 5vw;
-      background:#050505;
+      background:#050506;
       display:flex;align-items:center;justify-content:space-between;
       flex-wrap:wrap;gap:1.5rem;
       position:relative;z-index:2;
     }
     .footer-left p{font-size:0.75rem;color:var(--text-muted)}
 
-    /* ─── SCROLL REVEAL ANIMATIONS ─── */
+    /* Scroll Reveal */
     .reveal{
-      opacity:0;transform:translateY(32px);
+      opacity:0;transform:translateY(30px);
       transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
     }
     .reveal.active{opacity:1;transform:translateY(0)}
 
     /* Responsive */
     @media(max-width:960px){
-      .hero{grid-template-columns:1fr;text-align:center;padding-top:2.5rem}
+      .hero{grid-template-columns:1fr;text-align:center;padding-top:2rem}
       .id-card-wrapper{order:-1;margin-bottom:1rem}
       .hero-actions{justify-content:center}
       .hero-desc{margin-left:auto;margin-right:auto}
-      .video-suite-grid{grid-template-columns:1fr}
       .about-layout{grid-template-columns:1fr;gap:3rem}
-      .journey-duo{grid-template-columns:1fr;gap:3rem}
       .stats-grid{grid-template-columns:1fr 1fr}
       .stat-box:nth-child(2){border-right:none}
       .stat-box:nth-child(3){border-top:1px solid rgba(229,184,59,0.1)}
@@ -788,15 +681,14 @@
     @media(max-width:600px){
       .stats-grid{grid-template-columns:1fr}
       .stat-box{border-right:none;border-bottom:1px solid rgba(229,184,59,0.1)}
-      .hero-title{font-size:4rem}
-      .contact-container{padding:2.5rem 1.5rem}
+      .hero-title{font-size:3.8rem}
+      .contact-container{padding:2.5rem 1.2rem}
     }
   </style>
 </head>
 <body>
 
-  <!-- Ambient background -->
-  <div class="ambient-canvas"></div>
+  <!-- Background canvas -->
   <canvas id="interactive-canvas"></canvas>
   <div id="progress-bar"></div>
   <div id="spotlight"></div>
@@ -804,12 +696,10 @@
   <!-- Mobile Drawer -->
   <div class="mobile-drawer" id="mobileDrawer">
     <button class="drawer-close" id="drawerClose">&times;</button>
-    <a href="#work" onclick="closeDrawer()">रिपोर्ट्स</a>
-    <a href="#videos" onclick="closeDrawer()">वीडियो गैलरी</a>
     <a href="#about" onclick="closeDrawer()">परिचय</a>
-    <a href="#press" onclick="closeDrawer()">प्रेस कार्ड</a>
-    <a href="#beat" onclick="closeDrawer()">कवरेज बीट</a>
-    <a href="#journey" onclick="closeDrawer()">सफ़र & अवार्ड्स</a>
+    <a href="#experience" onclick="closeDrawer()">कार्य अनुभव</a>
+    <a href="#projects" onclick="closeDrawer()">प्रोजेक्ट्स</a>
+    <a href="#skills" onclick="closeDrawer()">दक्षताएं</a>
     <a href="#contact" onclick="closeDrawer()" style="color:var(--gold-light)">संपर्क</a>
   </div>
 
@@ -818,19 +708,17 @@
     <div class="breaking-tag"><span class="pulse-dot"></span> IBC24 LIVE</div>
     <div class="ticker-viewport">
       <div class="ticker-content">
-        <span>अतुल नेताम — बस्तर संभाग ग्राउंड रिपोर्टर व वीडियो जर्नलिस्ट</span>
-        <span>नक्सल प्रभावित अबूझमाड़ व अंदरूनी क्षेत्रों से एक्सक्लूसिव कवरेज</span>
-        <span>8+ वर्षों का निर्भीक फील्ड जर्नलिज्म अनुभव</span>
-        <span>IBC24 न्यूज़ चैनल • नारायणपुर ब्यूरो</span>
-        <span>आदिवासी अधिकार, संस्कृति एवं जमीनी हकीकत की सच्ची आवाज़</span>
-        <span>विधानसभा चुनाव व आपदा में फर्स्ट-ऑन-ग्राउंड रिपोर्टिंग</span>
-        <!-- Duplicate for continuous scroll -->
-        <span>अतुल नेताम — बस्तर संभाग ग्राउंड रिपोर्टर व वीडियो जर्नलिस्ट</span>
-        <span>नक्सल प्रभावित अबूझमाड़ व अंदरूनी क्षेत्रों से एक्सक्लूसिव कवरेज</span>
-        <span>8+ वर्षों का निर्भीक फील्ड जर्नलिज्म अनुभव</span>
-        <span>IBC24 न्यूज़ चैनल • नारायणपुर ब्यूरो</span>
-        <span>आदिवासी अधिकार, संस्कृति एवं जमीनी हकीकत की सच्ची आवाज़</span>
-        <span>विधानसभा चुनाव व आपदा में फर्स्ट-ऑन-ग्राउंड रिपोर्टिंग</span>
+        <span>अतुल सिंह नेताम — कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network)</span>
+        <span>नारायणपुर एवं अबूझमाड़ क्षेत्र से निर्भीक ग्राउंड रिपोर्टिंग एवं MoJo जर्नलिज्म</span>
+        <span>संस्थापक एवं संपादक: avsbastar.com एवं bastarsandesh8.wordpress.com</span>
+        <span>रीजनल टेक, एआई ऑटोमेशन एवं डिजिटल डायरेक्टरी डेवलपर</span>
+        <span>संचार समन्वयक — नारायणपुर प्रेस क्लब (Narayanpur Press Club)</span>
+        <!-- Loop for seamless ticker -->
+        <span>अतुल सिंह नेताम — कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network)</span>
+        <span>नारायणपुर एवं अबूझमाड़ क्षेत्र से निर्भीक ग्राउंड रिपोर्टिंग एवं MoJo जर्नलिज्म</span>
+        <span>संस्थापक एवं संपादक: avsbastar.com एवं bastarsandesh8.wordpress.com</span>
+        <span>रीजनल टेक, एआई ऑटोमेशन एवं डिजिटल डायरेक्टरी डेवलपर</span>
+        <span>संचार समन्वयक — नारायणपुर प्रेस क्लब (Narayanpur Press Club)</span>
       </div>
     </div>
   </div>
@@ -838,16 +726,15 @@
   <!-- NAVIGATION -->
   <nav>
     <a href="#" class="brand-group">
-      <span class="brand-name">ATUL NETAM</span>
-      <span class="brand-sub">IBC24 • Bastar Bureau</span>
+      <span class="brand-name">ATUL SINGH NETAM</span>
+      <span class="brand-sub">IBC24 • Narayanpur, Bastar</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#work">रिपोर्ट्स</a></li>
-      <li><a href="#videos">वीडियोज</a></li>
       <li><a href="#about">परिचय</a></li>
-      <li><a href="#press">प्रेस आईडी</a></li>
-      <li><a href="#beat">बीट</a></li>
-      <li><a href="#journey">सफ़र</a></li>
+      <li><a href="#experience">कार्य अनुभव</a></li>
+      <li><a href="#projects">प्रमुख प्रोजेक्ट्स</a></li>
+      <li><a href="#skills">कौशल एवं टेक</a></li>
+      <li><a href="#contact">संपर्क</a></li>
     </ul>
     <div class="nav-actions">
       <a href="#contact" class="cta-button">संपर्क करें</a>
@@ -861,191 +748,81 @@
   <section class="hero">
     <div class="hero-left reveal">
       <div class="hero-badge-pill">
-        <span>📹 IBC24 नारायणपुर ब्यूरो</span>
+        <span>📹 IBC24 News Network • S.B. Multimedia Pvt. Ltd.</span>
       </div>
       <h1 class="hero-title">
-        ATUL<br/>
+        ATUL SINGH<br/>
         <span class="glow-gold">NETAM</span>
       </h1>
-      <p class="hero-tagline">कैमरामैन एवं वीडियो जर्नलिस्ट — बस्तर संभाग, छत्तीसगढ़</p>
+      <p class="hero-tagline">कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24) | डिजिटल क्रिएटर | रीजनल टेक डेवलपर</p>
       <p class="hero-desc">
-        जहाँ तक कैमरे की नज़र आसानी से नहीं पहुँचती—<strong>अबूझमाड़ के घने जंगल, रेड ज़ोन मुठभेड़ क्षेत्र, बाढ़ संकट एवं दूरस्थ आदिवासी अंचल</strong>—वहाँ से निष्पक्ष और वास्तविक धरातल की तस्वीरें जनता तक पहुँचाना ही मेरा जीवन है।
+        नारायणपुर (बस्तर, छत्तीसगढ़) से एक सक्रिय वीडियो जर्नलिस्ट। <strong>27 दिसंबर 2024</strong> से IBC24 न्यूज़ नेटवर्क के साथ जुड़कर नारायणपुर और अबूझमाड़ के दुर्गम इलाकों से ग्राउंड रिपोर्टिंग, ब्रेकिंग न्यूज़ और मोबाइल जर्नलिज्म (MoJo) के माध्यम से जन-सरोकार की आवाज़ उठा रहा हूँ।
       </p>
       <div class="hero-actions">
-        <a href="#videos" class="cta-button">▶ रिपोर्ट्स देखें</a>
-        <a href="#contact" class="btn-secondary">📞 सीधे बात करें</a>
+        <a href="#experience" class="cta-button">कार्य अनुभव देखें</a>
+        <a href="tel:+917587776030" class="btn-secondary">📞 कॉल करें (+91 7587776030)</a>
       </div>
     </div>
 
-    <!-- 3D INTERACTIVE TILT ID CARD -->
+    <!-- 3D INTERACTIVE PRESS ID CARD -->
     <div class="id-card-wrapper reveal">
       <div class="id-3d-card" id="idTiltCard">
         <div class="card-top-bar">
           <div>
             <div class="card-channel-logo">IBC24</div>
-            <div class="card-channel-sub">Chhattisgarh Bureau</div>
+            <div class="card-channel-sub">S.B. Multimedia Pvt. Ltd.</div>
           </div>
           <div class="hologram-seal">★</div>
         </div>
         <div class="card-avatar-box">
-          <img src="atul-photo.jpg" alt="Atul Netam"/>
+          <img src="atul-photo.jpg" alt="Atul Singh Netam"/>
         </div>
-        <div class="card-subject-name">अतुल नेताम</div>
-        <div class="card-subject-title">Senior Video Journalist</div>
+        <div class="card-subject-name">अतुल सिंह नेताम</div>
+        <div class="card-subject-title">Cameraman & Video Journalist</div>
         <div class="card-grid-meta">
           <div class="c-meta-item">
-            <span class="c-lbl">ब्यूरो</span>
+            <span class="c-lbl">ब्यूरो / क्षेत्र</span>
             <span class="c-val">नारायणपुर (बस्तर)</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-lbl">मोबाइल</span>
+            <span class="c-lbl">कार्यारंभ तिथि</span>
+            <span class="c-val">27 दिसंबर 2024</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-lbl">प्राथमिक संपर्क</span>
             <span class="c-val">+91 75877 76030</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-lbl">आईडी क्र.</span>
-            <span class="c-val">IBC24-NGP-48</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-lbl">अनुभव</span>
-            <span class="c-val">8+ वर्ष (2017 से)</span>
+            <span class="c-lbl">प्रेस क्लब</span>
+            <span class="c-val">संचार समन्वयक</span>
           </div>
         </div>
         <div class="card-bottom-strip">
-          <span class="status-badge">● Active Correspondent</span>
-          <span class="card-id-code">PRESS CARD VALID</span>
+          <span class="status-badge">● Active Media Professional</span>
+          <span class="card-id-code">IBC24-NGP-OFFICIAL</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ANIMATED NUMERIC STATS -->
+  <!-- LIVE NUMERIC METRICS -->
   <section class="stats-section">
     <div class="stats-grid">
       <div class="stat-box reveal">
-        <div class="stat-num" data-target="8">0</div>
-        <div class="stat-label">वर्षों का निर्भीक अनुभव</div>
+        <div class="stat-num" data-target="27">0</div>
+        <div class="stat-label">दिसंबर 2024 से IBC24 संबद्ध</div>
       </div>
       <div class="stat-box reveal">
-        <div class="stat-num" data-target="650">0</div>
-        <div class="stat-label">ग्राउंड बुलेटिन्स व रिपोर्ट्स</div>
+        <div class="stat-num" data-target="2">0</div>
+        <div class="stat-label">डिजिटल न्यूज़ पोर्टल्स (संस्थापक)</div>
+      </div>
+      <div class="stat-box reveal">
+        <div class="stat-num" data-target="100">0</div>
+        <div class="stat-label">% अबूझमाड़ व बस्तर ग्राउंड फोकस</div>
       </div>
       <div class="stat-box reveal">
         <div class="stat-num" data-target="15">0</div>
-        <div class="stat-label">संभाग के जिले व ब्लॉक कवर्ड</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num" data-target="6">0</div>
-        <div class="stat-label">राज्य व प्रेस क्लब सम्मान</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VIDEO THEATER SUITE -->
-  <section id="videos">
-    <div class="sec-header-wrap reveal">
-      <div>
-        <div class="sec-eyebrow">Visual Broadcast</div>
-        <h2 class="sec-title">प्रमुख <span>वीडियो रिपोर्ट्स</span></h2>
-      </div>
-      <a href="https://youtube.com/@AtulNetam" target="_blank" class="cta-button">📺 यूट्यूब चैनल विजिट करें</a>
-    </div>
-
-    <div class="video-suite-grid">
-      <div class="theater-frame reveal">
-        <div class="video-responsive">
-          <iframe id="mainYtPlayer"
-            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0"
-            title="IBC24 Special Report"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div class="theater-meta-bar">
-          <div>
-            <div class="theater-title" id="theaterVideoTitle">नक्सल ऑपरेशन ग्राउंड रिपोर्ट — अबूझमाड़ लाइव</div>
-            <p style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">IBC24 एक्सक्लूसिव • अतुल नेताम</p>
-          </div>
-          <span class="theater-badge">एक्सक्लूसिव</span>
-        </div>
-      </div>
-
-      <div class="playlist-wrapper reveal">
-        <div class="playlist-card active" onclick="switchVideo('dQw4w9WgXcQ', 'नक्सल ऑपरेशन ग्राउंड रिपोर्ट — अबूझमाड़ लाइव', this)">
-          <div class="pl-icon-wrap">▶</div>
-          <div class="pl-info">
-            <h4>अबूझमाड़ अंदरूनी क्षेत्र स्पेशल</h4>
-            <p>सुरक्षा बलों के साथ घने जंगलों से पहली रिपोर्टिंग</p>
-          </div>
-        </div>
-        <div class="playlist-card" onclick="switchVideo('dQw4w9WgXcQ', 'नारायणपुर बाढ़ त्रासदी 2024 — विस्थापितों का दर्द', this)">
-          <div class="pl-icon-wrap">🌧️</div>
-          <div class="pl-info">
-            <h4>बाढ़ संकट लाइव रेस्क्यू</h4>
-            <p>टापू बने गांवों में बोट से पहुंची IBC24 की टीम</p>
-          </div>
-        </div>
-        <div class="playlist-card" onclick="switchVideo('dQw4w9WgXcQ', 'विधानसभा चुनाव धरातल — बस्तर का मतदाता क्या सोचता है', this)">
-          <div class="pl-icon-wrap">🗳️</div>
-          <div class="pl-info">
-            <h4>छत्तीसगढ़ चुनाव महाकवरेज</h4>
-            <p>बूथों की सुरक्षा और जनता की उम्मीदों की पड़ताल</p>
-          </div>
-        </div>
-        <div class="playlist-card" onclick="switchVideo('dQw4w9WgXcQ', 'आदिवासी संस्कृति व देवगुड़ी संरक्षण — एक अनकही दास्तान', this)">
-          <div class="pl-icon-wrap">🌿</div>
-          <div class="pl-info">
-            <h4>बस्तर की लोक संस्कृति</h4>
-            <p>परंपरा, रीति-रिवाज एवं वनाधिकार की कहानी</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURED INVESTIGATIONS -->
-  <section id="work" style="background:rgba(10,9,7,0.5)">
-    <div class="sec-header-wrap reveal">
-      <div>
-        <div class="sec-eyebrow">Field Archives</div>
-        <h2 class="sec-title">विशेष <span>खोजी पड़ताल</span></h2>
-      </div>
-    </div>
-
-    <div class="investigation-grid">
-      <div class="invest-card reveal">
-        <div>
-          <span class="inv-tag">एंटी-नक्सल ग्राउंड ज़ीरो</span>
-          <h3 class="inv-title">बस्तर में शांति बहाली एवं आत्मसमर्पण की गवाही</h3>
-          <p class="inv-desc">नारायणपुर और दंतेवाड़ा के सुदूर इलाकों में हथियार छोड़ मुख्यधारा में लौटते युवाओं की वास्तविक दास्तान, पुलिस प्रशासन व जनता के बीच का संवाद।</p>
-        </div>
-        <div class="inv-footer">
-          <span>IBC24 Special Documented</span>
-          <span>🏆 स्टेट प्रेस अवार्ड</span>
-        </div>
-      </div>
-
-      <div class="invest-card reveal">
-        <div>
-          <span class="inv-tag">प्राकृतिक आपदा व राहत</span>
-          <h3 class="inv-title">बरसात में कटे 40 गांवों तक दवाई और राशन की लड़ाई</h3>
-          <p class="inv-desc">पुल-पुलियों के बह जाने के बाद जान जोखिम में डालकर नदी पार कर ग्रामीणों के हालात और प्रशासन की राहत टीम का सीधा प्रसारण।</p>
-        </div>
-        <div class="inv-footer">
-          <span>लाइव ग्राउंड रिपोर्टिंग</span>
-          <span>📡 24-घंटे ऑन-एयर</span>
-        </div>
-      </div>
-
-      <div class="invest-card reveal">
-        <div>
-          <span class="inv-tag">स्वास्थ्य व बुनियादी ढांचा</span>
-          <h3 class="inv-title">दूरस्थ गांवों में एम्बुलेंस न पहुँचने की कड़वी हकीकत</h3>
-          <p class="inv-desc">खाट पर मरीज को ले जाने की मजबूरियों पर धारदार कवरेज, जिसके प्रसारण के बाद स्वास्थ्य विभाग ने त्वरित संज्ञान लिया और मदद पहुँची।</p>
-        </div>
-        <div class="inv-footer">
-          <span>इम्पैक्ट जर्नलिज्म</span>
-          <span>⚡ असरकारी रिपोर्ट</span>
-        </div>
+        <div class="stat-label">तकनीकी व मीडिया टूल्स दक्षता</div>
       </div>
     </div>
   </section>
@@ -1054,246 +831,344 @@
   <section id="about">
     <div class="about-layout">
       <div class="about-media-box reveal">
-        <img src="atul-photo.jpg" alt="Atul Netam" class="main-photo"/>
+        <img src="atul-photo.jpg" alt="Atul Singh Netam" class="main-photo"/>
         <div class="about-floating-experience">
-          <div class="exp-big">8+</div>
-          <div class="exp-sub">Years in Field</div>
+          <div class="exp-big">IBC24</div>
+          <div class="exp-sub">Narayanpur Bureau</div>
         </div>
       </div>
       <div class="about-bio-body reveal">
-        <div class="sec-eyebrow">संक्षिप्त परिचय</div>
-        <h3>पत्रकारिता सिर्फ पेशा नहीं, बस्तर के जनमानस की आवाज़ है</h3>
+        <div class="sec-eyebrow">परिचय (About Me)</div>
+        <h3>बस्तर की ज़मीन से सच्ची पत्रकारिता और आधुनिक तकनीक का संगम</h3>
         <p>
-          मेरा नाम <strong>अतुल नेताम</strong> है। मध्य भारत के सबसे प्रतिष्ठित रीजनल न्यूज़ चैनल <strong>IBC24</strong> में कैमरामैन व वीडियो जर्नलिस्ट के रूप में कार्यरत हूँ।
+          मैं <strong>अतुल नेताम (Atul Singh Netam)</strong>, नारायणपुर (बस्तर संभाग, छत्तीसगढ़) से एक सक्रिय वीडियो जर्नलिस्ट, कैमरामैन और डिजिटल कंटेंट क्रिएटर हूँ। <strong>27 दिसंबर 2024</strong> से IBC24 न्यूज़ नेटवर्क के साथ जुड़कर मैं नारायणपुर और अबूझमाड़ के दुर्गम इलाकों से ग्राउंड रिपोर्टिंग, ब्रेकिंग न्यूज़ और मोबाइल जर्नलिज्म (MoJo) के माध्यम से जन-सरोकार की खबरें सामने ला रहा हूँ।
         </p>
         <p>
-          2017 से लगातार बस्तर संभाग, विशेषकर <strong>नारायणपुर</strong> क्षेत्र में रहकर मैंने ग्राउंड रिपोर्टिंग की है। हर विषम परिस्थिति, घने जंगलों, सुरक्षा ऑपरेशन्स से लेकर आदिवासियों के सांस्कृतिक जीवन को अपनी कैमरे की नज़र से जीवंत रखा है।
+          पत्रकारिता के साथ-साथ मैं फोटोग्राफी, सिनेमैटिक वीडियो एडिटिंग, एआई ऑटोमेशन और क्षेत्रीय डिजिटल न्यूज़ पोर्टल्स (जैसे <strong>avsbastar.com</strong> और <strong>bastarsandesh8.wordpress.com</strong> — बस्तर संदेश) के विकास में भी निरंतर सक्रिय हूँ।
         </p>
-        <div class="expertise-pills">
-          <span class="epill">🎥 प्रोफेशनल कैमरा संचालन</span>
-          <span class="epill">🎙️ लाइव फील्ड रिपोर्टिंग</span>
-          <span class="epill">🚁 ड्रोन सिनेमैटोग्राफी</span>
-          <span class="epill">⚡ ब्रेकिंग न्यूज़ कवरेज</span>
-          <span class="epill">📝 इन-डेप्थ स्टोरी टेलिंग</span>
-          <span class="epill">🛡️ क्राइसिस मैनेजमेंट</span>
+
+        <div class="quick-meta-box">
+          <div class="qm-item">
+            <span>जन्म तिथि</span>
+            <strong>21 जुलाई 1998</strong>
+          </div>
+          <div class="qm-item">
+            <span>शिक्षा</span>
+            <strong>11वीं उत्तीर्ण (छत्तीसगढ़)</strong>
+          </div>
+          <div class="qm-item">
+            <span>स्थानीय निवास</span>
+            <strong>बंगालापारा, वार्ड क्र. 4, पुराने बस स्टैंड के पीछे, नारायणपुर (494661)</strong>
+          </div>
+          <div class="qm-item">
+            <span>भाषा ज्ञान</span>
+            <strong>हिंदी, छत्तीसगढ़ी, हल्बी, गोंडी (क्षेत्रीय), अंग्रेजी</strong>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRESS CREDENTIALS -->
-  <section id="press" style="background:rgba(12,11,8,0.7)">
+  <!-- EXPERIENCE & ROLES -->
+  <section id="experience" style="background:rgba(11,10,8,0.6)">
     <div class="sec-header-wrap reveal">
       <div>
-        <div class="sec-eyebrow">Official Accreditations</div>
-        <h2 class="sec-title">प्रेस एवं <span>मीडिया सदस्यता</span></h2>
+        <div class="sec-eyebrow">Career Highlights</div>
+        <h2 class="sec-title">कार्य अनुभव <span>एवं भूमिकाएं</span></h2>
       </div>
     </div>
 
-    <div class="press-badge-card reveal">
-      <div class="credential-list">
-        <div class="cred-item">
-          <div class="cred-icon">🪪</div>
-          <div class="cred-text">
-            <h4>नारायणपुर प्रेस क्लब — सक्रिय सदस्य</h4>
-            <p>स्थानीय पत्रकारिता संगठन में निरंतर सहभागिता, मीडिया अधिकारों एवं निष्पक्ष रिपोर्टिंग के सिद्धांतों के प्रति समर्पित।</p>
+    <div class="experience-grid">
+      <!-- Role 1 -->
+      <div class="exp-card reveal">
+        <div>
+          <div class="exp-header">
+            <span class="exp-num">01</span>
+            <span class="exp-tag">27 दिसंबर 2024 – वर्तमान</span>
           </div>
+          <h3 class="exp-role-title">कैमरामैन एवं वीडियो जर्नलिस्ट</h3>
+          <p class="exp-company">IBC24 News Network (S.B. Multimedia Pvt. Ltd.)</p>
+          <ul class="exp-list">
+            <li>नारायणपुर और अबूझमाड़ क्षेत्र से लाइव रिपोर्टिंग, ब्रेकिंग न्यूज़ कवरेज और एक्सक्लूसिव ग्राउंड रिपोर्टिंग।</li>
+            <li>वरिष्ठ जिला संवाददाता अशफ़ाक़ अहमद के साथ समन्वय में फील्ड प्रोडक्शन, इंटरव्यू और विजुअल स्टोरीटेलिंग।</li>
+            <li>मोबाइल जर्नलिज्म (MoJo) और त्वरित न्यूज़ पैकेज एडिटिंग।</li>
+          </ul>
         </div>
-        <div class="cred-item">
-          <div class="cred-icon">📺</div>
-          <div class="cred-text">
-            <h4>IBC24 न्यूज़ चैनल — आधिकारिक वीडियो जर्नलिस्ट</h4>
-            <p>छत्तीसगढ़ व मध्य प्रदेश के अग्रणी न्यूज़ नेटवर्क IBC24 द्वारा बस्तर संभाग के लिए अधिकृत व प्रमाणित प्रतिनिधि।</p>
+      </div>
+
+      <!-- Role 2 -->
+      <div class="exp-card reveal">
+        <div>
+          <div class="exp-header">
+            <span class="exp-num">02</span>
+            <span class="exp-tag">संस्थापक एवं संपादक</span>
           </div>
+          <h3 class="exp-role-title">क्षेत्रीय डिजिटल मीडिया पोर्टल्स</h3>
+          <p class="exp-company">avsbastar.com एवं bastarsandesh8.wordpress.com (बस्तर संदेश)</p>
+          <ul class="exp-list">
+            <li>बस्तर और छत्तीसगढ़ की स्थानीय खबरों, प्रशासनिक अपडेट्स और जनहित के मुद्दों का डिजिटल प्रकाशन व संपादन।</li>
+            <li>वर्डप्रेस सिंक, न्यूज़ ऑटोमेशन और सोशल मीडिया न्यूज़ डिस्ट्रीब्यूशन।</li>
+          </ul>
         </div>
-        <div class="cred-item">
-          <div class="cred-icon">🌐</div>
-          <div class="cred-text">
-            <h4>डिजिटल व सोशल जर्नलिज्म</h4>
-            <p>यूट्यूब एवं सोशल मीडिया प्लेटफॉर्म्स पर बस्तर की वास्तविकताओं का तीव्र व सत्यनिष्ठ डिजिटल प्रसार।</p>
+      </div>
+
+      <!-- Role 3 -->
+      <div class="exp-card reveal">
+        <div>
+          <div class="exp-header">
+            <span class="exp-num">03</span>
+            <span class="exp-tag">स्वतंत्र सेवाएं</span>
           </div>
+          <h3 class="exp-role-title">फोटोग्राफर, वीडियोग्राफर एवं क्रिएटर</h3>
+          <p class="exp-company">क्रिएटिव मीडिया एवं विजुअल प्रोडक्शन</p>
+          <ul class="exp-list">
+            <li>वेडिंग और इवेंट फोटोग्राफी, सिनेमैटिक रील एडिटिंग।</li>
+            <li>लाइव स्ट्रीमिंग सेटअप और ग्राफिक पोस्टर व थंबनेल डिज़ाइनिंग।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Role 4 -->
+      <div class="exp-card reveal">
+        <div>
+          <div class="exp-header">
+            <span class="exp-num">04</span>
+            <span class="exp-tag">प्रेस समन्वय</span>
+          </div>
+          <h3 class="exp-role-title">संचार समन्वयक</h3>
+          <p class="exp-company">नारायणपुर प्रेस क्लब (Narayanpur Press Club)</p>
+          <ul class="exp-list">
+            <li>प्रेस क्लब के सदस्यों के बीच संवाद समन्वय एवं संपर्क डायरेक्टरी प्रबंधन।</li>
+            <li>आपातकालीन मीडिया सूचना प्रसारण एवं प्रेस विज्ञप्ति प्रबंधन।</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BEAT & COVERAGE -->
-  <section id="beat">
+  <!-- KEY PROJECTS & PUBLICATIONS -->
+  <section id="projects">
     <div class="sec-header-wrap reveal">
       <div>
-        <div class="sec-eyebrow">Core Areas</div>
-        <h2 class="sec-title">मेरी मुख्य <span>कवरेज बीट</span></h2>
+        <div class="sec-eyebrow">Innovation & Publications</div>
+        <h2 class="sec-title">प्रमुख प्रोजेक्ट्स <span>एवं लेखन</span></h2>
       </div>
     </div>
 
-    <div class="beat-card-grid">
-      <div class="b-card reveal">
-        <span class="b-icon">🌲</span>
-        <h4 class="b-title">सुरक्षा एवं नक्सल मामले</h4>
-        <p class="b-desc">संवेदनशील क्षेत्रों में सुरक्षा बलों की मूवमेंट, आत्मसमर्पण और मुठभेड़ों का निष्पक्ष व सीधा कवरेज।</p>
-      </div>
-      <div class="b-card reveal">
-        <span class="b-icon">🏹</span>
-        <h4 class="b-title">आदिवासी अधिकार व संस्कृति</h4>
-        <p class="b-desc">बस्तर के मूल निवासियों के अधिकार, जल-जंगल-ज़मीन से जुड़े मुद्दे और उनकी समृद्ध परंपराएँ।</p>
-      </div>
-      <div class="b-card reveal">
-        <span class="b-icon">🗳️</span>
-        <h4 class="b-title">राजनीति एवं चुनाव</h4>
-        <p class="b-desc">विधानसभा व लोकसभा चुनावों में अंदरूनी पोलिंग बूथों का लाइव माहौल और मतदाताओं की राय।</p>
-      </div>
-      <div class="b-card reveal">
-        <span class="b-icon">🌊</span>
-        <h4 class="b-title">आपदा एवं राहत कार्य</h4>
-        <p class="b-desc">बाढ़, आगजनी व आपातकालीन संकटों के दौरान ग्राउंड पर सबसे पहले पहुँचकर मदद सुनिश्चित कराना।</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- JOURNEY & HONORS -->
-  <section id="journey" style="background:rgba(9,8,6,0.6)">
-    <div class="journey-duo">
-      <div class="reveal">
-        <div class="sec-eyebrow">Milestones</div>
-        <h2 class="sec-title" style="margin-bottom:2rem">सफ़र की <span>कड़ियाँ</span></h2>
-        <div class="v-timeline">
-          <div class="vt-item">
-            <div class="vt-dot"></div>
-            <div class="vt-year">2024 — वर्तमान</div>
-            <div class="vt-title">सीनियर वीडियो जर्नलिस्ट • IBC24</div>
-            <div class="vt-desc">बस्तर संभाग की प्रमुख खोजी रिपोर्ट्स और स्टेट लेवल ब्रेकिंग न्यूज़ की अगुवाई।</div>
-          </div>
-          <div class="vt-item">
-            <div class="vt-dot"></div>
-            <div class="vt-year">2023</div>
-            <div class="vt-title">छत्तीसगढ़ विधानसभा चुनाव महाकवरेज</div>
-            <div class="vt-desc">अबूझमाड़ के अति-संवेदनशील पोलिंग सेंटर्स से लगातार लाइव विजुअल्स का प्रसारण।</div>
-          </div>
-          <div class="vt-item">
-            <div class="vt-dot"></div>
-            <div class="vt-year">2020</div>
-            <div class="vt-title">कोविड-19 महामारी ग्राउंड कवरेज</div>
-            <div class="vt-desc">दूर-दराज वनांचलों में चिकित्सा संकट एवं राहत वितरण पर विशेष केंद्रित रिपोर्टिंग।</div>
-          </div>
-          <div class="vt-item">
-            <div class="vt-dot"></div>
-            <div class="vt-year">2017</div>
-            <div class="vt-title">पत्रकारिता की शुरुआत — IBC24</div>
-            <div class="vt-desc">नारायणपुर से कैमरामैन के रूप में कदम रखा और ज़मीनी मुद्दों को प्राथमिकता दी।</div>
-          </div>
+    <div class="projects-container">
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">न्यूज़ पोर्टल एवं ऐप</span>
+          <h3 class="p-title">बस्तर संदेश (Bastar Sandesh) & CG News App</h3>
+          <p class="p-desc">GNews API, वर्डप्रेस सिंक और एआई सारांश (AI Summarization) तकनीक पर आधारित क्षेत्रीय हिंदी न्यूज़ पोर्टल और PWA ऐप।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">GNews API</span>
+          <span class="p-tech-pill">WordPress</span>
+          <span class="p-tech-pill">AI Summary</span>
+          <span class="p-tech-pill">PWA App</span>
         </div>
       </div>
 
-      <div class="reveal">
-        <div class="sec-eyebrow">Recognition</div>
-        <h2 class="sec-title" style="margin-bottom:2rem">प्रमुख <span>सम्मान एवं अवार्ड्स</span></h2>
-        <div class="awards-stack">
-          <div class="award-card-item">
-            <div class="award-trophy">🏆</div>
-            <div>
-              <div class="award-t-name">बेस्ट फील्ड रिपोर्टर — बस्तर अंचल</div>
-              <div class="award-t-org">IBC24 एनुअल रिकॉग्निशन • 2023</div>
-            </div>
-          </div>
-          <div class="award-card-item">
-            <div class="award-trophy">🎖️</div>
-            <div>
-              <div class="award-t-name">उत्कृष्ट पत्रकारिता सम्मान — रेड ज़ोन कवरेज</div>
-              <div class="award-t-org">छत्तीसगढ़ स्टेट मीडिया अवार्ड्स • 2022</div>
-            </div>
-          </div>
-          <div class="award-card-item">
-            <div class="award-trophy">⭐</div>
-            <div>
-              <div class="award-t-name">साहसिक रिपोर्टिंग अवॉर्ड — बाढ़ संकट</div>
-              <div class="award-t-org">बस्तर जर्नलिस्ट एसोसिएशन • 2021</div>
-            </div>
-          </div>
-          <div class="award-card-item">
-            <div class="award-trophy">📜</div>
-            <div>
-              <div class="award-t-name">जनजातीय संस्कृति संवर्धन मीडिया सम्मान</div>
-              <div class="award-t-org">ट्राइबल मीडिया फोरम • 2020</div>
-            </div>
-          </div>
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">ऑटोमेशन एवं एआई</span>
+          <h3 class="p-title">दैनिक बोर्ड (Dainik Board) & न्यूज़ बॉट</h3>
+          <p class="p-desc">नारायणपुर की स्थानीय खबरों के संकलन और कंटेंट मैनेजमेंट के लिए Python, Google AI Studio और n8n आधारित ऑटोमेशन सिस्टम।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">Python</span>
+          <span class="p-tech-pill">Google AI Studio</span>
+          <span class="p-tech-pill">n8n Automation</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">डिजिटल डायरेक्टरी</span>
+          <h3 class="p-title">नारायणपुर जिला अधिकारी एवं पंचायत डायरेक्टरी</h3>
+          <p class="p-desc">प्रशासनिक अधिकारियों और ग्राम पंचायतों की द्विभाषी (हिंदी-अंग्रेजी) संपर्क डायरेक्टरी (VCF, Excel और PDF प्रारूप में)।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">VCF Integration</span>
+          <span class="p-tech-pill">Excel Sheets</span>
+          <span class="p-tech-pill">PDF Directory</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">पुस्तक एवं शोध</span>
+          <h3 class="p-title">नारायणपुर का मावली मेला (Mawali Mela)</h3>
+          <p class="p-desc">नारायणपुर के ऐतिहासिक मावली मेले की परंपराओं, आस्था और सांस्कृतिक महत्व पर आधारित विस्तृत हिंदी पांडुलिपि।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">सांस्कृतिक शोध</span>
+          <span class="p-tech-pill">हिंदी पांडुलिपि</span>
+          <span class="p-tech-pill">बस्तर हेरिटेज</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">अकादमिक संकलन</span>
+          <h3 class="p-title">पत्रकारिता शोध प्रबंध (Journalism Thesis)</h3>
+          <p class="p-desc">शहीद महेंद्र कर्मा विश्वविद्यालय (SMKV), बस्तर के लिए तैयार किया गया उच्च-स्तरीय पत्रकारिता दस्तावेज।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">SMKV Bastar</span>
+          <span class="p-tech-pill">मीडिया रिसर्च</span>
+          <span class="p-tech-pill">अकादमिक दस्तावेज</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div>
+          <span class="p-cat-badge">इवेंट मैनेजमेंट ऑटोमेशन</span>
+          <h3 class="p-title">रास गरबा महोत्सव एवं रिदम्स ऑफ बस्तर</h3>
+          <p class="p-desc">गूगल फॉर्म्स, गूगल शीट्स और व्हाट्सएप ऑटोमेशन (QR कोड व टोकन सिस्टम) के माध्यम से डिजिटल रजिस्ट्रेशन एवं एंट्री प्रबंधन।</p>
+        </div>
+        <div class="p-tech">
+          <span class="p-tech-pill">Google Apps Script</span>
+          <span class="p-tech-pill">QR / Token</span>
+          <span class="p-tech-pill">WhatsApp API</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- INTERACTIVE LOCATION MAP -->
-  <section id="location">
+  <!-- SKILLS & EXPERTISE -->
+  <section id="skills" style="background:rgba(12,11,8,0.7)">
     <div class="sec-header-wrap reveal">
       <div>
-        <div class="sec-eyebrow">Base Location</div>
-        <h2 class="sec-title">नारायणपुर <span>कार्यक्षेत्र</span></h2>
+        <div class="sec-eyebrow">Technical & Creative Matrix</div>
+        <h2 class="sec-title">कौशल एवं <span>तकनीकी दक्षता</span></h2>
       </div>
     </div>
-    <div class="map-frame-box reveal">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119120.45781303803!2d81.1695276!3d19.7143167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a283995f5024795%3A0x6e2b144bc606c4da!2sNarayanpur%2C%20Chhattisgarh!5e0!3m2!1sen!2sin!4v1711200000000!5m2!1sen!2sin"
-        loading="lazy" allowfullscreen>
-      </iframe>
-      <div class="map-floating-overlay">
-        <h4>📍 नारायणपुर मुख्यालय</h4>
-        <p>बस्तर संभाग, छत्तीसगढ़ — 24/7 ऑन-फील्ड कवरेज के लिए तत्पर।</p>
-        <span style="font-size:0.68rem;color:var(--gold-light);font-weight:700">● LIVE ON-GROUND ACTIVE</span>
+
+    <div class="skills-quad-grid">
+      <div class="skill-category-card reveal">
+        <span class="sc-icon">🎥</span>
+        <h4 class="sc-title">पत्रकारिता एवं मीडिया</h4>
+        <div class="sc-tags">
+          <span class="sc-tag">ग्राउंड रिपोर्टिंग</span>
+          <span class="sc-tag">लाइव कैमरा संचालन</span>
+          <span class="sc-tag">मोबाइल जर्नलिज्म (MoJo)</span>
+          <span class="sc-tag">न्यूज़ पैकेजिंग</span>
+          <span class="sc-tag">इंटरव्यू व बाइट्स</span>
+        </div>
+      </div>
+
+      <div class="skill-category-card reveal">
+        <span class="sc-icon">✂️</span>
+        <h4 class="sc-title">वीडियो एवं ग्राफिक एडिटिंग</h4>
+        <div class="sc-tags">
+          <span class="sc-tag">Wondershare Filmora</span>
+          <span class="sc-tag">CapCut</span>
+          <span class="sc-tag">KineMaster</span>
+          <span class="sc-tag">VN Editor</span>
+          <span class="sc-tag">Adobe Photoshop</span>
+          <span class="sc-tag">पोस्टर व थंबनेल डिज़ाइन</span>
+        </div>
+      </div>
+
+      <div class="skill-category-card reveal">
+        <span class="sc-icon">🤖</span>
+        <h4 class="sc-title">टेक एवं ऑटोमेशन</h4>
+        <div class="sc-tags">
+          <span class="sc-tag">Python स्क्रिप्टिंग</span>
+          <span class="sc-tag">Google Apps Script</span>
+          <span class="sc-tag">n8n वर्कफ़्लो ऑटोमेशन</span>
+          <span class="sc-tag">WordPress CMS</span>
+          <span class="sc-tag">AI प्रॉम्प्ट इंजीनियरिंग</span>
+          <span class="sc-tag">GNews API सिंक</span>
+        </div>
+      </div>
+
+      <div class="skill-category-card reveal">
+        <span class="sc-icon">🗣️</span>
+        <h4 class="sc-title">भाषाई दक्षता</h4>
+        <div class="sc-tags">
+          <span class="sc-tag">हिंदी (उत्कृष्ट लेखन व वाचन)</span>
+          <span class="sc-tag">छत्तीसगढ़ी (सहज संवाद)</span>
+          <span class="sc-tag">हल्बी (क्षेत्रीय समझ)</span>
+          <span class="sc-tag">गोंडी (क्षेत्रीय समझ)</span>
+          <span class="sc-tag">अंग्रेजी (बुनियादी)</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT TERMINAL -->
+  <!-- CONTACT & PROFILES -->
   <section id="contact">
     <div class="contact-container reveal">
-      <div class="sec-eyebrow">Get In Touch</div>
-      <h2 class="sec-title" style="font-size:clamp(3rem,6vw,5.5rem);margin-bottom:1rem">
-        खबर या सहयोग के लिए<br/><span style="color:var(--gold-light)">सीधे जुड़ें</span>
+      <div class="sec-eyebrow">Personal Details & Direct Reach</div>
+      <h2 class="sec-title" style="font-size:clamp(2.5rem,5.5vw,4.5rem);margin-bottom:1rem">
+        सीधे संपर्क करें एवं <span style="color:var(--gold-light)">प्रोफाइल देखें</span>
       </h2>
-      <p style="color:var(--text-muted);max-width:550px;margin:0 auto;line-height:1.75">
-        किसी भी खबर की सूचना, प्रेस रिलीज, मीडिया कोलैबोरेशन अथवा ग्राउंड इन्वेस्टिगेशन के लिए आप मुझे सीधे कॉल, व्हाट्सएप या ईमेल पर संपर्क कर सकते हैं।
+      <p style="color:var(--text-muted);max-width:600px;margin:0 auto 1.5rem;line-height:1.75">
+        खबरों की जानकारी, मीडिया कवरेज, डिजिटल पोर्टल तकनीकी सहयोग अथवा फोटोग्राफी/इवेंट्स के लिए किसी भी समय संपर्क कर सकते हैं।
       </p>
 
-      <div class="contact-links-deck">
+      <!-- All 3 Phone Numbers -->
+      <div class="contact-phone-grid">
         <a href="tel:+917587776030" class="contact-pill">
           <span>📞</span> +91 75877 76030
         </a>
-        <a href="https://wa.me/917587776030" class="contact-pill" target="_blank" rel="noopener">
-          <span>💬</span> व्हाट्सएप मैसेज
+        <a href="tel:+919406175560" class="contact-pill">
+          <span>📞</span> +91 94061 75560
         </a>
-        <a href="mailto:Atulnetam5@gmail.com" class="contact-pill">
-          <span>✉️</span> Atulnetam5@gmail.com
+        <a href="tel:+917489300076" class="contact-pill">
+          <span>📞</span> +91 74893 00076
         </a>
-        <a href="https://youtube.com/@AtulNetam" class="contact-pill" target="_blank" rel="noopener">
-          <span>📺</span> यूट्यूब चैनल
-        </a>
-        <a href="https://instagram.com/Atul.netam" class="contact-pill" target="_blank" rel="noopener">
-          <span>📷</span> @Atul.netam
-        </a>
-        <a href="https://facebook.com/atulnetam" class="contact-pill" target="_blank" rel="noopener">
-          <span>👥</span> फेसबुक
+        <a href="mailto:atulnetam5@gmail.com" class="contact-pill">
+          <span>✉️</span> atulnetam5@gmail.com
         </a>
       </div>
 
-      <p style="font-size:0.8rem;color:var(--gold);letter-spacing:1px">
-        📍 ब्यूरो: नारायणपुर, बस्तर संभाग (छ.ग.)
-      </p>
+      <!-- Online & Social Profiles -->
+      <div class="social-links-deck">
+        <a href="https://avsbastar.com" target="_blank" rel="noopener" class="soc-pill">🌐 avsbastar.com</a>
+        <a href="https://bastarsandesh8.wordpress.com" target="_blank" rel="noopener" class="soc-pill">📰 Bastar Sandesh</a>
+        <a href="https://linktr.ee/Atulnetam" target="_blank" rel="noopener" class="soc-pill">🌲 linktr.ee/Atulnetam</a>
+        <a href="https://instagram.com/atul.netam" target="_blank" rel="noopener" class="soc-pill">📷 @atul.netam</a>
+        <a href="https://instagram.com/hans_n.21" target="_blank" rel="noopener" class="soc-pill">📷 @hans_n.21</a>
+        <a href="https://linkedin.com/in/atul-singh-netam-933ab6211" target="_blank" rel="noopener" class="soc-pill">💼 LinkedIn</a>
+        <a href="https://x.com/Atulnetam21" target="_blank" rel="noopener" class="soc-pill">🐦 @Atulnetam21</a>
+        <a href="https://github.com/atulnetam750" target="_blank" rel="noopener" class="soc-pill">🐙 GitHub</a>
+      </div>
+
+      <!-- Address Box -->
+      <div style="margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid rgba(229,184,59,0.15)">
+        <p style="font-size:0.85rem;color:var(--text);font-weight:600">
+          📍 पता: बंगालापारा, वार्ड क्रमांक 4, पुराने बस स्टैंड के पीछे, नारायणपुर, बस्तर संभाग, छत्तीसगढ़ – 494661
+        </p>
+      </div>
+
+      <!-- Location Map -->
+      <div class="map-frame-box">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119120.45781303803!2d81.1695276!3d19.7143167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a283995f5024795%3A0x6e2b144bc606c4da!2sNarayanpur%2C%20Chhattisgarh!5e0!3m2!1sen!2sin!4v1711200000000!5m2!1sen!2sin"
+          loading="lazy" allowfullscreen>
+        </iframe>
+      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-left">
-      <div class="brand-name" style="font-size:1.4rem">ATUL NETAM</div>
-      <p>© 2026 अतुल नेताम • अधिकृत वीडियो जर्नलिस्ट, IBC24 न्यूज़</p>
+      <div class="brand-name" style="font-size:1.4rem">ATUL SINGH NETAM</div>
+      <p>© 2026 अतुल सिंह नेताम • कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network)</p>
     </div>
     <div style="font-size:0.75rem;color:var(--text-muted)">
-      सत्य • निष्पक्षता • साहस — बस्तर की धड़कन
+      सत्य • निष्पक्षता • डिजिटल नवाचार — बस्तर, छत्तीसगढ़
     </div>
   </footer>
 
-  <!-- ADVANCED SCRIPT: AUTOMATION, CANVAS PARTICLES, 3D TILT, STATS -->
+  <!-- SCRIPT: CANVAS, 3D TILT, STATS, SCROLL OBSERVER -->
   <script>
-    // 1. Interactive Starfield / Particle Background
+    // 1. Canvas Particles
     const canvas = document.getElementById('interactive-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, particles = [];
@@ -1306,16 +1181,14 @@
     resizeCanvas();
 
     class Particle {
-      constructor() {
-        this.reset();
-      }
+      constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         this.size = Math.random() * 1.8 + 0.4;
         this.speedX = (Math.random() - 0.5) * 0.4;
         this.speedY = -Math.random() * 0.6 - 0.2;
-        this.alpha = Math.random() * 0.6 + 0.2;
+        this.alpha = Math.random() * 0.5 + 0.2;
       }
       update() {
         this.x += this.speedX;
@@ -1330,21 +1203,15 @@
       }
     }
 
-    for (let i = 0; i < 45; i++) {
-      particles.push(new Particle());
-    }
-
+    for (let i = 0; i < 45; i++) { particles.push(new Particle()); }
     function animateParticles() {
       ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
+      particles.forEach(p => { p.update(); p.draw(); });
       requestAnimationFrame(animateParticles);
     }
     animateParticles();
 
-    // 2. Custom Spotlight Cursor
+    // 2. Cursor Spotlight
     const spot = document.getElementById('spotlight');
     window.addEventListener('mousemove', e => {
       spot.style.left = e.clientX + 'px';
@@ -1359,7 +1226,7 @@
       document.getElementById('progress-bar').style.width = scrolled + '%';
     });
 
-    // 4. 3D Tilt Effect on Press ID Card
+    // 4. 3D Tilt Card
     const card = document.getElementById('idTiltCard');
     if (card) {
       card.addEventListener('mousemove', (e) => {
@@ -1377,7 +1244,7 @@
       });
     }
 
-    // 5. Scroll Reveal Intersection Observer
+    // 5. Scroll Reveal
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
@@ -1389,21 +1256,21 @@
     }, { threshold: 0.12 });
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // 6. Automated Numeric Counting with Observer
+    // 6. Number Counter
     const statsObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const numEl = entry.target;
           const target = +numEl.getAttribute('data-target');
           let current = 0;
-          const duration = 1600;
+          const duration = 1400;
           const stepTime = 25;
           const steps = duration / stepTime;
           const increment = target / steps;
           const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
-              numEl.textContent = target + '+';
+              numEl.textContent = target + (target > 50 ? '+' : (target === 100 ? '%' : ''));
               clearInterval(timer);
             } else {
               numEl.textContent = Math.floor(current);
@@ -1415,15 +1282,7 @@
     }, { threshold: 0.5 });
     document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
 
-    // 7. Video Theater Switcher
-    function switchVideo(videoId, title, cardElement) {
-      document.querySelectorAll('.playlist-card').forEach(c => c.classList.remove('active'));
-      cardElement.classList.add('active');
-      document.getElementById('mainYtPlayer').src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
-      document.getElementById('theaterVideoTitle').textContent = title;
-    }
-
-    // 8. Mobile Navigation Drawer
+    // 7. Mobile Drawer
     const mobileDrawer = document.getElementById('mobileDrawer');
     document.getElementById('hamburgerBtn').addEventListener('click', () => {
       mobileDrawer.classList.add('open');
