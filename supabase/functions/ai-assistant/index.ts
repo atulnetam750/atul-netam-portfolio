@@ -36,7 +36,7 @@ Deno.serve(async req => {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const clientHash = await sha256(ip + ":" + (Deno.env.get("AI_RATE_LIMIT_SALT") || "portfolio-v1"));
   const admin = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-  const { data: allowed, error: quotaError } = await admin.schema("private").rpc("consume_ai_quota", { p_client_hash: clientHash });
+  const { data: allowed, error: quotaError } = await admin.rpc("consume_ai_quota", { p_client_hash: clientHash });
   if (quotaError) return json({ error: "Rate limit service unavailable" }, 503);
   if (!allowed) return json({ error: "Hourly limit reached. Please try again later." }, 429);
 
