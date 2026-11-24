@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atul Netam — IBC24 Journalist | Bastar</title>
+  <meta name="description" content="Atul Netam — IBC24 Cameraman & Video Journalist, Narayanpur, Bastar. Covering ground reality of Chhattisgarh since 2017." />
+  <meta name="theme-color" content="#0a0800" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #060501;
+      --bg2:      #0c0a02;
+      --bg3:      #111004;
+      --gold:     #d4a017;
+      --gold2:    #f0c040;
+      --gold-dim: #8a6800;
+      --text:     #f5f0e0;
+      --muted:    #9a8f72;
+      --card:     #0f0d04;
+      --card2:    #161300;
+      --border:   rgba(212,160,23,0.15);
+      --shadow:   0 25px 60px rgba(0,0,0,0.9);
+      --r:        14px;
+      --ease:     0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ══════════════════════════════
+       PROGRESS BAR
+    ══════════════════════════════ */
+    #progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      z-index: 2000;
+      box-shadow: 0 0 12px rgba(212,160,23,0.7);
+      transition: width .1s linear;
+    }
+
+    /* ══════════════════════════════
+       BREAKING NEWS TICKER
+    ══════════════════════════════ */
+    .ticker {
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 6px 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 999;
+    }
+
+    .ticker-label {
+      background: #000;
+      color: var(--gold);
+      padding: 0 16px;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      display: flex; align-items: center;
+      z-index: 1;
+    }
+
+    .ticker-track {
+      display: flex;
+      animation: ticker-scroll 30s linear infinite;
+      padding-left: 160px;
+      white-space: nowrap;
+    }
+
+    .ticker-track span { margin-right: 60px; }
+    .ticker-track span::before { content: '◆  '; }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════════════════
+       NAV
+    ══════════════════════════════ */
+    nav {
+      position: sticky; top: 0;
+      z-index: 998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 66px;
+      background: rgba(6,5,1,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-decoration: none;
+      text-shadow: 0 0 25px rgba(212,160,23,0.5);
+    }
+
+    .logo span {
+      color: var(--text);
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      display: block;
+      margin-top: -6px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      opacity: 0.6;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color var(--ease);
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: #000 !important;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-weight: 700 !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold2) !important;
+      color: #000 !important;
+    }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+    }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      min-height: calc(100vh - 92px);
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      padding: 5rem 5vw 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 50%, rgba(212,160,23,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(212,160,23,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Gold particle dots */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(212,160,23,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 15%, rgba(212,160,23,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 70%, rgba(212,160,23,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 35% 80%, rgba(212,160,23,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 30%, rgba(212,160,23,0.4) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-line { width: 36px; height: 2px; background: var(--gold); }
+
+    .hero-eyebrow-text {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 10vw, 9rem);
+      line-height: 0.88;
+      letter-spacing: 3px;
+      color: var(--text);
+    }
+
+    .hero-name .gold { color: var(--gold); }
+
+    .hero-role {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--muted);
+      margin: 1.2rem 0;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .hero-desc strong { color: var(--text); font-weight: 600; }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      background: rgba(212,160,23,0.1);
+      border: 1px solid rgba(212,160,23,0.2);
+      color: var(--gold2);
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all var(--ease);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #000;
+      box-shadow: 0 8px 25px rgba(212,160,23,0.35);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 35px rgba(212,160,23,0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: rgba(212,160,23,0.08);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* ── Hero Right: ID Card ── */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .id-card {
+      background: linear-gradient(145deg, #131004, #0a0900);
+      border: 1px solid rgba(212,160,23,0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,160,23,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .id-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+    }
+
+    .id-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .id-org {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+    }
+
+    .id-org small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .id-logo-box {
+      width: 42px; height: 42px;
+      background: var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .id-photo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .id-photo {
+      width: 110px; height: 130px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1a1500, #0d0a00);
+      border: 2px solid rgba(212,160,23,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .id-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .id-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .id-photo-placeholder span {
+      font-size: 2.5rem;
+    }
+
+    .id-photo-placeholder small {
+      font-size: 0.55rem;
+      color: var(--gold-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .id-name-card {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .id-name-card small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .id-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .id-detail { }
+
+    .id-detail-label {
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .id-detail-value {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .id-barcode {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .barcode-lines {
+      display: flex;
+      gap: 2px;
+      justify-content: center;
+      height: 30px;
+      margin-bottom: 4px;
+    }
+
+    .barcode-lines span {
+      display: block;
+      background: var(--gold);
+      border-radius: 1px;
+      opacity: 0.6;
+    }
+
+    .barcode-num {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+    }
+
+    /* scroll down */
+    .scroll-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 4vw;
+        text-align: center;
+      }
+      .hero-right { order: -1; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-badges { justify-content: center; }
+      .hero-btns { justify-content: center; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .id-card { max-width: 300px; }
+    }
+
+    /* ══════════════════════════════
+       STATS
+    ══════════════════════════════ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    .stat {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-n {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.2rem;
+      line-height: 1;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-l {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3) { border-top: 1px solid var(--border); }
+    }
+
+    /* ══════════════════════════════
+       SECTION COMMONS
+    ══════════════════════════════ */
+    section { padding: 6rem 5vw; }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .sec-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      letter-spacing: 2px;
+      line-height: 1.05;
+      color: var(--text);
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .see-all {
+      color: var(--gold);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap var(--ease);
+    }
+
+    .see-all:hover { gap: 10px; }
+
+    /* ══════════════════════════════
+       FEATURED WORK
+    ══════════════════════════════ */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .work-secondary { display: grid; gap: 1.5rem; }
+
+    .work-card {
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: all var(--ease);
+    }
+
+    .work-card:hover {
+      border-color: rgba(212,160,23,0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,160,23,0.15);
+      transform: translateY(-4px);
+    }
+
+    .work-thumb {
+      aspect-ratio: 16/10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--ease);
+    }
+
+    .work-card-sm .work-thumb { aspect-ratio: 16/8; font-size: 2.5rem; }
+
+    .work-card:hover .work-thumb { transform: scale(1.05); }
+
+    .work-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(6,5,1,0.97) 0%, rgba(6,5,1,0.3) 55%, transparent 100%);
+    }
+
+    .work-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      width: 60px; height: 60px;
+      background: rgba(212,160,23,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: all var(--ease);
+      z-index: 2;
+    }
+
+    .work-card-sm .work-play { width: 46px; height: 46px; }
+
+    .work-play::after {
+      content: '';
+      border-style: solid;
+      border-width: 9px 0 9px 18px;
+      border-color: transparent transparent transparent #000;
+      margin-left: 3px;
+    }
+
+    .work-card-sm .work-play::after {
+      border-width: 7px 0 7px 14px;
+    }
+
+    .work-card:hover .work-play {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .work-info {
+      padding: 1.5rem;
+    }
+
+    .work-card-sm .work-info { padding: 1rem 1.2rem; }
+
+    .work-cat {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .work-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .work-card-sm .work-title { font-size: 1.1rem; }
+
+    .work-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* bg palettes */
+    .bg1 { background: linear-gradient(135deg, #180f00, #100a00); }
+    .bg2 { background: linear-gradient(135deg, #090d18, #050810); }
+    .bg3 { background: linear-gradient(135deg, #0a1800, #061000); }
+    .bg4 { background: linear-gradient(135deg, #18080a, #100408); }
+    .bg5 { background: linear-gradient(135deg, #140018, #0c0012); }
+
+    @media (max-width: 800px) {
+      .work-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════
+       REPORTS SCROLL
+    ══════════════════════════════ */
+    .reports-alt { background: var(--bg2); }
+
+    .reports-row {
+      display: flex;
+      gap: 1.2rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .reports-row::-webkit-scrollbar { display: none; }
+    .reports-row:active { cursor: grabbing; }
+
+    .rep-card {
+      flex: 0 0 250px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      transition: all var(--ease);
+      cursor: pointer;
+    }
+
+    .rep-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212,160,23,0.3);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.7);
+    }
+
+    .rep-thumb {
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      position: relative;
+    }
+
+    .ep-label {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: var(--gold);
+      color: #000;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    .rep-body { padding: 1rem; }
+
+    .rep-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      line-height: 1.35;
+    }
+
+    .rep-desc {
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .rep-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem;
+    }
+
+    .rep-dur { color: var(--muted); }
+
+    .rep-badge { color: var(--gold); font-weight: 700; }
+
+    /* ══════════════════════════════
+       ABOUT
+    ══════════════════════════════ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-portrait-wrap { position: relative; }
+
+    .about-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(145deg, #130f00, #0a0800);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-portrait img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .about-portrait::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(212,160,23,0.15) 0%, transparent 55%);
+    }
+
+    .about-float {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      background: var(--gold);
+      color: #000;
+      padding: 1.4rem 1.6rem;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(212,160,23,0.4);
+    }
+
+    .about-float-n {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      line-height: 1;
+      letter-spacing: 2px;
+    }
+
+    .about-float-l {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .about-text h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      line-height: 1.85;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 600; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    .skill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .skill-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(212,160,23,0.6);
+    }
+
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-portrait { aspect-ratio: 4/3; font-size: 5rem; }
+      .about-float { right: 0; }
+    }
+
+    /* ══════════════════════════════
+       PRESS CLUB / MEDIA CARD
+    ══════════════════════════════ */
+    .press-section { background: var(--bg2); }
+
+    .press-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .media-card {
+      background: linear-gradient(145deg, #131004, #0a0800);
+      border: 1px solid rgba(212,160,23,0.25);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    }
+
+    .media-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+    }
+
+    .media-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .media-org h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+    }
+
+    .media-org p {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .media-seal {
+      width: 52px; height: 52px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    .media-photo-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .media-photo {
+      width: 72px; height: 86px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1a1500, #0d0a00);
+      border: 1.5px solid rgba(212,160,23,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .media-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .media-name-block h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .media-name-block p {
+      font-size: 0.72rem;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .media-name-block small {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .media-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .media-field-label {
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .media-field-value {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .media-valid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .media-valid-text {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .media-valid-badge {
+      background: rgba(212,160,23,0.15);
+      border: 1px solid rgba(212,160,23,0.3);
+      color: var(--gold2);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+
+    .press-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .press-info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.4rem;
+      transition: all var(--ease);
+    }
+
+    .press-info-card:hover {
+      border-color: rgba(212,160,23,0.3);
+      transform: translateX(6px);
+    }
+
+    .press-info-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .press-info-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .press-info-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 800px) {
+      .press-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════
+       BEAT
+    ══════════════════════════════ */
+    .beat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .beat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.8rem;
+      transition: all var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .beat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--ease);
+    }
+
+    .beat-card:hover {
+      background: var(--card2);
+      transform: translateY(-5px);
+      border-color: rgba(212,160,23,0.25);
+    }
+
+    .beat-card:hover::after { transform: scaleX(1); }
+
+    .beat-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+
+    .beat-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .beat-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+
+    /* ══════════════════════════════
+       TIMELINE
+    ══════════════════════════════ */
+    .journey-alt { background: var(--bg2); }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .timeline { position: relative; padding-left: 1.5rem; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), rgba(212,160,23,0.1));
+    }
+
+    .tl-item {
+      position: relative;
+      padding-bottom: 2.5rem;
+      padding-left: 2rem;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-dot {
+      position: absolute;
+      left: -2rem;
+      top: 5px;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg2);
+      box-shadow: 0 0 12px rgba(212,160,23,0.6);
+    }
+
+    .tl-year {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .tl-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .tl-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+
+    .awards-stack { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .award-card {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.2rem 1.5rem;
+      transition: all var(--ease);
+    }
+
+    .award-card:hover {
+      border-color: rgba(212,160,23,0.3);
+      transform: translateX(6px);
+    }
+
+    .award-icon-box {
+      width: 48px; height: 48px;
+      background: rgba(212,160,23,0.1);
+      border: 1px solid rgba(212,160,23,0.2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .award-title { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 2px; }
+
+    .award-org {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 800px) {
+      .journey-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* ══════════════════════════════
+       CONTACT
+    ══════════════════════════════ */
+    .contact-section {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(212,160,23,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .contact-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      letter-spacing: 3px;
+      line-height: 0.95;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-title span { color: var(--gold); }
+
+    .contact-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 3rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .clink {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      transition: all var(--ease);
+    }
+
+    .clink:hover {
+      border-color: rgba(212,160,23,0.4);
+      background: rgba(212,160,23,0.07);
+      transform: translateY(-3px);
+    }
+
+    .clink-icon { font-size: 1rem; }
+
+    .contact-loc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      transition: color var(--ease);
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy { font-size: 0.72rem; color: var(--muted); }
+
+    /* ══════════════════════════════
+       FADE IN
+    ══════════════════════════════ */
+    .fi {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+
+    .fi.vis { opacity: 1; transform: translateY(0); }
+
+    .fi-delay-1 { transition-delay: .1s; }
+    .fi-delay-2 { transition-delay: .2s; }
+    .fi-delay-3 { transition-delay: .3s; }
+
+    /* ══════════════════════════════
+       SPOTLIGHT
+    ══════════════════════════════ */
+    #spot {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: radial-gradient(350px circle at var(--x,-500px) var(--y,-500px),
+        rgba(212,160,23,0.04) 0%, transparent 65%);
+    }
+  </style>
+</head>
+<body>
+
+<div id="spot"></div>
+<div id="progress"></div>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-label">IBC24 LIVE</div>
+  <div class="ticker-track">
+    <span>Atul Netam — Bastar Ground Reporter</span>
+    <span>IBC24 Cameraman • Narayanpur, Chhattisgarh</span>
+    <span>Naxal Zone Exclusive Coverage</span>
+    <span>8+ Sal Ka Field Journalism Experience</span>
+    <span>Adivasi Stories • Bastar Ki Sachchi Awaaz</span>
+    <span>Election Ground Report • Disaster Live Coverage</span>
+    <span>Atul Netam — Bastar Ground Reporter</span>
+    <span>IBC24 Cameraman • Narayanpur, Chhattisgarh</span>
+    <span>Naxal Zone Exclusive Coverage</span>
+    <span>8+ Sal Ka Field Journalism Experience</span>
+    <span>Adivasi Stories • Bastar Ki Sachchi Awaaz</span>
+    <span>Election Ground Report • Disaster Live Coverage</span>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="logo">
+    ATUL NETAM
+    <span>IBC24 · Bastar Correspondent</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#work">Kaam</a></li>
+    <li><a href="#about">Parichay</a></li>
+    <li><a href="#press">Press ID</a></li>
+    <li><a href="#beat">Beat</a></li>
+    <li><a href="#journey">Safar</a></li>
+    <li><a href="#contact" class="nav-cta">Sampark</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-left fi">
+    <div class="hero-eyebrow">
+      <div class="hero-line"></div>
+      <span class="hero-eyebrow-text">IBC24 • Narayanpur, Bastar</span>
+    </div>
+
+    <h1 class="hero-name">
+      ATUL<br>
+      <span class="gold">NETAM</span>
+    </h1>
+
+    <p class="hero-role">Cameraman & Video Journalist — Bastar Division</p>
+
+    <p class="hero-desc">
+      Main <strong>Atul Netam</strong> hun. <strong>IBC24</strong> ke liye Narayanpur, Bastar se ground reporting karta hun.
+      Jahan koi camera nahi jaata — <strong>Red Zone, remote villages, flood-hit areas</strong> —
+      wahan meri camera zaroor hoti hai. <strong>8+ saal</strong> se Bastar ki sachchi kahani har ghar tak pahuncha raha hun.
+    </p>
+
+    <div class="hero-badges">
+      <span class="badge">📹 Cameraman</span>
+      <span class="badge">🎙️ Video Journalist</span>
+      <span class="badge">🌿 Bastar Coverage</span>
+      <span class="badge">📡 Live Reporting</span>
+      <span class="badge">🏆 Award Winner</span>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#work" class="btn btn-gold">▶ Kaam Dekho</a>
+      <a href="#contact" class="btn btn-outline">📞 Sampark Karo</a>
+    </div>
+  </div>
+
+  <!-- ID CARD -->
+  <div class="hero-right fi fi-delay-2">
+    <div class="id-card">
+      <div class="id-card-header">
+        <div class="id-org">
+          IBC24
+          <small>News Channel • Chhattisgarh</small>
+        </div>
+        <div class="id-logo-box">📺</div>
+      </div>
+
+      <div class="id-photo-wrap">
+        <div class="id-photo">
+          <img src="atul-photo.jpg" alt="Atul Netam" />
+        </div>
+        <div class="id-name-card">
+          ATUL NETAM
+          <small>Cameraman & Video Journalist</small>
+        </div>
+      </div>
+
+      <div class="id-details">
+        <div class="id-detail">
+          <div class="id-detail-label">Station</div>
+          <div class="id-detail-value">Narayanpur</div>
+        </div>
+        <div class="id-detail">
+          <div class="id-detail-label">Division</div>
+          <div class="id-detail-value">Bastar</div>
+        </div>
+        <div class="id-detail">
+          <div class="id-detail-label">Mobile</div>
+          <div class="id-detail-value">75877 76030</div>
+        </div>
+        <div class="id-detail">
+          <div class="id-detail-label">Since</div>
+          <div class="id-detail-value">2017</div>
+        </div>
+      </div>
+
+      <div class="id-barcode">
+        <div class="barcode-lines" id="barcode"></div>
+        <div class="barcode-num">IBC24-NGP-2017-0048</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>↓</span>
+      <span style="font-size:.6rem;letter-spacing:2px;color:var(--muted)">Scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats fi">
+  <div class="stat">
+    <div class="stat-n" data-t="8">0</div>
+    <div class="stat-l">Saal Anubhav</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n" data-t="600">0</div>
+    <div class="stat-l">Reports Publish</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n" data-t="15">0</div>
+    <div class="stat-l">Jile Cover Kiye</div>
+  </div>
+  <div class="stat">
+    <div class="stat-n" data-t="6">0</div>
+    <div class="stat-l">Awards Mila</div>
+  </div>
+</div>
+
+<!-- ═══ FEATURED WORK ═══ -->
+<section id="work">
+  <div class="sec-head fi">
+    <div>
+      <div class="eyebrow">Featured</div>
+      <h2 class="sec-title">Khas Kaam</h2>
+    </div>
+    <a href="#reports" class="see-all">Sabhi Reports →</a>
+  </div>
+
+  <div class="work-grid fi">
+    <div class="work-card">
+      <div class="work-thumb bg1">
+        🌲
+        <div class="work-overlay"></div>
+        <div class="work-play"></div>
+      </div>
+      <div class="work-info">
+        <div class="work-cat">🏆 Award Winner · Ground Report</div>
+        <div class="work-title">Bastar Ke Jangalon Mein — Naxal Zone Special</div>
+        <div class="work-meta">48 min · IBC24 · Narayanpur se Exclusive Field Report · 2023</div>
+      </div>
+    </div>
+
+    <div class="work-secondary">
+      <div class="work-card work-card-sm">
+        <div class="work-thumb bg2">
+          🌊
+          <div class="work-overlay"></div>
+          <div class="work-play"></div>
+        </div>
+        <div class="work-info">
+          <div class="work-cat">Breaking News</div>
+          <div class="work-title">Baadh Ki Tabahi — Narayanpur Live</div>
+          <div class="work-meta">31 min · Live Coverage · 2024</div>
+        </div>
+      </div>
+
+      <div class="work-card work-card-sm">
+        <div class="work-thumb bg3">
+          🗳️
+          <div class="work-overlay"></div>
+          <div class="work-play"></div>
+        </div>
+        <div class="work-info">
+          <div class="work-cat">Election Special</div>
+          <div class="work-title">Bastar Mein Chunav Ki Zaminni Haqeeqat</div>
+          <div class="work-meta">39 min · In-depth Report · 2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REPORTS SCROLL ═══ -->
+<section class="reports-alt" id="reports" style="padding-top:0">
+  <div class="sec-head fi">
+    <div>
+      <div class="eyebrow">Latest</div>
+      <h2 class="sec-title">Taze Reports</h2>
+    </div>
+  </div>
+
+  <div class="reports-row fi" id="repRow">
+    <div class="rep-card">
+      <div class="rep-thumb bg4">
+        <span class="ep-label">EP 01</span>🔴
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">Naxal Surrender — Narayanpur Jungle Se Live</div>
+        <div class="rep-desc">Bastar mein bade Naxaliyon ka surrender aur police operation ki real-time exclusive coverage IBC24 par.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 34 min</span>
+          <span class="rep-badge">⭐ Top Rated</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <div class="rep-thumb bg3">
+        <span class="ep-label">EP 02</span>🌿
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">Adivasi Jeevan — Bastar Ki Sachchi Kahani</div>
+        <div class="rep-desc">Bastar ke aadivasi samudaay ki zindagi, hak aur unki sanskriti — ground se ek bhaavuk documentary.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 27 min</span>
+          <span class="rep-badge">📌 Featured</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <div class="rep-thumb bg1">
+        <span class="ep-label">EP 03</span>🔥
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">CRPF Operation Dantewada — Field Report</div>
+        <div class="rep-desc">CRPF ke sath jungle mein — anti-naxal operation ki real camera footage aur exclusive interview.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 43 min</span>
+          <span class="rep-badge">🏆 Award</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <div class="rep-thumb bg2">
+        <span class="ep-label">EP 04</span>🌧️
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">Flood 2024 — Narayanpur Mein Baadh Ka Tanday</div>
+        <div class="rep-desc">Bhari barish mein live field reporting — relief work, rahie raaste aur peedit parivaaron ki kahaaniyan.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 21 min</span>
+          <span class="rep-badge">📡 Breaking</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <div class="rep-thumb bg5">
+        <span class="ep-label">EP 05</span>🗳️
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">Vidhansabha Chunav 2023 — Bastar Ground Zero</div>
+        <div class="rep-desc">Voters, candidates aur security setup — Chhattisgarh chunav ki sachchi tasveer Bastar se.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 38 min</span>
+          <span class="rep-badge">⭐ Top Rated</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <div class="rep-thumb bg3">
+        <span class="ep-label">EP 06</span>🏥
+      </div>
+      <div class="rep-body">
+        <div class="rep-title">Swasthya Sankat — Door Ilaakon Mein Dawakhana</div>
+        <div class="rep-desc">Bastar ke remote villages mein medical facilities ki bhari kami — ek investigative ground report.</div>
+        <div class="rep-foot">
+          <span class="rep-dur">🕐 25 min</span>
+          <span class="rep-badge">📌 Featured</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-portrait-wrap fi">
+      <div class="about-portrait"><img src="atul-photo.jpg" alt="Atul Netam" /></div>
+      <div class="about-float">
+        <div class="about-float-n">IBC24</div>
+        <div class="about-float-l">Bastar Correspondent</div>
+      </div>
+    </div>
+
+    <div class="about-text fi fi-delay-1">
+      <div class="eyebrow">Parichay</div>
+      <h2>Bastar Ki Kahaniyon Ka Ek Jawaan Chehra</h2>
+
+      <p>
+        Main <strong>Atul Netam</strong> hun — <strong>IBC24</strong> ka Cameraman aur Video Journalist.
+        Mera ghar <strong>Narayanpur, Bastar</strong> hai aur yahi meri reporting ka dil bhi hai.
+      </p>
+
+      <p>
+        <strong>2017</strong> se main us zameen par hoon jahan doosre nahi jaate —
+        <strong>red zone mein, jungle mein, barish mein, adivasi gaanvon mein</strong>.
+        Mera camera sirf ek tool nahi, balki un awaazon ki zuban hai jo otherwise nahi suni jaatein.
+      </p>
+
+      <p>
+        IBC24 ke liye <strong>breaking news, ground reports, election coverage, disaster reporting</strong>
+        aur <strong>aadivasi issues</strong> par consistently kaam karta hun.
+        Bastar ka sachcha chehra dikhana mera mission hai — har frame mein, har report mein.
+      </p>
+
+      <div class="skills-grid">
+        <div class="skill"><span class="skill-dot"></span>Camera Operation</div>
+        <div class="skill"><span class="skill-dot"></span>Live Field Reporting</div>
+        <div class="skill"><span class="skill-dot"></span>Video Editing</div>
+        <div class="skill"><span class="skill-dot"></span>Breaking News</div>
+        <div class="skill"><span class="skill-dot"></span>Drone Footage</div>
+        <div class="skill"><span class="skill-dot"></span>Investigative Journalism</div>
+        <div class="skill"><span class="skill-dot"></span>Hindi / Halbi Reporting</div>
+        <div class="skill"><span class="skill-dot"></span>Disaster Coverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRESS CLUB / MEDIA CARD ═══ -->
+<section class="press-section" id="press">
+  <div class="sec-head fi">
+    <div>
+      <div class="eyebrow">Media Identity</div>
+      <h2 class="sec-title">Press & Media ID</h2>
+    </div>
+  </div>
+
+  <div class="press-grid fi">
+    <!-- Media ID Card -->
+    <div class="media-card">
+      <div class="media-card-top">
+        <div class="media-org">
+          <h3>PRESS CARD</h3>
+          <p>Bastar Division · Chhattisgarh</p>
+        </div>
+        <div class="media-seal">⚖️</div>
+      </div>
+
+      <div class="media-photo-row">
+        <div class="media-photo"><img src="atul-photo.jpg" alt="Atul Netam" /></div>
+        <div class="media-name-block">
+          <h4>ATUL NETAM</h4>
+          <p>Video Journalist</p>
+          <small>IBC24 News Channel</small>
+          <small style="margin-top:4px;color:var(--muted)">Narayanpur, Bastar, CG</small>
+        </div>
+      </div>
+
+      <div class="media-fields">
+        <div>
+          <div class="media-field-label">Mobile</div>
+          <div class="media-field-value">+91 75877 76030</div>
+        </div>
+        <div>
+          <div class="media-field-label">Email</div>
+          <div class="media-field-value" style="font-size:.72rem">Atulnetam5@gmail.com</div>
+        </div>
+        <div>
+          <div class="media-field-label">Beat</div>
+          <div class="media-field-value">Bastar Division</div>
+        </div>
+        <div>
+          <div class="media-field-label">ID No.</div>
+          <div class="media-field-value">IBC24/NGP/2017</div>
+        </div>
+      </div>
+
+      <div class="media-valid">
+        <div class="media-valid-text">Valid · Bastar Press Club</div>
+        <div class="media-valid-badge">✓ Active Member</div>
+      </div>
+    </div>
+
+    <!-- Press Info Cards -->
+    <div class="press-info">
+      <div class="press-info-card">
+        <div class="press-info-icon">📰</div>
+        <div class="press-info-title">Narayanpur Press Club — Sadasy</div>
+        <div class="press-info-desc">Narayanpur Press Club ke active member. Local journalism community mein significant role aur press freedom ki raksha mein nirantar kaam.</div>
+      </div>
+
+      <div class="press-info-card">
+        <div class="press-info-icon">📡</div>
+        <div class="press-info-title">IBC24 — Official Correspondent</div>
+        <div class="press-info-desc">IBC24 Chhattisgarh ke liye Bastar division ka official cameraman aur video journalist. Breaking news se leke in-depth documentaries tak sab cover karta hun.</div>
+      </div>
+
+      <div class="press-info-card">
+        <div class="press-info-icon">🌐</div>
+        <div class="press-info-title">Digital Journalist</div>
+        <div class="press-info-desc">YouTube, Facebook aur Instagram par bhi Bastar ki ground reality share karta hun. Social media par bhi powerful presence maintained karta hun.</div>
+      </div>
+
+      <div class="press-info-card">
+        <div class="press-info-icon">🛡️</div>
+        <div class="press-info-title">Press Freedom Advocate</div>
+        <div class="press-info-desc">Bastar jaise challenging terrain mein press ki azaadi aur journalists ki suraksha ke liye awaaz uthata hun. Har story ke peeche himmat chahiye — woh main rakhta hun.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BEAT ═══ -->
+<section id="beat">
+  <div class="sec-head fi">
+    <div>
+      <div class="eyebrow">Coverage Areas</div>
+      <h2 class="sec-title">Mera Beat</h2>
+    </div>
+  </div>
+
+  <div class="beat-grid">
+    <div class="beat-card fi">
+      <span class="beat-icon">🌲</span>
+      <div class="beat-title">Naxal & Security</div>
+      <div class="beat-desc">Red zone operations, naxal surrenders, CRPF movements — har sensitive story meri camera ke saamne.</div>
+    </div>
+    <div class="beat-card fi fi-delay-1">
+      <span class="beat-icon">🏘️</span>
+      <div class="beat-title">Aadivasi Issues</div>
+      <div class="beat-desc">Bastar ke tribal communities ki zindagi, rights, culture aur unke sangharsh ki authentic reporting.</div>
+    </div>
+    <div class="beat-card fi fi-delay-2">
+      <span class="beat-icon">🗳️</span>
+      <div class="beat-title">Politics & Elections</div>
+      <div class="beat-desc">Chhattisgarh ki chunavi politics, candidates aur ground-level voter sentiments ka live coverage.</div>
+    </div>
+    <div class="beat-card fi">
+      <span class="beat-icon">🌊</span>
+      <div class="beat-title">Disaster & Crisis</div>
+      <div class="beat-desc">Floods, droughts aur natural disasters mein first-on-ground reporting aur relief efforts ka documentation.</div>
+    </div>
+    <div class="beat-card fi fi-delay-1">
+      <span class="beat-icon">🏥</span>
+      <div class="beat-title">Health & Education</div>
+      <div class="beat-desc">Remote areas mein healthcare aur education ki sthiti — ek investigative journalist ki nazar se.</div>
+    </div>
+    <div class="beat-card fi fi-delay-2">
+      <span class="beat-icon">🏗️</span>
+      <div class="beat-title">Development</div>
+      <div class="beat-desc">Bastar mein infrastructure projects, roads, bijli aur sarkaari yojanaon ka ground-level impact coverage.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ JOURNEY + AWARDS ═══ -->
+<section class="journey-alt" id="journey">
+  <div class="sec-head fi">
+    <div>
+      <div class="eyebrow">Career & Recognition</div>
+      <h2 class="sec-title">Safar & Samman</h2>
+    </div>
+  </div>
+
+  <div class="journey-grid">
+    <!-- Timeline -->
+    <div class="fi">
+      <div class="eyebrow" style="margin-bottom:1.5rem">Career Timeline</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2024 — PRESENT</div>
+          <div class="tl-title">Senior Cameraman — IBC24, Narayanpur</div>
+          <div class="tl-desc">Bastar division ki senior-level reporting. Breaking news, exclusive ground reports aur investigative coverage mein national recognition.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2023</div>
+          <div class="tl-title">Chhattisgarh Election Special Coverage</div>
+          <div class="tl-desc">Poore Bastar division mein chunavi coverage. Naxal-affected booths par special reporting, security setup documentation aur voter interviews.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2021</div>
+          <div class="tl-title">Naxal Surrender — Exclusive Coverage</div>
+          <div class="tl-desc">Narayanpur jungle se bade Naxaliyon ke surrender ki exclusive live coverage — IBC24 ki top-rated report bani.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2020</div>
+          <div class="tl-title">COVID-19 Pandemic Ground Reporting</div>
+          <div class="tl-desc">Pandemic ke doran Bastar ke remote villages mein health crisis ki real-time coverage. National media mein report featured hui.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2017</div>
+          <div class="tl-title">IBC24 mein Joining — Bastar Correspondent</div>
+          <div class="tl-desc">IBC24 ke saath career ki shuruat. Pehle din se hi Bastar ke challenging terrain mein camera leke nikla aur tab se ruka nahi.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Awards -->
+    <div class="fi fi-delay-1">
+      <div class="eyebrow" style="margin-bottom:1.5rem">Awards & Honours</div>
+      <div class="awards-stack">
+        <div class="award-card">
+          <div class="award-icon-box">🏆</div>
+          <div>
+            <div class="award-title">Best Field Reporter — Bastar Coverage</div>
+            <div class="award-org">IBC24 Annual Awards · 2023</div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-icon-box">🎖️</div>
+          <div>
+            <div class="award-title">Excellence in Journalism — Naxal Zone</div>
+            <div class="award-org">Chhattisgarh Press Club · 2022</div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-icon-box">📸</div>
+          <div>
+            <div class="award-title">Best Video Coverage — Disaster Reporting</div>
+            <div class="award-org">State Media Awards · 2022</div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-icon-box">⭐</div>
+          <div>
+            <div class="award-title">Courageous Journalism — Red Zone</div>
+            <div class="award-org">Bastar Journalists' Association · 2021</div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-icon-box">📰</div>
+          <div>
+            <div class="award-title">Press Club Sadasy — Active Member</div>
+            <div class="award-org">Narayanpur Press Club · 2017–Present</div>
+          </div>
+        </div>
+        <div class="award-card">
+          <div class="award-icon-box">🌟</div>
+          <div>
+            <div class="award-title">Special Recognition — Adivasi Coverage</div>
+            <div class="award-org">Tribal Affairs Media Forum · 2020</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner fi">
+    <div class="eyebrow">Sampark Karo</div>
+    <h2 class="contact-title">
+      Baat Karte<br>
+      <span>Hain</span>
+    </h2>
+    <p class="contact-sub">
+      Story tips, collaboration, media partnerships ya kuch bhi —
+      main hamesha available hun. Bastar ki sach dikhane ke liye hamesha taiyaar.
+    </p>
+
+    <div class="contact-links">
+      <a href="tel:+917587776030" class="clink">
+        <span class="clink-icon">📞</span>Call Now
+      </a>
+      <a href="https://wa.me/917587776030" class="clink" target="_blank" rel="noopener">
+        <span class="clink-icon">💬</span>WhatsApp
+      </a>
+      <a href="mailto:Atulnetam5@gmail.com" class="clink">
+        <span class="clink-icon">✉️</span>Email
+      </a>
+      <a href="https://youtube.com/@AtulNetam" class="clink" target="_blank" rel="noopener">
+        <span class="clink-icon">📺</span>YouTube
+      </a>
+      <a href="https://instagram.com/Atul.netam" class="clink" target="_blank" rel="noopener">
+        <span class="clink-icon">📷</span>Instagram
+      </a>
+      <a href="https://facebook.com/atulnetam" class="clink" target="_blank" rel="noopener">
+        <span class="clink-icon">👥</span>Facebook
+      </a>
+    </div>
+
+    <div class="contact-loc">
+      📍 Narayanpur, Bastar Division, Chhattisgarh — Field available 24/7
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">ATUL NETAM</div>
+  <ul class="footer-links">
+    <li><a href="#work">Kaam</a></li>
+    <li><a href="#about">Parichay</a></li>
+    <li><a href="#press">Press ID</a></li>
+    <li><a href="#beat">Beat</a></li>
+    <li><a href="#contact">Sampark</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Atul Netam · IBC24 · Bastar, Chhattisgarh</div>
+</footer>
+
+<script>
+  // Progress bar
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100) + '%';
+  });
+
+  // Spotlight
+  const spot = document.getElementById('spot');
+  window.addEventListener('mousemove', e => {
+    spot.style.setProperty('--x', e.clientX + 'px');
+    spot.style.setProperty('--y', e.clientY + 'px');
+  });
+
+  // Fade-in
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('vis'), i * 90);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+  // Counter
+  const cobs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.t;
+      const suffix = target >= 100 ? '+' : '+';
+      let cur = 0, step = target / 55;
+      const t = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = Math.floor(cur) + (cur >= target ? suffix : '');
+        if (cur >= target) clearInterval(t);
+      }, 28);
+      cobs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-t]').forEach(el => cobs.observe(el));
+
+  // Barcode generator
+  const bc = document.getElementById('barcode');
+  if (bc) {
+    const widths = [2,3,1,4,2,1,3,2,4,1,2,3,1,4,2,1,3,2,1,4,2,3,1,2,4,1,3,2];
+    widths.forEach(w => {
+      const s = document.createElement('span');
+      s.style.width = w + 'px';
+      bc.appendChild(s);
+    });
+  }
+
+  // Drag scroll reports
+  const row = document.getElementById('repRow');
+  if (row) {
+    let down = false, sx, sl;
+    row.addEventListener('mousedown', e => { down = true; sx = e.pageX - row.offsetLeft; sl = row.scrollLeft; });
+    row.addEventListener('mouseleave', () => down = false);
+    row.addEventListener('mouseup', () => down = false);
+    row.addEventListener('mousemove', e => {
+      if (!down) return;
+      e.preventDefault();
+      row.scrollLeft = sl - (e.pageX - row.offsetLeft - sx) * 1.5;
+    });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
