@@ -1386,10 +1386,25 @@
         liveFeed = {
           ...liveFeed, ...fresh,
           videos: fresh.videos.map(v => ({
-            ...v, views: Number.isFinite(Number(v.views)) ? Math.max(0, Number(v.views)) : 0,
-            likes: v.likes === null || v.likes === undefined ? null : Math.max(0, Number(v.likes) || 0)
+            ...v,
+            id: safeVideoId(v.id),
+            num: Number(v.num) || 0,
+            title: String(v.title || ''),
+            date: String(v.date || ''),
+            channel: String(v.channel || ''),
+            cat: String(v.cat || 'अन्य'),
+            mention: Boolean(v.mention),
+            views: Number.isFinite(Number(v.views)) ? Math.max(0, Number(v.views)) : 0,
+            likes: v.likes === null || v.likes === undefined ? null : Math.max(0, Number(v.likes) || 0),
+            duration_sec: Math.max(0, Number(v.duration_sec) || 0)
           })),
-          ibc24_narayanpur: Array.isArray(fresh.ibc24_narayanpur) ? fresh.ibc24_narayanpur : []
+          ibc24_narayanpur: Array.isArray(fresh.ibc24_narayanpur)
+            ? fresh.ibc24_narayanpur.filter(n => n && typeof n.title === 'string').map(n => ({
+                ...n, title: String(n.title), date: String(n.date || ''),
+                category: String(n.category || 'Narayanpur'),
+                url: safeNewsUrl(n.url), image: safeImageUrl(n.image)
+              }))
+            : []
         };
         syncOk = true;
       } catch (err) {
