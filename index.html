@@ -54,9 +54,113 @@
 
     #progress-line {
       position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--gold), var(--red));
+      background: linear-gradient(90deg, var(--gold), var(--red), var(--gold-light));
+      box-shadow: 0 0 12px rgba(245, 192, 66, 0.55);
       z-index: 10000;
     }
+
+    /* ── ADVANCED AMBIENT FX CANVAS & CURSOR GLOW ── */
+    #fx-canvas {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none; opacity: 0.72;
+    }
+    #cursor-glow {
+      position: fixed; width: 420px; height: 420px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 192, 66, 0.085) 0%, rgba(229, 57, 53, 0.03) 38%, transparent 70%);
+      pointer-events: none; transform: translate(-50%, -50%);
+      z-index: 0; will-change: left, top;
+    }
+    header, .page-wrapper, footer { position: relative; z-index: 2; }
+
+    /* Broadcast Audio Equalizer Bars */
+    .eq-bars {
+      display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; margin-left: 2px;
+    }
+    .eq-bars i {
+      display: block; width: 2.5px; background: #fff; border-radius: 2px;
+      animation: eqDance 0.85s ease-in-out infinite alternate;
+    }
+    .eq-bars i:nth-child(1) { height: 4px; animation-delay: 0s; }
+    .eq-bars i:nth-child(2) { height: 10px; animation-delay: 0.2s; }
+    .eq-bars i:nth-child(3) { height: 6px; animation-delay: 0.4s; }
+    .eq-bars i:nth-child(4) { height: 9px; animation-delay: 0.15s; }
+    @keyframes eqDance {
+      0% { transform: scaleY(0.35); }
+      100% { transform: scaleY(1); }
+    }
+
+    /* Card Dynamic Spotlight Hover + Shimmer */
+    .glow-card {
+      position: relative; overflow: hidden;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s, box-shadow 0.28s, background 0.28s;
+    }
+    .glow-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(245, 192, 66, 0.14), transparent 65%);
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    .glow-card:hover::after { opacity: 1; }
+    .glow-card:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.48), 0 0 18px rgba(245, 192, 66, 0.1);
+    }
+
+    /* Animated Gold Border Glow for Major Panels */
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(245,192,66,0.16); }
+      50% { box-shadow: 0 12px 36px rgba(0,0,0,0.55), 0 0 22px rgba(245,192,66,0.16); }
+    }
+    .analytics-board, .bottom-profile-section {
+      animation: borderPulse 5s ease-in-out infinite;
+    }
+
+    /* Primary Button Shine Sweep */
+    .nav-cta, .c-btn:not(.alt), .f-pill.active {
+      position: relative; overflow: hidden;
+    }
+    .nav-cta::before, .c-btn:not(.alt)::before {
+      content: ''; position: absolute; top: 0; left: -120%; width: 70%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+      transform: skewX(-22deg);
+      animation: shineSweep 4.5s infinite;
+    }
+    @keyframes shineSweep {
+      0%, 65% { left: -120%; }
+      100% { left: 160%; }
+    }
+
+    /* Video Switch Flash Effect */
+    @keyframes playerPulse {
+      0% { filter: brightness(1.35) saturate(1.2); box-shadow: 0 0 28px rgba(245, 192, 66, 0.35); }
+      100% { filter: brightness(1) saturate(1); box-shadow: none; }
+    }
+    .player-flash { animation: playerPulse 0.55s ease-out; }
+
+    /* Smooth Scroll Reveal */
+    .fx-reveal {
+      opacity: 0; transform: translateY(18px) scale(0.988);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fx-reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* 3D Tilt Photo */
+    .bottom-photo {
+      transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Back to Top Floating Button */
+    #backToTop {
+      position: fixed; bottom: 20px; left: 20px; z-index: 9990;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(17, 19, 26, 0.92); backdrop-filter: blur(10px);
+      border: 1px solid var(--border-gold); color: var(--gold-light);
+      font-size: 1.05rem; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transform: translateY(12px);
+      transition: all 0.28s ease; box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #backToTop:hover { background: var(--gold); color: #000; transform: translateY(-2px); }
 
     /* ── LIVE TICKER ── */
     .top-live-bar {
@@ -487,12 +591,18 @@
 </head>
 <body>
 
+  <canvas id="fx-canvas"></canvas>
+  <div id="cursor-glow"></div>
   <div id="progress-line"></div>
   <div id="toast">लिंक कॉपी हो गया!</div>
+  <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="ऊपर जाएं">↑</button>
 
   <!-- 1. LIVE TICKER -->
   <div class="top-live-bar">
-    <div class="live-indicator"><span class="pulse-circle"></span> IBC24 LIVE</div>
+    <div class="live-indicator">
+      <span class="pulse-circle"></span> IBC24 LIVE
+      <span class="eq-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </div>
     <div class="ticker-scroll-wrap">
       <div class="ticker-items" id="liveTickerItems">
         <span><b>IBC24 नारायणपुर पोर्टल</b> — ताज़ा खबरें व 22+ ग्राउंड वीडियो रिपोर्ट्स ऑटो-अपडेट सक्रिय</span>
@@ -618,7 +728,7 @@
     </section>
 
     <!-- SECTION 2: DEDICATED YOUTUBE ANALYTICS BOARD -->
-    <section id="analytics" class="analytics-board">
+    <section id="analytics" class="analytics-board fx-reveal">
       <div class="section-head" style="border-color:rgba(245,192,66,0.2)">
         <h2 class="sec-title">YouTube वीडियो एनालिटिक्स बोर्ड (Live Likes & Views Analysis)</h2>
         <span class="sec-action" id="abLastSync" style="cursor:pointer" onclick="syncLiveData(true)">🔄 लाइव सिंक: सक्रिय</span>
@@ -693,7 +803,7 @@
     </section>
 
     <!-- SECTION 3: IBC24 NEWS PORTAL NARAYANPUR LIVE FEED -->
-    <section id="ibc-portal" class="ibc-portal-box">
+    <section id="ibc-portal" class="ibc-portal-box fx-reveal">
       <div class="section-head">
         <h2 class="sec-title">IBC24 न्यूज़ पोर्टल — नारायणपुर की ताज़ा खबरें (Auto-Updated)</h2>
         <a href="https://www.ibc24.in/city/narayanpur" target="_blank" rel="noopener noreferrer" class="sec-action">ibc24.in/city/narayanpur पर जाएं ↗</a>
@@ -851,7 +961,7 @@
     </div>
 
     <!-- SECTION 5 (AT THE VERY BOTTOM): PERSONAL DETAILS & CONTACT ("Mera detail sabse niche mein rahega") -->
-    <section class="bottom-profile-section" id="my-details">
+    <section class="bottom-profile-section fx-reveal" id="my-details">
       <div class="section-head" style="border-color:rgba(245,192,66,0.2)">
         <h2 class="sec-title">मेरा व्यक्तिगत विवरण, परिचय एवं संपर्क (Atul Netam)</h2>
       </div>
@@ -965,6 +1075,12 @@
       currentVideoId = vid.id;
 
       const player = document.getElementById('mainYtPlayer');
+      const screen = player.closest('.video-screen-container');
+      if (screen && autoplay) {
+        screen.classList.remove('player-flash');
+        void screen.offsetWidth;
+        screen.classList.add('player-flash');
+      }
       player.src = `https://www.youtube-nocookie.com/embed/${vid.id}?autoplay=${autoplay ? 1 : 0}&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&controls=1`;
 
       document.getElementById('npBadge').textContent = vid.mention ? '★ कैमरामैन अतुल मेंशन' : `${vid.cat}`;
@@ -1152,7 +1268,7 @@
       `).join('');
     }
 
-    // Auto-Fixer Engine
+    // Auto-Fixer Engine + Dynamic Glow Card Enhancement
     function runAutoFixer() {
       document.querySelectorAll('img').forEach(img => {
         img.onerror = function() { this.src = 'atul-photo.jpg'; };
@@ -1164,6 +1280,25 @@
       document.querySelectorAll('a[href^="tel:"]').forEach(tel => {
         tel.setAttribute('href', tel.getAttribute('href').replace(/[^\d+:]/g, ''));
       });
+      document.querySelectorAll('.ab-kpi-card, .ibc-card, .proj-item, .tl-card, .skill-card, .kpi-chip').forEach(card => {
+        card.classList.add('glow-card');
+      });
+    }
+
+    // Animated Number Roll-Up Helper
+    function animateCounter(id, endVal) {
+      const el = document.getElementById(id);
+      if (!el || isNaN(endVal)) return;
+      const startVal = 0;
+      const duration = 900;
+      const startTime = performance.now();
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(startVal + (endVal - startVal) * eased).toLocaleString('en-IN');
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     }
 
     // Live Auto-Sync Loader (fetches data/live-feed.json updated by GitHub Actions every 2h)
@@ -1197,8 +1332,132 @@
       renderIbcNews();
       selectVideo(currentVideoId, false);
       runAutoFixer();
+
+      // Trigger smooth KPI count-up animations
+      const tv = liveFeed.videos.reduce((a, v) => a + (v.views || 0), 0);
+      const tl = liveFeed.videos.reduce((a, v) => a + (typeof v.likes === 'number' ? v.likes : 0), 0);
+      animateCounter('topTotalViews', tv);
+      animateCounter('topTotalLikes', tl);
+      animateCounter('abTotalViews', tv);
+      animateCounter('abTotalLikes', tl);
+
       if (manual) showToast('लाइव डेटा और IBC24 खबरें अपडेट हो गईं!');
     }
+
+    // Advanced Visual FX Engine: Constellation Particles, Lerp Spotlight, Card Glow, 3D Tilt & Scroll Reveal
+    (function initAdvancedFX() {
+      // 1. Ambient Constellation Particles
+      const canvas = document.getElementById('fx-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        const mouse = { x: -999, y: -999 };
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const count = window.innerWidth < 768 ? 26 : 48;
+        const pts = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.42,
+          vy: (Math.random() - 0.5) * 0.42,
+          r: Math.random() * 1.5 + 0.6
+        }));
+
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+        function drawFX() {
+          ctx.clearRect(0, 0, w, h);
+          for (let i = 0; i < pts.length; i++) {
+            const p = pts[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+
+            const dxm = mouse.x - p.x, dym = mouse.y - p.y;
+            const dm = Math.hypot(dxm, dym);
+            if (dm < 120 && dm > 1) {
+              p.x -= (dxm / dm) * 0.8;
+              p.y -= (dym / dm) * 0.8;
+            }
+
+            ctx.fillStyle = 'rgba(245, 192, 66, 0.45)';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+
+            for (let j = i + 1; j < pts.length; j++) {
+              const q = pts[j];
+              const d = Math.hypot(p.x - q.x, p.y - q.y);
+              if (d < 105) {
+                ctx.strokeStyle = `rgba(245, 192, 66, ${(1 - d / 105) * 0.16})`;
+                ctx.lineWidth = 0.7;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(q.x, q.y);
+                ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(drawFX);
+        }
+        drawFX();
+      }
+
+      // 2. Smooth Cursor Spotlight (Lerp) + Delegated Card Magnetic Light
+      const glow = document.getElementById('cursor-glow');
+      let tx = -500, ty = -500, cx = -500, cy = -500;
+      window.addEventListener('mousemove', e => {
+        tx = e.clientX; ty = e.clientY;
+        const card = e.target.closest('.glow-card');
+        if (card) {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+        }
+      });
+      (function loopGlow() {
+        cx += (tx - cx) * 0.14;
+        cy += (ty - cy) * 0.14;
+        if (glow) { glow.style.left = cx + 'px'; glow.style.top = cy + 'px'; }
+        requestAnimationFrame(loopGlow);
+      })();
+
+      // 3. 3D Tilt on Bottom Profile Photo
+      const photo = document.querySelector('.bottom-photo');
+      if (photo) {
+        photo.addEventListener('mousemove', e => {
+          const r = photo.getBoundingClientRect();
+          const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -10;
+          const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 10;
+          photo.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.04)`;
+        });
+        photo.addEventListener('mouseleave', () => {
+          photo.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+      }
+
+      // 4. Scroll Reveal + Back-to-Top Toggle
+      const revObs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            en.target.classList.add('visible');
+            revObs.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.06 });
+      document.querySelectorAll('.fx-reveal').forEach(el => revObs.observe(el));
+
+      const topBtn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (topBtn) topBtn.classList.toggle('show', window.scrollY > 380);
+      });
+    })();
 
     // Initial boot & 5-minute background auto-refresh
     syncLiveData(false);
