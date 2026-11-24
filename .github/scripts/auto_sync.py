@@ -8,6 +8,21 @@ import re
 import urllib.request
 from datetime import datetime, timezone
 
+# Keep the last successful measurements when an upstream page temporarily blocks scraping.
+PREVIOUS_STATS = {}
+
+
+def load_previous_stats():
+    try:
+        with open("data/live-feed.json", "r", encoding="utf-8") as f:
+            previous = json.load(f)
+        for item in previous.get("videos", []):
+            if item.get("id"):
+                PREVIOUS_STATS[item["id"]] = item
+    except (OSError, ValueError, TypeError):
+        pass
+
+
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -71,10 +86,12 @@ def fetch_url(url, timeout=12):
 def fetch_video_stats(video):
     vid = video["id"]
     entry = dict(video)
-    entry["views"] = 0
-    entry["likes"] = None
-    entry["likes_display"] = "—"
-    entry["duration_sec"] = 0
+    previous = PREVIOUS_STATS.get(vid, {})
+    entry["views"] = int(previous.get("views") or 0)
+    entry["likes"] = previous.get("likes")
+    entry["likes_display"] = previous.get("likes_display") or "—"
+    entry["duration_sec"] = int(previous.get("duration_sec") or 0)
+    entry["stats_status"] = "stale"
     entry["yt_title"] = ""
     entry["thumbnail"] = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
     entry["url"] = f"https://www.youtube.com/watch?v={vid}"
@@ -84,6 +101,7 @@ def fetch_video_stats(video):
         vm = re.search(r'"viewCount":"(\d+)"', html)
         if vm:
             entry["views"] = int(vm.group(1))
+            entry["stats_status"] = "fresh"
 
         dur_m = re.search(r'"lengthSeconds":"(\d+)"', html)
         if dur_m:
@@ -108,6 +126,7 @@ def fetch_video_stats(video):
         if likes_val is not None:
             entry["likes"] = likes_val
             entry["likes_display"] = f"{likes_val:,}"
+            entry["stats_status"] = "fresh"
     except Exception as exc:
         entry["error"] = str(exc)
 
@@ -115,11 +134,12 @@ def fetch_video_stats(video):
     if entry["likes"] is None:
         try:
             ryd = json.loads(fetch_url(f"https://returnyoutubedislikeapi.com/votes?videoId={vid}", timeout=8))
-            if ryd.get("likes") and ryd["likes"] > 0:
+            if entry["likes"] is None and ryd.get("likes") and ryd["likes"] > 0:
                 entry["likes"] = int(ryd["likes"])
                 entry["likes_display"] = f"{entry['likes']:,}"
-            if entry["views"] == 0 and ryd.get("viewCount"):
+            if entry["views"] == 0 and ryd.get("viewCount") and int(ryd["viewCount"]) > 0:
                 entry["views"] = int(ryd["viewCount"])
+                entry["stats_status"] = "fresh"
         except Exception:
             pass
 
@@ -174,10 +194,13 @@ def fetch_ibc24_narayanpur():
 
 
 def main():
+    load_previous_stats()
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         video_results = list(pool.map(fetch_video_stats, VIDEOS))
 
     video_results.sort(key=lambda x: x["num"])
+    if len(video_results) != len(VIDEOS) or len({v["id"] for v in video_results}) != len(VIDEOS):
+        raise RuntimeError("Video feed integrity check failed")
     ibc_news = fetch_ibc24_narayanpur()
 
     total_views = sum(v["views"] for v in video_results)
