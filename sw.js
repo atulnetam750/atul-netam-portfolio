@@ -16,13 +16,17 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.endsWith('/data/live-feed.json')) {
-    event.respondWith(fetch(request).then(response => {
-      if (response.ok) {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const stableKey = new Request(new URL('data/live-feed.json', self.registration.scope).href);
+      try {
+        const response = await fetch(request);
+        if (response.ok) await cache.put(stableKey, response.clone());
+        return response;
+      } catch (_) {
+        return (await cache.match(stableKey)) || Response.error();
       }
-      return response;
-    }).catch(async () => (await caches.match(request)) || Response.error()));
+    })());
     return;
   }
 
