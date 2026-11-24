@@ -931,6 +931,14 @@
       </div>
     </div>
 
+    <!-- DYNAMIC PROJECTS MANAGED FROM ADMIN -->
+    <section class="fx-reveal" id="managed-projects" style="margin:32px 0">
+      <div class="section-head"><h2 class="sec-title">नए प्रोजेक्ट्स</h2><span class="p-cat">ADMIN MANAGED</span></div>
+      <div id="dynamic-projects-grid" class="projects-grid">
+        <p style="color:var(--text-muted)">प्रोजेक्ट्स लोड हो रहे हैं...</p>
+      </div>
+    </section>
+
     <!-- SKILLS MATRIX -->
     <div class="skills-grid">
       <div class="skill-card">
@@ -989,19 +997,24 @@
             मैं अतुल नेताम, नारायणपुर (बस्तर, छत्तीसगढ़) से एक सक्रिय वीडियो जर्नलिस्ट, कैमरामैन और डिजिटल कंटेंट क्रिएटर हूँ। 27 दिसंबर 2024 से IBC24 न्यूज़ नेटवर्क के साथ जुड़कर मैं नारायणपुर और अबूझमाड़ के दुर्गम इलाकों से ग्राउंड रिपोर्टिंग, ब्रेकिंग न्यूज़ और मोबाइल जर्नलिज्म (MoJo) के माध्यम से जन-सरोकार की खबरें सामने ला रहा हूँ।
           </p>
           <div class="bottom-meta-pills">
-            <span class="bm-pill">🎂 <b>जन्मतिथि:</b> 21 जुलाई 1998</span>
-            <span class="bm-pill">🎓 <b>शिक्षा:</b> 11वीं उत्तीर्ण (छ.ग.)</span>
-            <span class="bm-pill">📍 <b>पता:</b> बंगालापारा, वार्ड क्र. 4, पुराने बस स्टैंड के पीछे, नारायणपुर, बस्तर (छ.ग.) – 494661</span>
+            <span class="bm-pill">📍 <b>कार्य क्षेत्र:</b> नारायणपुर, बस्तर, छत्तीसगढ़</span>
+            <span class="bm-pill">🎥 <b>कार्य:</b> वीडियो जर्नलिज्म, फोटोग्राफी एवं डिजिटल मीडिया</span>
           </div>
         </div>
         <div class="bottom-contact-panel">
           <div style="font-size:0.78rem;font-weight:700;color:var(--gold);text-transform:uppercase">सीधे कॉल, व्हाट्सएप व प्रोफाइल्स:</div>
           <div class="contact-nums">
-            <a href="tel:+917587776030" class="c-btn">📞 +91 7587776030</a>
-            <a href="tel:+917489300076" class="c-btn">📞 +91 7489300076</a>
-            <a href="https://wa.me/917587776030" target="_blank" rel="noopener noreferrer" class="c-btn alt">💬 WhatsApp</a>
-            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ atulnetam5@gmail.com</a>
+            <a href="mailto:atulnetam5@gmail.com" class="c-btn alt">✉️ Professional Email</a>
           </div>
+          <form id="contactForm" class="portfolio-contact-form">
+            <label for="contactName">आपका नाम</label>
+            <input id="contactName" name="name" maxlength="100" autocomplete="name" required>
+            <label for="contactEmail">ईमेल</label>
+            <input id="contactEmail" name="email" type="email" maxlength="180" autocomplete="email" required>
+            <label for="contactMessage">संदेश</label>
+            <textarea id="contactMessage" name="message" rows="3" maxlength="3000" required></textarea>
+            <button type="submit" class="c-btn">संदेश भेजें</button>
+          </form>
           <div class="links-mini-grid">
             <a href="https://avsbastar.com" target="_blank" rel="noopener noreferrer" class="w-link">avsbastar.com</a>
             <a href="https://bastarsandesh8.wordpress.com" target="_blank" rel="noopener noreferrer" class="w-link">बस्तर संदेश</a>
@@ -1572,5 +1585,6 @@
       }, { once: true });
     }
   </script>
+  <script type="module" src="./assets/js/portfolio-enhancements.js"></script>
 </body>
 </html>
