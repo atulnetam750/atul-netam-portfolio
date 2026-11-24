@@ -10,8 +10,10 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
+
+concurrency:
+  group: portfolio-auto-sync
+  cancel-in-progress: false
 
 jobs:
   auto-update-and-fix:
@@ -25,9 +27,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Compile automation script
+        run: python3 -m py_compile .github/scripts/auto_sync.py
+
       - name: Run IBC24 & YouTube Live Auto-Sync
-        run: |
-          python3 .github/scripts/auto_sync.py
+        run: python3 .github/scripts/auto_sync.py
 
       - name: Auto Fixer & Integrity Check
         run: |
@@ -36,7 +40,18 @@ jobs:
             echo "Required files missing!"
             exit 1
           fi
-          python3 -c "import json; d=json.load(open('data/live-feed.json')); print('Validated JSON:', len(d.get('videos',[])), 'videos,', len(d.get('ibc24_narayanpur',[])), 'news')"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("data/live-feed.json").read_text(encoding="utf-8"))
+          videos = data.get("videos", [])
+          assert isinstance(videos, list) and len(videos) == 22, "Expected 22 video records"
+          assert len({v.get("id") for v in videos}) == len(videos), "Duplicate video IDs"
+          assert all(isinstance(v.get("title"), str) and v.get("id") for v in videos), "Invalid video record"
+          news = data.get("ibc24_narayanpur", [])
+          assert isinstance(news, list), "News feed must be a list"
+          print(f"Validated feed: {len(videos)} videos, {len(news)} news items")
+          PY
           # Ensure no banned old phone number exists
           if grep -q "9406175560" index.html; then
             sed -i 's/+91 9406175560//g; s/9406175560//g' index.html
