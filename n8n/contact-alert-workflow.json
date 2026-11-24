@@ -1,0 +1,92 @@
+{
+  "name": "Atul Portfolio - Contact Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "portfolio-contact-alert",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "contact-webhook",
+      "name": "Contact Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "atul-portfolio-contact-alert",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_AFTER_IMPORT",
+          "name": "Portfolio Webhook Header"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const root = $json.body ?? $json;\nconst record = root.record ?? root;\nconst name = String(record.name ?? '').slice(0, 100);\nconst email = String(record.email ?? '').slice(0, 180);\nconst message = String(record.message ?? '').slice(0, 1200);\nif (!name || !email || !message) return [];\nconst safe = value => value.replace(/[<>]/g, '');\nreturn [{ json: { text: `New portfolio contact\\nName: ${safe(name)}\\nEmail: ${safe(email)}\\nMessage: ${safe(message)}` } }];"
+      },
+      "id": "sanitize-contact",
+      "name": "Validate Contact Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "REPLACE_WITH_YOUR_CHAT_ID",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "telegram-notify",
+      "name": "Telegram Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_AFTER_IMPORT",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Contact Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Contact Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Contact Payload": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1"
+}
