@@ -67,6 +67,24 @@ form.addEventListener("submit", async event => {
   } finally { send.disabled = false; send.textContent = "भेजें"; input.focus(); }
 });
 
+// Keep the public bio synchronized with the Admin Dashboard profile record.
+async function loadManagedProfile() {
+  if (!supabaseReady) return;
+  const { data, error } = await supabase.from("site_profile")
+    .select("headline,about,location").eq("id", "main").maybeSingle();
+  if (error || !data) { if (error) console.warn("Profile load:", error); return; }
+  const role = document.querySelector(".bottom-role");
+  const about = document.querySelector(".bottom-text");
+  if (role && data.headline) role.textContent = data.headline;
+  if (about && data.about) about.textContent = data.about;
+  const meta = document.querySelector(".bottom-meta-pills");
+  if (meta && data.location) {
+    const locationPill = meta.querySelector(".bm-pill");
+    if (locationPill) locationPill.textContent = "📍 कार्य क्षेत्र: " + data.location;
+  }
+}
+loadManagedProfile();
+
 // Render public projects from Supabase. Public RLS exposes only published rows.
 async function loadManagedProjects() {
   const grid = document.querySelector("#dynamic-projects-grid");
