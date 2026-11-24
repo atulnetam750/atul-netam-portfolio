@@ -307,6 +307,60 @@
     }
     .id-qr-box img { width: 100%; height: 100%; display: block; }
 
+    /* Social Media Tabs Hub */
+    .social-hub-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 16px; margin-bottom: 18px;
+    }
+    .social-tabs-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .social-tab-btn {
+      background: var(--surface-card); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.76rem; font-weight: 700;
+      padding: 7px 14px; border-radius: 10px; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px; transition: var(--ease);
+    }
+    .social-tab-btn:hover { border-color: var(--gold); color: #fff; }
+    .social-tab-btn.active {
+      background: linear-gradient(135deg, #f5c042, #ea580c);
+      color: #000; border-color: transparent;
+      box-shadow: 0 4px 14px rgba(245, 192, 66, 0.28);
+    }
+    .social-tab-panel { display: none; animation: fadeTab 0.3s ease-out; }
+    .social-tab-panel.active { display: block; }
+    @keyframes fadeTab {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .social-cards-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .social-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 14px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: var(--ease);
+    }
+    .social-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .social-card-top {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+    }
+    .social-badge {
+      font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 12px;
+      background: rgba(245, 192, 66, 0.14); color: var(--gold-light); border: 1px solid var(--border-gold);
+    }
+    .social-handle { font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .social-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 12px; }
+    .social-go-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; padding: 8px 12px; border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: #fff; text-decoration: none; font-size: 0.76rem; font-weight: 700; transition: var(--ease);
+    }
+    .social-go-btn:hover { background: var(--gold); color: #000; border-color: transparent; }
+    .social-go-btn.ig { background: linear-gradient(135deg, #db2777, #f59e0b); border-color: transparent; }
+    .social-go-btn.ig:hover { filter: brightness(1.1); color: #fff; }
+    @media (max-width: 900px) { .social-cards-grid { grid-template-columns: 1fr; } }
+
     /* ── LIVE TICKER ── */
     .top-live-bar {
       background: #131620;
@@ -775,7 +829,7 @@
         <li><a href="#videos">वीडियो रिपोर्ट्स (22)</a></li>
         <li><a href="#analytics">YouTube Analytics</a></li>
         <li><a href="#ibc-portal">IBC24 नारायणपुर न्यूज़</a></li>
-        <li><a href="#work">अनुभव व प्रोजेक्ट्स</a></li>
+        <li><a href="#social-hub">सोशल मीडिया</a></li>
         <li><a href="#my-details">मेरा विवरण / संपर्क</a></li>
       </ul>
       <div class="nav-right">
@@ -1132,6 +1186,120 @@
       </div>
     </section>
 
+    <!-- DEDICATED SOCIAL MEDIA TABS HUB -->
+    <section class="social-hub-box fx-reveal" id="social-hub">
+      <div class="section-head">
+        <h2 class="sec-title">सोशल मीडिया नेटवर्क हब (Instagram / YouTube / X / LinkedIn / Telegram)</h2>
+        <a href="https://linktr.ee/Atulnetam" target="_blank" rel="noopener noreferrer" class="sec-action">Linktree पर सभी लिंक्स ↗</a>
+      </div>
+
+      <div class="social-tabs-bar">
+        <button type="button" onclick="switchSocialTab('instagram')" id="stab-instagram" class="social-tab-btn active">📷 Instagram (3)</button>
+        <button type="button" onclick="switchSocialTab('youtube')" id="stab-youtube" class="social-tab-btn">📺 YouTube</button>
+        <button type="button" onclick="switchSocialTab('twitter')" id="stab-twitter" class="social-tab-btn">🐦 X (Twitter)</button>
+        <button type="button" onclick="switchSocialTab('linkedin')" id="stab-linkedin" class="social-tab-btn">💼 LinkedIn</button>
+        <button type="button" onclick="switchSocialTab('telegram')" id="stab-telegram" class="social-tab-btn">✈️ Telegram & Pinterest</button>
+      </div>
+
+      <!-- 1. Instagram -->
+      <div id="spanel-instagram" class="social-tab-panel active">
+        <div class="social-cards-grid">
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">Official Main</span><span>📷</span></div>
+              <div class="social-handle">@atul.netam</div>
+              <div class="social-desc">आधिकारिक प्रोफ़ाइल — ग्राउंड रिपोर्टिंग बिहाइंड-द-सीन्स (BTS), बस्तर यात्रा, लाइफस्टाइल व टेक रील्स।</div>
+            </div>
+            <a href="https://www.instagram.com/atul.netam" target="_blank" rel="noopener noreferrer" class="social-go-btn ig">प्रोफ़ाइल खोलें (Follow) ↗</a>
+          </div>
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">Creative & Reels</span><span>🎬</span></div>
+              <div class="social-handle">@hans_n.21</div>
+              <div class="social-desc">सिनेमैटिक एडिट्स, पर्सनल रील्स, फोटोग्राफी और क्रिएटिव वीडियो कंटेंट शोकेस।</div>
+            </div>
+            <a href="https://www.instagram.com/hans_n.21" target="_blank" rel="noopener noreferrer" class="social-go-btn">@hans_n.21 देखें ↗</a>
+          </div>
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">CG Community</span><span>🌟</span></div>
+              <div class="social-handle">@top_star_model_of_cg</div>
+              <div class="social-desc">छत्तीसगढ़ टैलेंट, मॉडलिंग, इवेंट्स और रीजनल डिजिटल प्रमोशन पेज।</div>
+            </div>
+            <a href="https://www.instagram.com/top_star_model_of_cg" target="_blank" rel="noopener noreferrer" class="social-go-btn">@top_star_model_of_cg देखें ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. YouTube -->
+      <div id="spanel-youtube" class="social-tab-panel">
+        <div class="social-cards-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">Official Channel</span><span>📺</span></div>
+              <div class="social-handle">@AtulNetam</div>
+              <div class="social-desc">अतुल नेताम का आधिकारिक यूट्यूब चैनल — ग्राउंड रिपोर्ट्स, व्लॉग्स एवं क्षेत्रीय कवरेज।</div>
+            </div>
+            <a href="https://youtube.com/@AtulNetam" target="_blank" rel="noopener noreferrer" class="social-go-btn" style="background:var(--red);border-color:transparent">YouTube चैनल सब्सक्राइब करें ↗</a>
+          </div>
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">IBC24 Archive</span><span>📹</span></div>
+              <div class="social-handle">22+ ग्राउंड रिपोर्ट्स आर्काइव</div>
+              <div class="social-desc">ऊपर दिए गए क्लीन थियेटर व एनालिटिक्स बोर्ड में सभी 22 IBC24 रिपोर्ट्स लाइव Views व Likes के साथ उपलब्ध हैं।</div>
+            </div>
+            <a href="#videos" class="social-go-btn">ऊपर वीडियो प्लेयर पर जाएं ▲</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. X (Twitter) -->
+      <div id="spanel-twitter" class="social-tab-panel">
+        <div class="social-card glow-card" style="max-width:520px;margin:0 auto;text-align:center">
+          <div>
+            <div class="social-card-top" style="justify-content:center;gap:8px"><span class="social-badge">Breaking Updates</span></div>
+            <div class="social-handle">𝕏 @Atulnetam21</div>
+            <div class="social-desc">बस्तर व नारायणपुर की ब्रेकिंग न्यूज़ अपडेट्स, लाइव ग्राउंड रिपोर्ट्स, प्रशासनिक सूचनाएं और त्वरित पत्रकारिता अपडेट्स के लिए X (Twitter) पर जुड़ें।</div>
+          </div>
+          <a href="https://x.com/Atulnetam21" target="_blank" rel="noopener noreferrer" class="social-go-btn">X (Twitter) पर फॉलो करें ↗</a>
+        </div>
+      </div>
+
+      <!-- 4. LinkedIn -->
+      <div id="spanel-linkedin" class="social-tab-panel">
+        <div class="social-card glow-card" style="max-width:520px;margin:0 auto;text-align:center">
+          <div>
+            <div class="social-card-top" style="justify-content:center;gap:8px"><span class="social-badge">Professional Network</span></div>
+            <div class="social-handle">💼 Atul Netam</div>
+            <div class="social-desc">Cameraman & Video Journalist at IBC24 News Network — प्रोफेशनल नेटवर्किंग, मीडिया कोलैबोरेशन और AI-ऑटोमेशन प्रोजेक्ट्स के लिए कनेक्ट करें।</div>
+          </div>
+          <a href="https://www.linkedin.com/in/atul-singh-netam-933ab6211" target="_blank" rel="noopener noreferrer" class="social-go-btn" style="background:#2563eb;border-color:transparent">LinkedIn पर कनेक्ट करें ↗</a>
+        </div>
+      </div>
+
+      <!-- 5. Telegram & Pinterest -->
+      <div id="spanel-telegram" class="social-tab-panel">
+        <div class="social-cards-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">Direct News</span><span>✈️</span></div>
+              <div class="social-handle">Telegram (@atulnetam21)</div>
+              <div class="social-desc">सीधा संवाद, न्यूज़ डॉक्यूमेंट्स शेयरिंग और त्वरित अपडेट्स के लिए टेलीग्राम पर जुड़ें।</div>
+            </div>
+            <a href="https://t.me/atulnetam21" target="_blank" rel="noopener noreferrer" class="social-go-btn" style="background:#0284c7;border-color:transparent">Telegram खोलें ↗</a>
+          </div>
+          <div class="social-card glow-card">
+            <div>
+              <div class="social-card-top"><span class="social-badge">Visual Boards</span><span>📌</span></div>
+              <div class="social-handle">Pinterest (@Its_atul_official_750)</div>
+              <div class="social-desc">ग्राफिक पोस्टर डिज़ाइन, फोटोग्राफी कलेक्शन और क्रिएटिव विज़ुअल बोर्ड्स।</div>
+            </div>
+            <a href="https://www.pinterest.com/Its_atul_official_750" target="_blank" rel="noopener noreferrer" class="social-go-btn" style="background:#dc2626;border-color:transparent">Pinterest बोर्ड देखें ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 5 (AT THE VERY BOTTOM): PERSONAL DETAILS & CONTACT ("Mera detail sabse niche mein rahega") -->
     <section class="bottom-profile-section fx-reveal" id="my-details">
       <div class="section-head" style="border-color:rgba(245,192,66,0.2)">
@@ -1196,6 +1364,9 @@
             <a href="https://linktr.ee/Atulnetam" target="_blank" rel="noopener noreferrer" class="w-link">Linktree</a>
             <a href="https://instagram.com/atul.netam" target="_blank" rel="noopener noreferrer" class="w-link">@atul.netam</a>
             <a href="https://instagram.com/hans_n.21" target="_blank" rel="noopener noreferrer" class="w-link">@hans_n.21</a>
+            <a href="https://instagram.com/top_star_model_of_cg" target="_blank" rel="noopener noreferrer" class="w-link">@top_star_model_of_cg</a>
+            <a href="https://t.me/atulnetam21" target="_blank" rel="noopener noreferrer" class="w-link">Telegram</a>
+            <a href="https://www.pinterest.com/Its_atul_official_750" target="_blank" rel="noopener noreferrer" class="w-link">Pinterest</a>
             <a href="https://linkedin.com/in/atul-singh-netam-933ab6211" target="_blank" rel="noopener noreferrer" class="w-link">LinkedIn</a>
             <a href="https://x.com/Atulnetam21" target="_blank" rel="noopener noreferrer" class="w-link">X (@Atulnetam21)</a>
             <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" class="w-link">GitHub</a>
@@ -1842,7 +2013,15 @@
       }
     }
 
-    // 8. Digital Press Card Modal & One-Click vCard (.vcf) Contact Download
+    // 8. Digital Press Card Modal, Social Tabs & One-Click vCard (.vcf) Contact Download
+    function switchSocialTab(tab) {
+      document.querySelectorAll('.social-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.social-tab-panel').forEach(p => p.classList.remove('active'));
+      const btn = document.getElementById('stab-' + tab);
+      const panel = document.getElementById('spanel-' + tab);
+      if (btn) btn.classList.add('active');
+      if (panel) panel.classList.add('active');
+    }
     function toggleIdModal() {
       const modal = document.getElementById('id-modal');
       if (modal) modal.classList.toggle('open');
