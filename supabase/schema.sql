@@ -78,7 +78,7 @@ create table if not exists private.ai_usage (
 );
 revoke all on private.ai_usage from public, anon, authenticated;
 
-create or replace function private.consume_ai_quota(p_client_hash text)
+create or replace function public.consume_ai_quota(p_client_hash text)
 returns boolean
 language plpgsql
 security definer
@@ -96,9 +96,8 @@ begin
   return v_count <= 12;
 end;
 $$;
-revoke all on function private.consume_ai_quota(text) from public, anon, authenticated;
-grant usage on schema private to service_role;
-grant execute on function private.consume_ai_quota(text) to service_role;
+revoke all on function public.consume_ai_quota(text) from public, anon, authenticated;
+grant execute on function public.consume_ai_quota(text) to service_role;
 
 insert into public.site_profile(id, headline, about, location)
 values ('main','Video Journalist & Cameraman','IBC24 News Network • Photography • Videography • Ground Reporting','Narayanpur, Chhattisgarh, India')
