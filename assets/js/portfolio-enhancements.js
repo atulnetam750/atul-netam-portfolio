@@ -67,6 +67,46 @@ form.addEventListener("submit", async event => {
   } finally { send.disabled = false; send.textContent = "भेजें"; input.focus(); }
 });
 
+// Render public projects from Supabase. Public RLS exposes only published rows.
+async function loadManagedProjects() {
+  const grid = document.querySelector("#dynamic-projects-grid");
+  if (!grid) return;
+  if (!supabaseReady) { grid.textContent = "नए प्रोजेक्ट्स देखने के लिए डेटा सेवा configure की जा रही है।"; return; }
+  const { data, error } = await supabase.from("portfolio_projects")
+    .select("id,title,category,description,url,image_url,created_at")
+    .eq("published", true).order("created_at", { ascending: false }).limit(12);
+  grid.replaceChildren();
+  if (error) { grid.textContent = "अभी प्रोजेक्ट्स लोड नहीं हो सके।"; console.warn(error); return; }
+  if (!data?.length) { grid.textContent = "नए प्रोजेक्ट्स जल्द जोड़े जाएंगे।"; return; }
+  for (const project of data) {
+    const card = document.createElement("article"); card.className = "proj-item";
+    const body = document.createElement("div");
+    const category = document.createElement("span"); category.className = "p-cat"; category.textContent = project.category;
+    const title = document.createElement("h3"); title.className = "p-name"; title.textContent = project.title;
+    const description = document.createElement("p"); description.className = "p-summary"; description.textContent = project.description || "";
+    body.append(category, title, description);
+    if (project.image_url && /^https:\/\//i.test(project.image_url)) {
+      const image = document.createElement("img"); image.src = project.image_url; image.alt = project.title;
+      image.loading = "lazy"; image.referrerPolicy = "no-referrer";
+      image.style.cssText = "width:100%;max-height:190px;object-fit:cover;border-radius:10px;margin-bottom:10px";
+      image.addEventListener("error", () => image.remove(), { once: true }); body.prepend(image);
+    }
+    card.append(body);
+    if (project.url) {
+      try {
+        const url = new URL(project.url);
+        if (url.protocol === "https:") {
+          const link = document.createElement("a"); link.href = url.href; link.target = "_blank";
+          link.rel = "noopener noreferrer"; link.className = "p-pill"; link.textContent = "प्रोजेक्ट देखें ↗";
+          card.append(link);
+        }
+      } catch (_) {}
+    }
+    grid.append(card);
+  }
+}
+loadManagedProjects();
+
 // Lightweight contact form enhancement for an existing #contactForm, if present.
 const contactForm = document.querySelector("#contactForm");
 if (contactForm && supabaseReady) {
