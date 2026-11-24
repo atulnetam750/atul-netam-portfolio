@@ -111,8 +111,7 @@ loadManagedProjects();
 const contactForm = document.querySelector("#contactForm");
 if (contactForm && supabaseReady) {
   contactForm.addEventListener("submit", async event => {
-    if (contactForm.dataset.supabaseBound) return;
-    event.preventDefault(); contactForm.dataset.supabaseBound = "1";
+    event.preventDefault();
     const values = new FormData(contactForm);
     const payload = {
       name: String(values.get("name") || "").trim().slice(0, 100),
@@ -120,10 +119,10 @@ if (contactForm && supabaseReady) {
       message: String(values.get("message") || "").trim().slice(0, 3000)
     };
     if (!payload.name || !payload.email || !payload.message) {
-      alert("कृपया नाम, ईमेल और संदेश भरें।"); contactForm.dataset.supabaseBound = ""; return;
+      alert("कृपया नाम, ईमेल और संदेश भरें।"); return;
     }
     const { error } = await supabase.from("contact_messages").insert(payload);
-    if (error) { alert("संदेश भेजा नहीं जा सका। कृपया दोबारा प्रयास करें।"); contactForm.dataset.supabaseBound = ""; }
+    if (error) { alert("संदेश भेजा नहीं जा सका। कृपया दोबारा प्रयास करें।"); }
     else { alert("आपका संदेश भेज दिया गया है। धन्यवाद!"); contactForm.reset(); }
   });
 }
