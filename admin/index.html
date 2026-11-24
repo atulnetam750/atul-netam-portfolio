@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#10131c">
+  <title>Admin Dashboard | Atul Netam</title>
+  <link rel="stylesheet" href="./admin.css">
+  <script src="../assets/js/config.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top"><div><p class="eyebrow">ATUL NETAM / CONTROL ROOM</p><h1>Portfolio Admin</h1><p>Projects, profile और contact inbox मैनेज करें।</p></div><a href="../">← Website</a></header>
+    <section class="panel" id="loginPanel"><h2>Admin Login</h2><form id="loginForm"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button>Login</button><p class="hint">केवल पहले से बनाए गए admin account से login करें।</p></form></section>
+    <section id="dashboard" hidden>
+      <div class="bar"><h2>Dashboard</h2><button id="logoutBtn" class="secondary">Logout</button></div>
+      <div class="grid">
+        <section class="panel"><h3>Profile Summary</h3><form id="profileForm"><label>Headline<input name="headline" maxlength="180"></label><label>About<textarea name="about" rows="5" maxlength="3000"></textarea></label><label>Location<input name="location" maxlength="150"></label><button>Save Profile</button></form></section>
+        <section class="panel"><h3>Add / Edit Project</h3><form id="projectForm"><input type="hidden" name="id"><label>Title<input name="title" maxlength="140" required></label><label>Category<input name="category" maxlength="80" required></label><label>Project URL<input name="url" type="url" placeholder="https://..."></label><label>Image URL<input name="image_url" type="url" placeholder="https://..."></label><label>Description<textarea name="description" rows="3" maxlength="1200"></textarea></label><label class="check"><input name="published" type="checkbox" checked> Published</label><div class="actions"><button>Save Project</button><button type="button" id="resetProject" class="secondary">Clear</button></div></form></section>
+      </div>
+      <section class="panel"><h3>Projects</h3><div id="projectsList" class="list">Loading…</div></section>
+      <section class="panel"><h3>Contact Inbox</h3><div id="messagesList" class="list">Loading…</div></section>
+      <p id="status" role="status" class="status"></p>
+    </section>
+  </main>
+  <script type="module" src="./admin.js"></script>
+</body></html>
