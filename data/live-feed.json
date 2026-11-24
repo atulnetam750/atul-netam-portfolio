@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-24T18:33:37Z",
+  "updated_at": "2026-11-24T18:58:55Z",
   "summary": {
     "total_videos": 22,
     "total_views": 39748,
@@ -20,6 +20,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/rZQpZJmWoqc/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=rZQpZJmWoqc"
@@ -36,6 +37,7 @@
       "likes": 42,
       "likes_display": "42",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/clVJVPqR3dk/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=clVJVPqR3dk"
@@ -52,6 +54,7 @@
       "likes": 175,
       "likes_display": "175",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/rjqJ6LEHvI0/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=rjqJ6LEHvI0"
@@ -68,6 +71,7 @@
       "likes": 1,
       "likes_display": "1",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/TvVsvxd3JwY/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=TvVsvxd3JwY"
@@ -84,6 +88,7 @@
       "likes": 4,
       "likes_display": "4",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/nG_WrINs7Xc/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=nG_WrINs7Xc"
@@ -100,6 +105,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/MgChUJknAlM/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=MgChUJknAlM"
@@ -116,6 +122,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/iteSkoeMiW4/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=iteSkoeMiW4"
@@ -132,6 +139,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/LqjeIpjBqUs/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=LqjeIpjBqUs"
@@ -148,6 +156,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/bFrQvd7bczw/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=bFrQvd7bczw"
@@ -164,6 +173,7 @@
       "likes": 34,
       "likes_display": "34",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/2Y4tfLnULdI/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=2Y4tfLnULdI"
@@ -180,6 +190,7 @@
       "likes": 9,
       "likes_display": "9",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/xIIu44nAJAQ/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=xIIu44nAJAQ"
@@ -196,6 +207,7 @@
       "likes": 20,
       "likes_display": "20",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/vatiFZ1jc_E/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=vatiFZ1jc_E"
@@ -212,6 +224,7 @@
       "likes": 4,
       "likes_display": "4",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/wzFw2Rga438/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=wzFw2Rga438"
@@ -228,6 +241,7 @@
       "likes": 5,
       "likes_display": "5",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/YWD5c-k6l4s/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=YWD5c-k6l4s"
@@ -244,6 +258,7 @@
       "likes": 25,
       "likes_display": "25",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/CZdfSLwGMXg/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=CZdfSLwGMXg"
@@ -260,6 +275,7 @@
       "likes": 6,
       "likes_display": "6",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/HIauWkdd1eA/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=HIauWkdd1eA"
@@ -276,6 +292,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "fresh",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/0ndXpLlI0nA/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=0ndXpLlI0nA"
@@ -292,6 +309,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/rdm41bY4z3s/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=rdm41bY4z3s"
@@ -308,6 +326,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/j3jYKuVND7o/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=j3jYKuVND7o"
@@ -324,6 +343,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/eWHFSFtjqXg/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=eWHFSFtjqXg"
@@ -340,6 +360,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/Kko20g5ALiE/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=Kko20g5ALiE"
@@ -356,6 +377,7 @@
       "likes": null,
       "likes_display": "—",
       "duration_sec": 0,
+      "stats_status": "stale",
       "yt_title": "",
       "thumbnail": "https://i.ytimg.com/vi/6KJ_8Xw2AC4/hqdefault.jpg",
       "url": "https://www.youtube.com/watch?v=6KJ_8Xw2AC4"
