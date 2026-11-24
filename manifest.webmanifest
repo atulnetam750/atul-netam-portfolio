@@ -1,0 +1,11 @@
+{
+  "name": "Atul Netam | Professional Portfolio",
+  "short_name": "Atul Portfolio",
+  "description": "Professional portfolio, video archive and projects",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090a0f",
+  "theme_color": "#0b0c10",
+  "lang": "hi"
+}
