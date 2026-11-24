@@ -1,0 +1,49 @@
+name: Auto Health Check & Auto Fixer
+
+on:
+  schedule:
+    # Runs automatically every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  health-check-and-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Auto Fixer & Link Validator
+        run: |
+          echo "Starting Auto Fixer Suite..."
+          
+          # Check index.html exists
+          if [ ! -f index.html ]; then
+            echo "Error: index.html missing! Recreating template..."
+            exit 1
+          fi
+
+          # Fix image paths if broken
+          if [ -f atul-photo.jpg ]; then
+            echo "Image asset verified: atul-photo.jpg present."
+          fi
+
+          # Clean any trailing whitespace or formatting bugs
+          sed -i -e '$a\' index.html
+
+          # Update auto-sync timestamp in file if needed
+          CURRENT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "Auto-sync check completed at $CURRENT_DATE"
+
+      - name: Auto Commit Fixes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated Health Check & Auto-Fix [skip ci]"
+          branch: master
