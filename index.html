@@ -6,6 +6,15 @@
   <title>IBC24 बस्तर न्यूज़ हब & अतुल नेताम (Atul Netam) — वीडियो आर्काइव व एनालिटिक्स</title>
   <meta name="description" content="अतुल नेताम (कैमरामैन एवं वीडियो जर्नलिस्ट, IBC24 News) — 22+ ग्राउंड रिपोर्ट्स, लाइव YouTube एनालिटिक्स बोर्ड, IBC24 नारायणपुर ऑटो-अपडेट न्यूज़ पोर्टल एवं प्रोफाइल।"/>
   <meta name="theme-color" content="#0b0c10"/>
+  <meta name="color-scheme" content="dark light"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Atul Netam | Video Journalist & Digital Creator"/>
+  <meta property="og:description" content="Portfolio, ground reports, video archive and professional projects."/>
+  <meta property="og:url" content="https://atulnetam750.github.io/atul-netam-portfolio/"/>
+  <link rel="canonical" href="https://atulnetam750.github.io/atul-netam-portfolio/"/>
+  <link rel="manifest" href="./manifest.webmanifest"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -38,6 +47,10 @@
     }
 
     html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      #fx-canvas, #cursor-glow { display: none !important; }
+    }
     body {
       background: var(--bg);
       color: var(--text);
@@ -1056,6 +1069,28 @@
       document.getElementById('progress-line').style.width = (h > 0 ? (s / h) * 100 : 0) + '%';
     });
 
+    // Defensive helpers for remotely-synced JSON: render text as text, and allow only trusted URLs.
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[ch]);
+    }
+    function safeVideoId(value) {
+      return /^[A-Za-z0-9_-]{11}$/.test(String(value || '')) ? String(value) : '';
+    }
+    function safeNewsUrl(value) {
+      try {
+        const u = new URL(String(value || ''), location.href);
+        return u.protocol === 'https:' && (u.hostname === 'ibc24.in' || u.hostname === 'www.ibc24.in') ? u.href : 'https://www.ibc24.in/city/narayanpur';
+      } catch (_) { return 'https://www.ibc24.in/city/narayanpur'; }
+    }
+    function safeImageUrl(value) {
+      try {
+        const u = new URL(String(value || ''), location.href);
+        return u.protocol === 'https:' ? u.href : './atul-photo.jpg';
+      } catch (_) { return './atul-photo.jpg'; }
+    }
+
     function fmtDuration(sec) {
       if (!sec) return "—";
       const m = Math.floor(sec / 60), s = sec % 60;
@@ -1070,7 +1105,8 @@
     }
 
     function selectVideo(videoId, autoplay = true) {
-      const vid = liveFeed.videos.find(v => v.id === videoId) || liveFeed.videos[0];
+      const requestedId = safeVideoId(videoId);
+      const vid = liveFeed.videos.find(v => safeVideoId(v.id) && v.id === requestedId) || liveFeed.videos.find(v => safeVideoId(v.id)) || liveFeed.videos[0];
       if (!vid) return;
       currentVideoId = vid.id;
 
@@ -1114,9 +1150,29 @@
       document.getElementById('videoSuiteBox').classList.toggle('cinema');
     }
 
-    function copyCurrentVideo() {
-      const url = `https://www.youtube.com/watch?v=${currentVideoId}`;
-      navigator.clipboard?.writeText(url).then(() => showToast('वीडियो लिंक कॉपी हो गया!'));
+    async function copyCurrentVideo() {
+      const id = safeVideoId(currentVideoId);
+      if (!id) return showToast('वीडियो लिंक उपलब्ध नहीं है');
+      const url = `https://www.youtube.com/watch?v=${id}`;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          const field = document.createElement('textarea');
+          field.value = url;
+          field.setAttribute('readonly', '');
+          field.style.position = 'fixed';
+          field.style.opacity = '0';
+          document.body.appendChild(field);
+          field.select();
+          const copied = document.execCommand('copy');
+          field.remove();
+          if (!copied) throw new Error('copy unavailable');
+        }
+        showToast('वीडियो लिंक कॉपी हो गया!');
+      } catch (_) {
+        showToast('कॉपी नहीं हुआ — लिंक YouTube बटन से खोलें');
+      }
     }
 
     function setVideoFilter(cat, btn) {
@@ -1141,14 +1197,14 @@
       }
 
       container.innerHTML = filtered.map(v => `
-        <div class="pl-item ${v.id === currentVideoId ? 'active' : ''}" onclick="selectVideo('${v.id}', true)">
-          <span class="pl-index">${String(v.num).padStart(2, '0')}</span>
+        <div class="pl-item ${v.id === currentVideoId ? 'active' : ''}" onclick="selectVideo('${safeVideoId(v.id)}', true)">
+          <span class="pl-index">${escapeHTML(String(v.num).padStart(2, '0'))}</span>
           <div class="pl-txt">
-            <div class="pl-title">${v.title}</div>
+            <div class="pl-title">${escapeHTML(v.title)}</div>
             <div class="pl-meta-line">
-              <span>${v.date}</span>
-              <span>👁️ ${v.views.toLocaleString('en-IN')}</span>
-              <span>❤️ ${v.likes !== null ? v.likes : '—'}</span>
+              <span>${escapeHTML(v.date)}</span>
+              <span>👁️ ${Number(v.views || 0).toLocaleString('en-IN')}</span>
+              <span>❤️ ${v.likes !== null ? Number(v.likes || 0).toLocaleString('en-IN') : '—'}</span>
             </div>
           </div>
           ${v.mention ? '<span class="pl-badge-mention">अतुल</span>' : ''}
@@ -1206,7 +1262,7 @@
           return `
             <div class="cat-bar-row">
               <div class="cat-bar-label">
-                <span><b>${cat}</b> (${stats.count} रिपोर्ट्स)</span>
+                <span><b>${escapeHTML(cat)}</b> (${stats.count} रिपोर्ट्स)</span>
                 <span style="color:var(--gold-light)">${stats.views.toLocaleString('en-IN')} Views • ${stats.likes} Likes</span>
               </div>
               <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%"></div></div>
@@ -1227,7 +1283,7 @@
         return `
           <tr onclick="selectVideo('${v.id}', true); document.getElementById('videos').scrollIntoView({behavior:'smooth'})">
             <td style="color:var(--gold);font-weight:700">${v.num}</td>
-            <td style="font-weight:600;color:#e5e7eb">${v.title.slice(0, 46)}${v.title.length > 46 ? '…' : ''}</td>
+            <td style="font-weight:600;color:#e5e7eb">${escapeHTML(v.title.slice(0, 46))}${v.title.length > 46 ? '…' : ''}</td>
             <td style="white-space:nowrap;color:var(--blue);font-weight:700">
               ${v.views.toLocaleString('en-IN')}
               <span class="mini-bar"><span class="mini-bar-fill" style="width:${barPct}%"></span></span>
@@ -1235,7 +1291,7 @@
             <td style="font-weight:800;color:${v.likes !== null ? 'var(--gold-light)' : 'var(--text-subtle)'}">
               ${v.likes !== null ? '❤️ ' + v.likes.toLocaleString('en-IN') : '—'}
             </td>
-            <td style="font-size:0.68rem;color:var(--text-muted)">${v.channel}</td>
+            <td style="font-size:0.68rem;color:var(--text-muted)">${escapeHTML(v.channel)}</td>
           </tr>
         `;
       }).join('');
@@ -1252,15 +1308,15 @@
         return;
       }
       grid.innerHTML = news.map(n => `
-        <a class="ibc-card" href="${n.url}" target="_blank" rel="noopener noreferrer">
+        <a class="ibc-card" href="${safeNewsUrl(n.url)}" target="_blank" rel="noopener noreferrer">
           <div class="ibc-thumb">
-            <img src="${n.image || 'atul-photo.jpg'}" alt="IBC24 Narayanpur News" loading="lazy" onerror="this.src='atul-photo.jpg'"/>
-            <span class="ibc-cat-tag">${n.category || 'Narayanpur'}</span>
+            <img src="${safeImageUrl(n.image)}" alt="IBC24 Narayanpur News" loading="lazy" onerror="this.onerror=null;this.src='./atul-photo.jpg'"/>
+            <span class="ibc-cat-tag">${escapeHTML(n.category || 'Narayanpur')}</span>
           </div>
           <div class="ibc-body">
-            <div class="ibc-title">${n.title}</div>
+            <div class="ibc-title">${escapeHTML(n.title)}</div>
             <div class="ibc-foot">
-              <span>🕒 ${n.date || 'IBC24'}</span>
+              <span>🕒 ${escapeHTML(n.date || 'IBC24')}</span>
               <span style="color:var(--gold);font-weight:700">पढ़ें ↗</span>
             </div>
           </div>
@@ -1271,7 +1327,13 @@
     // Auto-Fixer Engine + Dynamic Glow Card Enhancement
     function runAutoFixer() {
       document.querySelectorAll('img').forEach(img => {
-        img.onerror = function() { this.src = 'atul-photo.jpg'; };
+        if (img.dataset.fallbackBound) return;
+        img.dataset.fallbackBound = '1';
+        img.addEventListener('error', function() {
+          if (this.dataset.fallbackTried) { this.hidden = true; return; }
+          this.dataset.fallbackTried = '1';
+          this.src = './atul-photo.jpg';
+        });
       });
       document.querySelectorAll('a[href^="http"]').forEach(link => {
         if (!link.getAttribute('target')) link.setAttribute('target', '_blank');
@@ -1301,31 +1363,53 @@
       requestAnimationFrame(step);
     }
 
-    // Live Auto-Sync Loader (fetches data/live-feed.json updated by GitHub Actions every 2h)
+    // Live Auto-Sync Loader: validates remote feed, keeps last-known data, and never reports a false success.
+    let syncInProgress = false;
     async function syncLiveData(manual = false) {
+      if (syncInProgress) return;
+      syncInProgress = true;
       const badge = document.getElementById('navSyncBadge');
       if (manual && badge) badge.textContent = 'सिंक हो रहा है...';
+      let syncOk = false;
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 12000);
       try {
-        const res = await fetch(`./data/live-feed.json?t=${Date.now()}`, { cache: 'no-store' });
-        if (res.ok) {
-          const fresh = await res.json();
-          if (fresh && Array.isArray(fresh.videos)) {
-            liveFeed = fresh;
-          }
-        }
+        const res = await fetch(`./data/live-feed.json?t=${Date.now()}`, {
+          cache: 'no-store', signal: controller.signal, headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error(`Feed HTTP ${res.status}`);
+        const fresh = await res.json();
+        const valid = fresh && Array.isArray(fresh.videos) &&
+          fresh.videos.length > 0 &&
+          fresh.videos.every(v => safeVideoId(v.id) && typeof v.title === 'string');
+        if (!valid) throw new Error('Invalid feed schema');
+        liveFeed = {
+          ...liveFeed, ...fresh,
+          videos: fresh.videos.map(v => ({
+            ...v, views: Number.isFinite(Number(v.views)) ? Math.max(0, Number(v.views)) : 0,
+            likes: v.likes === null || v.likes === undefined ? null : Math.max(0, Number(v.likes) || 0)
+          })),
+          ibc24_narayanpur: Array.isArray(fresh.ibc24_narayanpur) ? fresh.ibc24_narayanpur : []
+        };
+        syncOk = true;
       } catch (err) {
-        console.log('Using local embedded feed snapshot');
+        console.warn('Live feed sync failed; showing last known snapshot.', err);
+      } finally {
+        window.clearTimeout(timeoutId);
+        syncInProgress = false;
       }
 
-      // Format sync time
-      const dt = liveFeed.updated_at ? new Date(liveFeed.updated_at) : new Date();
-      const timeStr = dt.toLocaleDateString('hi-IN', {
-        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-      });
-
-      if (badge) badge.textContent = `सिंक: ${timeStr}`;
-      document.getElementById('abLastSync').textContent = `🔄 अंतिम ऑटो-सिंक: ${timeStr}`;
-      document.getElementById('footerSyncStatus').textContent = `⚡ ऑटो-अपडेट एवं ऑटो-फ़िक्सर सक्रिय • अंतिम सिंक: ${timeStr} • IBC24 नारायणपुर व YouTube लाइव`;
+      const parsedDate = liveFeed.updated_at ? new Date(liveFeed.updated_at) : null;
+      const timeStr = parsedDate && !Number.isNaN(parsedDate.getTime())
+        ? parsedDate.toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : 'उपलब्ध नहीं';
+      if (badge) badge.textContent = syncOk ? `ऑटो-सिंक: ${timeStr}` : 'पुराना डेटा / ऑफलाइन';
+      const syncLabel = document.getElementById('abLastSync');
+      if (syncLabel) syncLabel.textContent = `${syncOk ? '🔄 अंतिम सफल सिंक' : '⚠️ अंतिम उपलब्ध डेटा'}: ${timeStr}`;
+      const footer = document.getElementById('footerSyncStatus');
+      if (footer) footer.textContent = syncOk
+        ? `⚡ ऑटो-सिंक सफल • ${timeStr} • डेटा स्रोत उपलब्ध`
+        : `⚠️ लाइव स्रोत उपलब्ध नहीं • पिछला सेव डेटा दिखाया जा रहा है • ${timeStr}`;
 
       renderPlaylist();
       renderAnalyticsBoard();
@@ -1333,15 +1417,13 @@
       selectVideo(currentVideoId, false);
       runAutoFixer();
 
-      // Trigger smooth KPI count-up animations
-      const tv = liveFeed.videos.reduce((a, v) => a + (v.views || 0), 0);
+      const tv = liveFeed.videos.reduce((a, v) => a + (Number(v.views) || 0), 0);
       const tl = liveFeed.videos.reduce((a, v) => a + (typeof v.likes === 'number' ? v.likes : 0), 0);
       animateCounter('topTotalViews', tv);
       animateCounter('topTotalLikes', tl);
       animateCounter('abTotalViews', tv);
       animateCounter('abTotalLikes', tl);
-
-      if (manual) showToast('लाइव डेटा और IBC24 खबरें अपडेट हो गईं!');
+      if (manual) showToast(syncOk ? 'डेटा सफलतापूर्वक अपडेट हुआ' : 'कनेक्शन नहीं मिला — पिछला डेटा दिखाया जा रहा है');
     }
 
     // Advanced Visual FX Engine: Constellation Particles, Lerp Spotlight, Card Glow, 3D Tilt & Scroll Reveal
@@ -1459,9 +1541,21 @@
       });
     })();
 
-    // Initial boot & 5-minute background auto-refresh
+    // Initial boot, connectivity recovery, and low-impact background refresh.
     syncLiveData(false);
-    setInterval(() => syncLiveData(false), 300000);
+    window.addEventListener('online', () => syncLiveData(true));
+    window.addEventListener('offline', () => showToast('आप ऑफलाइन हैं — सेव डेटा उपलब्ध है'));
+    window.setInterval(() => {
+      if (!document.hidden && navigator.onLine) syncLiveData(false);
+    }, 300000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && navigator.onLine) syncLiveData(false);
+    });
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Offline mode unavailable:', err));
+      }, { once: true });
+    }
   </script>
 </body>
 </html>
