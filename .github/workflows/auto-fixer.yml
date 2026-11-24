@@ -28,7 +28,7 @@ jobs:
           python-version: '3.11'
 
       - name: Compile automation script
-        run: python3 -m py_compile .github/scripts/auto_sync.py
+        run: python3 -c "from pathlib import Path; compile(Path('.github/scripts/auto_sync.py').read_text(encoding='utf-8'), '.github/scripts/auto_sync.py', 'exec')"
 
       - name: Run IBC24 & YouTube Live Auto-Sync
         run: python3 .github/scripts/auto_sync.py
