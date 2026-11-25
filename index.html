@@ -353,12 +353,32 @@
     }
     .id-card-btn:hover { background: var(--gold); color: #000; }
 
-    #id-modal {
+    #id-modal, #add-modal {
       position: fixed; inset: 0; z-index: 10005;
       background: rgba(4, 5, 9, 0.84); backdrop-filter: blur(10px);
       display: none; align-items: center; justify-content: center; padding: 16px;
     }
-    #id-modal.open { display: flex; }
+    #id-modal.open, #add-modal.open { display: flex; }
+    .add-proj-btn {
+      background: var(--gold); color: #000; border: none; border-radius: 8px;
+      padding: 4px 10px; font-size: 0.72rem; font-weight: 800; cursor: pointer;
+      font-family: inherit; display: inline-flex; align-items: center; gap: 4px;
+      transition: var(--ease);
+    }
+    .add-proj-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .auto-ui-pill {
+      background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+      color: var(--gold-light); font-size: 0.65rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 12px; cursor: pointer; font-family: inherit;
+      transition: var(--ease); white-space: nowrap;
+    }
+    .auto-ui-pill:hover { border-color: var(--gold); color: #fff; }
+    .health-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 0 10px; height: 100%; background: rgba(16, 185, 129, 0.08);
+      border-left: 1px solid var(--border); color: #4ade80;
+      font-size: 0.68rem; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+    }
     .id-modal-card {
       background: linear-gradient(155deg, #171a26 0%, #0d0f17 100%);
       border: 1px solid var(--border-gold); border-radius: 20px;
@@ -986,6 +1006,9 @@
         <span><b>अतुल नेताम</b> — कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News) | अबूझमाड़ व बस्तर कवरेज</span>
       </div>
     </div>
+    <div class="health-pill" id="autoHealthBadge" title="Self-Healing & Auto-UI Engine">
+      <i class="fas fa-shield-halved"></i> Auto-Heal सक्रिय
+    </div>
     <div class="weather-pill" id="liveWeatherClock">
       <span id="live-weather">☁️ नारायणपुर...</span>
       <span style="opacity:0.4">|</span>
@@ -1008,10 +1031,11 @@
         <li><a href="#my-details">मेरा विवरण / संपर्क</a></li>
       </ul>
       <div class="nav-right">
-        <div class="theme-dots" title="थीम बदलें (Broadcast Gold / Bastar Emerald / Newsroom Crimson)">
-          <button type="button" class="theme-dot" style="background:#f5c042" onclick="setTheme('default')" aria-label="Broadcast Gold Theme"></button>
-          <button type="button" class="theme-dot" style="background:#10b981" onclick="setTheme('theme-emerald')" aria-label="Bastar Emerald Theme"></button>
-          <button type="button" class="theme-dot" style="background:#f43f5e" onclick="setTheme('theme-crimson')" aria-label="Newsroom Crimson Theme"></button>
+        <div class="theme-dots" title="थीम बदलें (Auto-UI / Broadcast Gold / Bastar Emerald / Newsroom Crimson)">
+          <button type="button" class="auto-ui-pill" onclick="cycleAutoUI()" id="uiModeLabel" title="Auto-UI मोड बदलें">🪄 Auto</button>
+          <button type="button" class="theme-dot" style="background:#f5c042" onclick="setTheme('default', true)" aria-label="Broadcast Gold Theme"></button>
+          <button type="button" class="theme-dot" style="background:#10b981" onclick="setTheme('theme-emerald', true)" aria-label="Bastar Emerald Theme"></button>
+          <button type="button" class="theme-dot" style="background:#f43f5e" onclick="setTheme('theme-crimson', true)" aria-label="Newsroom Crimson Theme"></button>
         </div>
         <button class="id-card-btn" onclick="toggleIdModal()" title="डिजिटल प्रेस एवं विजिटिंग कार्ड">
           🪪 डिजिटल कार्ड
@@ -1239,12 +1263,16 @@
         </div>
       </div>
 
-      <!-- Key Projects & Investigative Highlights -->
+      <!-- Key Projects & Investigative Highlights (Autonomous Auto-Sync + Quick Add) -->
       <div class="content-box">
-        <div class="section-head">
-          <h2 class="sec-title">प्रमुख प्रोजेक्ट्स, शोध व विशेष खुलासे</h2>
+        <div class="section-head" style="flex-wrap:wrap;gap:8px;">
+          <h2 class="sec-title">प्रमुख प्रोजेक्ट्स, शोध व विशेष खुलासे (<span id="keyProjCount">4</span>)</h2>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="proj-search" class="search-input" placeholder="🔍 खोजें..." style="min-width:120px;padding:4px 9px;font-size:0.72rem;"/>
+            <button type="button" onclick="toggleQuickAddModal()" class="add-proj-btn"><i class="fas fa-plus"></i> नया जोड़ें</button>
+          </div>
         </div>
-        <div class="projects-grid">
+        <div class="projects-grid" id="keyProjectsGrid">
           <div class="proj-item" style="border-left:3px solid var(--red)">
             <div>
               <span class="p-cat" style="color:var(--red)">विशेष खुलासा • आरटीआई</span>
@@ -1646,6 +1674,28 @@
     </div>
   </div>
 
+  <!-- QUICK ADD PROJECT / REPORT MODAL (AUTONOMOUS ADDER) -->
+  <div id="add-modal" onclick="if(event.target===this) toggleQuickAddModal()">
+    <div class="id-modal-card" style="max-width:420px;text-align:left;">
+      <button type="button" class="id-modal-close" onclick="toggleQuickAddModal()" aria-label="Close">&times;</button>
+      <div style="font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:6px;">
+        <i class="fas fa-plus-circle" style="color:var(--gold);margin-right:5px"></i> नया प्रोजेक्ट या रिपोर्ट जोड़ें
+      </div>
+      <p style="font-size:0.74rem;color:var(--text-muted);line-height:1.45;margin-bottom:12px;">
+        यहाँ जोड़ा गया प्रोजेक्ट तुरंत आपकी वेबसाइट पर जुड़ जाएगा। स्थायी ऑटो-सिंक के लिए आप कोड में <code>GOOGLE_SHEET_CSV_URL</code> भी जोड़ सकते हैं।
+      </p>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <input type="text" id="new-proj-title" class="wa-input" placeholder="प्रोजेक्ट / रिपोर्ट का शीर्षक *"/>
+        <input type="text" id="new-proj-tag" class="wa-input" placeholder="कैटेगरी (जैसे: IBC24 Report / AI Tool / Web)"/>
+        <textarea id="new-proj-desc" rows="3" class="wa-input" placeholder="संक्षिप्त विवरण लिखें... *" style="resize:vertical"></textarea>
+        <input type="url" id="new-proj-link" class="wa-input" placeholder="लिंक (https://...) वैकल्पिक"/>
+        <button type="button" onclick="saveCustomProject()" class="c-btn" style="width:100%;justify-content:center;padding:10px;font-size:0.82rem;cursor:pointer;margin-top:4px;">
+          ✨ तुरंत लाइव जोड़ें (Auto-Add)
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <p>© 2026 अतुल नेताम (Atul Netam) • कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network) • नारायणपुर, बस्तर (छ.ग.)</p>
@@ -1951,17 +2001,29 @@
       `).join('');
     }
 
-    // Auto-Fixer Engine + Dynamic Glow Card Enhancement
+    // Self-Healing Auto-Fixer Engine + Dynamic Glow Card Enhancement
+    let autoHealCount = 0;
+    function updateHealthStatus() {
+      const badge = document.getElementById('autoHealthBadge');
+      if (badge && autoHealCount > 0) {
+        badge.innerHTML = `<i class="fas fa-shield-halved"></i> Auto-Heal सक्रिय (${autoHealCount} फ़िक्स)`;
+      }
+    }
+    document.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && !e.target.dataset.avatarTried) {
+        if (!e.target.dataset.fallbackTried) {
+          e.target.dataset.fallbackTried = '1';
+          e.target.src = './atul-photo.jpg';
+        } else {
+          e.target.dataset.avatarTried = '1';
+          e.target.src = 'https://ui-avatars.com/api/?name=Atul+Netam&background=f59e0b&color=000&size=256&bold=true';
+        }
+        autoHealCount++;
+        updateHealthStatus();
+      }
+    }, true);
+
     function runAutoFixer() {
-      document.querySelectorAll('img').forEach(img => {
-        if (img.dataset.fallbackBound) return;
-        img.dataset.fallbackBound = '1';
-        img.addEventListener('error', function() {
-          if (this.dataset.fallbackTried) { this.hidden = true; return; }
-          this.dataset.fallbackTried = '1';
-          this.src = './atul-photo.jpg';
-        });
-      });
       document.querySelectorAll('a[href^="http"]').forEach(link => {
         if (!link.getAttribute('target')) link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noopener noreferrer');
@@ -1969,9 +2031,16 @@
       document.querySelectorAll('a[href^="tel:"]').forEach(tel => {
         tel.setAttribute('href', tel.getAttribute('href').replace(/[^\d+:]/g, ''));
       });
+      document.querySelectorAll('input, textarea, select').forEach(el => {
+        if (!el.classList.contains('wa-input') && !el.classList.contains('search-input') && el.type !== 'hidden' && !el.closest('#an-chat-form')) {
+          el.classList.add('wa-input');
+          autoHealCount++;
+        }
+      });
       document.querySelectorAll('.ab-kpi-card, .ibc-card, .proj-item, .tl-card, .skill-card, .kpi-chip, .gh-repo-card').forEach(card => {
         card.classList.add('glow-card');
       });
+      updateHealthStatus();
     }
 
     // Animated Number Roll-Up Helper
@@ -2277,18 +2346,140 @@
       });
     }
 
-    // 5b. 3-Theme Switcher with LocalStorage Persistence
-    function setTheme(themeName) {
+    // 5b. Autonomous Time-Aware UI & 3-Theme Switcher (Auto / Morning Gold / Afternoon Emerald / Night Crimson)
+    const uiModes = ['auto', 'default', 'theme-emerald', 'theme-crimson'];
+    let uiModeIdx = 0;
+
+    function applyAutoUI(mode = 'auto', manual = false) {
       document.body.classList.remove('theme-emerald', 'theme-crimson');
-      if (themeName && themeName !== 'default') {
-        document.body.classList.add(themeName);
+      const label = document.getElementById('uiModeLabel');
+      const hour = new Date().getHours();
+      let resolved = mode;
+      if (mode === 'auto') {
+        if (hour >= 5 && hour < 12) resolved = 'default';
+        else if (hour >= 12 && hour < 18) resolved = 'theme-emerald';
+        else resolved = 'theme-crimson';
+        if (label) label.textContent = '🪄 Auto';
+      } else {
+        const names = { 'default': 'Gold', 'theme-emerald': 'Emerald', 'theme-crimson': 'Crimson' };
+        if (label) label.textContent = `🎨 ${names[resolved] || 'UI'}`;
       }
-      try { localStorage.setItem('portfolio_theme', themeName); } catch (e) {}
+      if (resolved && resolved !== 'default') document.body.classList.add(resolved);
+      if (manual) {
+        try { localStorage.setItem('portfolio_theme', mode); } catch (e) {}
+      }
+    }
+    function setTheme(themeName, manual = false) {
+      applyAutoUI(themeName || 'default', manual);
+    }
+    function cycleAutoUI() {
+      uiModeIdx = (uiModeIdx + 1) % uiModes.length;
+      const chosen = uiModes[uiModeIdx];
+      applyAutoUI(chosen, true);
+      showToast(chosen === 'auto' ? 'Auto-UI सक्रिय (समय अनुसार थीम)' : 'थीम अपडेट की गई!');
     }
     try {
       const savedTheme = localStorage.getItem('portfolio_theme');
-      if (savedTheme) setTheme(savedTheme);
-    } catch (e) {}
+      if (savedTheme && uiModes.includes(savedTheme)) {
+        uiModeIdx = uiModes.indexOf(savedTheme);
+        applyAutoUI(savedTheme, false);
+      } else {
+        applyAutoUI('auto', false);
+      }
+    } catch (e) { applyAutoUI('auto', false); }
+
+    // 5c. Autonomous Key Projects & Content Adder (Verified Core + LocalStorage + Optional Google Sheet CSV)
+    const GOOGLE_SHEET_CSV_URL = "";
+    const coreKeyProjects = [
+      { title: "स्वास्थ्य विभाग ₹2.27 करोड़ CSR घोटाला", tag: "विशेष खुलासा • आरटीआई", desc: "कोहकामेटा CSR फंड गड़बड़ी व अधिकारी मनोज कुमार राज के निलंबन पर विस्तृत ग्राउंड रिपोर्ट।", pills: ["₹2.27 करोड़", "CSR जांच"], accent: "var(--red)", url: "https://www.ibc24.in/city/narayanpur" },
+      { title: "₹25 करोड़ उगाही कांड – रेड लीक", tag: "क्राइम इन्वेस्टिगेशन", desc: "ईडी व प्रेस रेड सूचना लीक मामले में इनोवा क्रिस्टा जब्ती व ACOU कार्रवाई की विशेष कवरेज।", pills: ["क्राइम", "ACOU"], accent: "var(--blue)", url: "https://www.ibc24.in/city/narayanpur" },
+      { title: "दैनिक बोर्ड, न्यूज़ बॉट & JARVIS", tag: "AI व ऑटोमेशन", desc: "Python, Google AI Studio, n8n और Google Sheets से बने ऑटोमेटेड न्यूज़ व इवेंट टोकन सिस्टम।", pills: ["Python", "n8n", "JARVIS AI"], accent: "", url: "https://github.com/atulnetam750" },
+      { title: "जिला डायरेक्टरी & मावली मेला शोध", tag: "डेटा व संस्कृति", desc: "नारायणपुर अधिकारी/पंचायत डायरेक्टरी (VCF/Excel/PDF) व मावली मेला ऐतिहासिक संकलन।", pills: ["VCF / PDF", "मावली मेला"], accent: "", url: "https://github.com/atulnetam750" }
+    ];
+    let allKeyProjects = [...coreKeyProjects];
+
+    function renderKeyProjects(list) {
+      const grid = document.getElementById('keyProjectsGrid');
+      const countEl = document.getElementById('keyProjCount');
+      if (countEl) countEl.textContent = String(list.length);
+      if (!grid) return;
+      if (!list.length) {
+        grid.innerHTML = `<div class="proj-item" style="grid-column:1/-1;color:var(--text-muted);font-size:0.78rem;">कोई मैचिंग प्रोजेक्ट नहीं मिला।</div>`;
+        return;
+      }
+      grid.innerHTML = list.map(p => {
+        const borderStyle = p.accent ? `style="border-left:3px solid ${p.accent}"` : '';
+        const catStyle = p.accent ? `style="color:${p.accent}"` : '';
+        const pillsHtml = Array.isArray(p.pills) && p.pills.length
+          ? p.pills.map(t => `<span class="p-pill">${escapeHTML(t)}</span>`).join('')
+          : (p.url && p.url !== '#' ? `<a href="${safeNewsUrl(p.url)}" target="_blank" rel="noopener noreferrer" class="p-pill" style="color:var(--gold);text-decoration:none">खोलें ↗</a>` : '');
+        return `
+          <div class="proj-item glow-card" ${borderStyle}>
+            <div>
+              <span class="p-cat" ${catStyle}>${escapeHTML(p.tag)}</span>
+              <h4 class="p-name">${escapeHTML(p.title)}</h4>
+              <p class="p-summary">${escapeHTML(p.desc)}</p>
+            </div>
+            <div class="p-pills">${pillsHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function loadAutonomousProjects() {
+      let localAdded = [];
+      try { localAdded = JSON.parse(localStorage.getItem('atul_auto_projects') || '[]'); } catch (e) {}
+      allKeyProjects = [...(Array.isArray(localAdded) ? localAdded : []), ...coreKeyProjects];
+      if (GOOGLE_SHEET_CSV_URL) {
+        try {
+          const res = await fetch(GOOGLE_SHEET_CSV_URL);
+          const csv = await res.text();
+          csv.split('\n').slice(1).forEach(row => {
+            const cols = row.split(',');
+            if (cols[0] && cols[0].trim()) {
+              allKeyProjects.unshift({
+                title: cols[0].trim(), tag: (cols[1] || 'Auto-Sheet').trim(),
+                desc: (cols[2] || '').trim(), url: (cols[3] || '#').trim(), pills: []
+              });
+            }
+          });
+        } catch (e) {}
+      }
+      renderKeyProjects(allKeyProjects);
+    }
+    loadAutonomousProjects();
+
+    const projSearchInput = document.getElementById('proj-search');
+    if (projSearchInput) {
+      projSearchInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        renderKeyProjects(allKeyProjects.filter(p =>
+          p.title.toLowerCase().includes(q) || p.tag.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)
+        ));
+      });
+    }
+    function toggleQuickAddModal() {
+      const m = document.getElementById('add-modal');
+      if (m) m.classList.toggle('open');
+    }
+    function saveCustomProject() {
+      const title = document.getElementById('new-proj-title')?.value.trim() || '';
+      const tag = document.getElementById('new-proj-tag')?.value.trim() || 'Featured Update';
+      const desc = document.getElementById('new-proj-desc')?.value.trim() || '';
+      const url = document.getElementById('new-proj-link')?.value.trim() || '#';
+      if (!title || !desc) { showToast('कृपया शीर्षक और विवरण भरें!'); return; }
+      let existing = [];
+      try { existing = JSON.parse(localStorage.getItem('atul_auto_projects') || '[]'); } catch (e) {}
+      existing.unshift({ title, tag, desc, url, pills: [] });
+      try { localStorage.setItem('atul_auto_projects', JSON.stringify(existing)); } catch (e) {}
+      document.getElementById('new-proj-title').value = '';
+      document.getElementById('new-proj-tag').value = '';
+      document.getElementById('new-proj-desc').value = '';
+      document.getElementById('new-proj-link').value = '';
+      toggleQuickAddModal();
+      loadAutonomousProjects();
+      showToast('नया प्रोजेक्ट तुरंत लाइव जुड़ गया!');
+    }
 
     // 6. Unified Smart Auto-Routing Contact Box & Command Center Filter
     function filterCmdSocial(category) {
