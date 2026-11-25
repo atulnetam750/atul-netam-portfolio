@@ -1065,16 +1065,21 @@
       </div>
     </div>
 
-    <!-- SECTION 1: VIDEO PLAYER & FILTERABLE 22 VIDEO ARCHIVE -->
+    <!-- SECTION 1: VIDEO PLAYER & FILTERABLE VIDEO ARCHIVE + LIVE YOUTUBE RSS -->
     <section id="videos">
-      <div class="section-head">
+      <div class="section-head" style="flex-wrap:wrap;gap:8px;">
         <h2 class="sec-title">वीडियो रिपोर्ट्स थियेटर (एड-मुक्त क्लीन प्लेयर)</h2>
-        <a href="https://youtube.com/@AtulNetam" target="_blank" rel="noopener noreferrer" class="sec-action">YouTube चैनल ↗</a>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span id="vidSyncBadge" class="health-pill" style="border:1px solid rgba(74,222,128,0.35);border-radius:14px;padding:3px 10px;height:auto;">🔄 वीडियो सिंक हो रहे हैं...</span>
+          <button type="button" onclick="loadAutoYtVideos(true)" class="add-proj-btn">🔄 रीफ्रेश</button>
+          <a href="https://youtube.com/@AtulNetam" target="_blank" rel="noopener noreferrer" class="sec-action">YouTube चैनल ↗</a>
+        </div>
       </div>
 
       <div class="toolbar-row">
         <div class="filter-pills" id="videoFilterPills">
-          <button class="f-pill active" onclick="setVideoFilter('all', this)">सभी (22)</button>
+          <button class="f-pill active" onclick="setVideoFilter('all', this)">सभी (<span id="allVidCountBadge">23</span>)</button>
+          <button class="f-pill" onclick="setVideoFilter('ytlive', this)">🔴 लाइव IBC24 YouTube (<span id="ytLiveCount">1</span>)</button>
           <button class="f-pill" onclick="setVideoFilter('mention', this)">★ कैमरामैन अतुल (5)</button>
           <button class="f-pill" onclick="setVideoFilter('नक्सल एवं सुरक्षा', this)">नक्सल व सुरक्षा</button>
           <button class="f-pill" onclick="setVideoFilter('चुनाव कवरेज', this)">चुनाव</button>
@@ -1082,7 +1087,7 @@
           <button class="f-pill" onclick="setVideoFilter('जन-सरोकार', this)">जन-सरोकार</button>
           <button class="f-pill" onclick="setVideoFilter('संस्कृति एवं आयोजन', this)">संस्कृति</button>
         </div>
-        <input type="text" class="search-input" id="videoSearch" placeholder="🔍 वीडियो रिपोर्ट खोजें..." oninput="renderPlaylist()"/>
+        <input type="text" class="search-input" id="videoSearch" placeholder="🔍 वीडियो खोजें (नारायणपुर, अबूझमाड़, मुठभेड़)..." oninput="renderPlaylist()"/>
       </div>
 
       <div class="video-box-suite" id="videoSuiteBox">
@@ -1795,9 +1800,89 @@
       setTimeout(() => t.classList.remove('show'), 2200);
     }
 
+    // Live YouTube RSS Sync Engine (IBC24 Official Channel + Curated Pinned Report)
+    const YT_CHANNEL_ID = "UCBc13XYipnBIBE3Ff8QaaGg";
+    const pinnedNarayanpurVideos = [
+      {
+        id: "C63jJtONOY4",
+        num: 23,
+        title: "नक्सलियों के मांद में IBC24 की बेखौफ ग्राउंड रिपोर्टिंग — नारायणपुर, बस्तर",
+        date: "IBC24 ग्राउंड रिपोर्ट",
+        channel: "IBC24 News",
+        cat: "नक्सल एवं सुरक्षा",
+        mention: false,
+        views: 0,
+        likes: null,
+        duration_sec: 0,
+        isLiveYt: true
+      }
+    ];
+    let liveYtExtras = [...pinnedNarayanpurVideos];
+
+    function getAllTheaterVideos() {
+      const baseIds = new Set(liveFeed.videos.map(v => v.id));
+      const extras = liveYtExtras.filter(v => safeVideoId(v.id) && !baseIds.has(v.id));
+      return [...liveFeed.videos, ...extras];
+    }
+
+    async function loadAutoYtVideos(manual = false) {
+      const badge = document.getElementById('vidSyncBadge');
+      if (badge) badge.textContent = '🔄 वीडियो सिंक हो रहे हैं...';
+      try {
+        const feedUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
+        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`);
+        if (!res.ok) throw new Error('YT RSS HTTP ' + res.status);
+        const data = await res.json();
+        if (data.status === 'ok' && Array.isArray(data.items)) {
+          const baseIds = new Set(liveFeed.videos.map(v => v.id));
+          const mapped = data.items.map((item, i) => {
+            const parts = String(item.guid || '').split(':');
+            const vidId = safeVideoId(parts[2] || item.link?.split('v=')[1] || '');
+            return {
+              id: vidId,
+              num: 24 + i,
+              title: String(item.title || '').trim(),
+              date: item.pubDate ? new Date(item.pubDate).toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'IBC24 YouTube',
+              channel: 'IBC24 News Live',
+              cat: 'IBC24 Live YouTube',
+              mention: false,
+              views: 0,
+              likes: null,
+              duration_sec: 0,
+              isLiveYt: true
+            };
+          }).filter(v => v.id && v.title && !baseIds.has(v.id));
+
+          const regionalFirst = mapped.filter(v => /narayanpur|नारायणपुर|abujhmad|अबूझमाड़|bastar|बस्तर|naxal|नक्सल/i.test(v.title));
+          const others = mapped.filter(v => !/narayanpur|नारायणपुर|abujhmad|अबूझमाड़|bastar|बस्तर|naxal|नक्सल/i.test(v.title));
+          const merged = [...pinnedNarayanpurVideos, ...regionalFirst, ...others];
+          const seen = new Set();
+          liveYtExtras = merged.filter(v => { if (seen.has(v.id)) return false; seen.add(v.id); return true; })
+            .map((v, idx) => ({ ...v, num: liveFeed.videos.length + idx + 1 }));
+          try { localStorage.setItem('cached_yt_videos', JSON.stringify(liveYtExtras)); } catch (e) {}
+        }
+      } catch (err) {
+        try {
+          const cached = JSON.parse(localStorage.getItem('cached_yt_videos') || 'null');
+          if (Array.isArray(cached) && cached.length) liveYtExtras = cached;
+        } catch (e) {}
+      }
+
+      const now = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit' });
+      const total = getAllTheaterVideos().length;
+      if (badge) badge.textContent = `✔ ${total} वीडियो लाइव (${now})`;
+      const allCountEl = document.getElementById('allVidCountBadge');
+      const liveCountEl = document.getElementById('ytLiveCount');
+      if (allCountEl) allCountEl.textContent = String(total);
+      if (liveCountEl) liveCountEl.textContent = String(liveYtExtras.length);
+      renderPlaylist();
+      if (manual) showToast(`YouTube से ${liveYtExtras.length} लाइव वीडियो अपडेट हुए!`);
+    }
+
     function selectVideo(videoId, autoplay = true) {
       const requestedId = safeVideoId(videoId);
-      const vid = liveFeed.videos.find(v => safeVideoId(v.id) && v.id === requestedId) || liveFeed.videos.find(v => safeVideoId(v.id)) || liveFeed.videos[0];
+      const pool = getAllTheaterVideos();
+      const vid = pool.find(v => safeVideoId(v.id) && v.id === requestedId) || pool.find(v => safeVideoId(v.id)) || pool[0];
       if (!vid) return;
       currentVideoId = vid.id;
 
@@ -1813,8 +1898,8 @@
       document.getElementById('npBadge').textContent = vid.mention ? '★ कैमरामैन अतुल मेंशन' : `${vid.cat}`;
       document.getElementById('npTitle').textContent = `${vid.num}. ${vid.title}`;
       document.getElementById('npMeta').textContent = `${vid.date} • चैनल: ${vid.channel} • श्रेणी: ${vid.cat}`;
-      document.getElementById('npViews').textContent = (vid.views || 0).toLocaleString('en-IN');
-      document.getElementById('npLikes').textContent = vid.likes !== null ? `${vid.likes.toLocaleString('en-IN')} ❤️` : 'चैनल द्वारा छुपाया';
+      document.getElementById('npViews').textContent = vid.views ? Number(vid.views).toLocaleString('en-IN') : 'Live Stream';
+      document.getElementById('npLikes').textContent = vid.likes !== null ? `${Number(vid.likes).toLocaleString('en-IN')} ❤️` : 'YouTube लाइव';
       document.getElementById('npChannel').textContent = vid.channel;
       document.getElementById('npDuration').textContent = fmtDuration(vid.duration_sec);
 
@@ -1826,15 +1911,17 @@
     }
 
     function prevVideo() {
-      const idx = liveFeed.videos.findIndex(v => v.id === currentVideoId);
-      const prev = liveFeed.videos[(idx - 1 + liveFeed.videos.length) % liveFeed.videos.length];
-      selectVideo(prev.id, true);
+      const pool = getAllTheaterVideos();
+      const idx = pool.findIndex(v => v.id === currentVideoId);
+      const prev = pool[(idx - 1 + pool.length) % pool.length];
+      if (prev) selectVideo(prev.id, true);
     }
 
     function nextVideo() {
-      const idx = liveFeed.videos.findIndex(v => v.id === currentVideoId);
-      const next = liveFeed.videos[(idx + 1) % liveFeed.videos.length];
-      selectVideo(next.id, true);
+      const pool = getAllTheaterVideos();
+      const idx = pool.findIndex(v => v.id === currentVideoId);
+      const next = pool[(idx + 1) % pool.length];
+      if (next) selectVideo(next.id, true);
     }
 
     function toggleCinema() {
@@ -1869,14 +1956,17 @@
     function setVideoFilter(cat, btn) {
       activeFilter = cat;
       document.querySelectorAll('#videoFilterPills .f-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       renderPlaylist();
     }
 
     function renderPlaylist() {
       const q = (document.getElementById('videoSearch').value || '').trim().toLowerCase();
-      const filtered = liveFeed.videos.filter(v => {
-        const matchCat = activeFilter === 'all' || (activeFilter === 'mention' ? v.mention : v.cat === activeFilter);
+      const pool = getAllTheaterVideos();
+      const filtered = pool.filter(v => {
+        const matchCat = activeFilter === 'all'
+          || (activeFilter === 'ytlive' ? Boolean(v.isLiveYt)
+          : (activeFilter === 'mention' ? v.mention : v.cat === activeFilter));
         const matchQ = !q || v.title.toLowerCase().includes(q) || v.date.toLowerCase().includes(q) || v.channel.toLowerCase().includes(q);
         return matchCat && matchQ;
       });
@@ -1894,11 +1984,11 @@
             <div class="pl-title">${escapeHTML(v.title)}</div>
             <div class="pl-meta-line">
               <span>${escapeHTML(v.date)}</span>
-              <span>👁️ ${Number(v.views || 0).toLocaleString('en-IN')}</span>
-              <span>❤️ ${v.likes !== null ? Number(v.likes || 0).toLocaleString('en-IN') : '—'}</span>
+              <span>${v.isLiveYt ? '🔴 LIVE YT' : `👁️ ${Number(v.views || 0).toLocaleString('en-IN')}`}</span>
+              <span>${v.likes !== null ? `❤️ ${Number(v.likes || 0).toLocaleString('en-IN')}` : (v.isLiveYt ? '▶ चलाएं' : '❤️ —')}</span>
             </div>
           </div>
-          ${v.mention ? '<span class="pl-badge-mention">अतुल</span>' : ''}
+          ${v.mention ? '<span class="pl-badge-mention">अतुल</span>' : (v.isLiveYt ? '<span class="pl-badge-mention" style="background:rgba(229,57,53,0.18);color:#fca5a5;border-color:rgba(229,57,53,0.4)">LIVE</span>' : '')}
         </div>
       `).join('');
     }
@@ -2746,13 +2836,17 @@
 
     // Initial boot, connectivity recovery, and low-impact background refresh.
     syncLiveData(false);
+    loadAutoYtVideos(false);
     loadGitHubProjects();
     loadNarayanpurWeather();
-    window.addEventListener('online', () => { syncLiveData(true); loadGitHubProjects(); loadNarayanpurWeather(); });
+    window.addEventListener('online', () => { syncLiveData(true); loadAutoYtVideos(true); loadGitHubProjects(); loadNarayanpurWeather(); });
     window.addEventListener('offline', () => showToast('आप ऑफलाइन हैं — सेव डेटा उपलब्ध है'));
     window.setInterval(() => {
       if (!document.hidden && navigator.onLine) { syncLiveData(false); loadGitHubProjects(); }
     }, 300000);
+    window.setInterval(() => {
+      if (!document.hidden && navigator.onLine) { loadAutoYtVideos(false); }
+    }, 600000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && navigator.onLine) syncLiveData(false);
     });
