@@ -1767,14 +1767,17 @@
       return /^[A-Za-z0-9_-]{11}$/.test(String(value || '')) ? String(value) : '';
     }
     function safeNewsUrl(value) {
+      if (!value || !String(value).trim()) return 'https://www.ibc24.in/city/narayanpur';
       try {
-        const u = new URL(String(value || ''), location.href);
-        return u.protocol === 'https:' && (u.hostname === 'ibc24.in' || u.hostname === 'www.ibc24.in') ? u.href : 'https://www.ibc24.in/city/narayanpur';
+        const u = new URL(String(value).trim(), location.href);
+        const allowed = ['ibc24.in', 'www.ibc24.in', 'news.google.com', 'github.com', 'www.github.com', 'atulnetam750.github.io'];
+        return u.protocol === 'https:' && allowed.includes(u.hostname) ? u.href : 'https://www.ibc24.in/city/narayanpur';
       } catch (_) { return 'https://www.ibc24.in/city/narayanpur'; }
     }
     function safeImageUrl(value) {
+      if (!value || !String(value).trim()) return './atul-photo.jpg';
       try {
-        const u = new URL(String(value || ''), location.href);
+        const u = new URL(String(value).trim(), location.href);
         return u.protocol === 'https:' ? u.href : './atul-photo.jpg';
       } catch (_) { return './atul-photo.jpg'; }
     }
@@ -1998,10 +2001,15 @@
     }
     function mergeIbcNewsList(primaryList, secondaryList) {
       const map = new Map();
+      const seenTitles = new Set();
       [...(primaryList || []), ...(secondaryList || [])].forEach(n => {
         if (!n || !n.title || !n.url) return;
         const key = extractIbcArticleKey(n.url);
-        if (!map.has(key)) map.set(key, n);
+        const titleKey = String(n.title).replace(/\s+/g, ' ').trim().slice(0, 35).toLowerCase();
+        if (!map.has(key) && !seenTitles.has(titleKey)) {
+          map.set(key, n);
+          seenTitles.add(titleKey);
+        }
       });
       return Array.from(map.values());
     }
@@ -2180,30 +2188,94 @@
       selectVideo(currentVideoId, false);
       runAutoFixer();
 
-      // Live in-browser IBC24 Narayanpur RSS sync so breaking stories appear within seconds
+      // Live multi-source browser sync (IBC24 RSS + Google News site:ibc24.in + Direct AllOrigins scrape)
+      async function fetchIbc24RssDirect() {
+        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur/feed'));
+        if (!res.ok) return [];
+        const data = await res.json();
+        if (data.status !== 'ok' || !Array.isArray(data.items)) return [];
+        return data.items.map(it => ({
+          title: String(it.title || '').trim(),
+          url: safeNewsUrl(it.link),
+          date: it.pubDate ? new Date(it.pubDate).toLocaleString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'IBC24 ताज़ा',
+          image: safeImageUrl(it.thumbnail || it.enclosure?.link || ''),
+          category: 'Narayanpur',
+          source: 'IBC24 Live RSS'
+        })).filter(it => it.title && it.url);
+      }
+
+      async function fetchGoogleNewsIBC24() {
+        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=site:ibc24.in+narayanpur&hl=hi&gl=IN&ceid=IN:hi'));
+        if (!res.ok) return [];
+        const data = await res.json();
+        if (data.status !== 'ok' || !Array.isArray(data.items)) return [];
+        return data.items.map(it => ({
+          title: String(it.title || '').replace(/\s*-\s*IBC24\s*News/i, '').trim(),
+          url: safeNewsUrl(it.link),
+          date: it.pubDate ? new Date(it.pubDate).toLocaleString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Google News',
+          image: safeImageUrl(it.thumbnail || ''),
+          category: 'Narayanpur',
+          source: 'IBC24 Google News'
+        })).filter(it => it.title && it.url);
+      }
+
+      async function scrapeDirectIBC24() {
+        const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur'));
+        if (!res.ok) return [];
+        const json = await res.json();
+        if (!json.contents) return [];
+        const doc = new DOMParser().parseFromString(json.contents, 'text/html');
+        const out = [];
+        doc.querySelectorAll('a[href]').forEach(anchor => {
+          const rawHref = anchor.getAttribute('href') || '';
+          let absUrl = '';
+          try { absUrl = new URL(rawHref, 'https://www.ibc24.in').href; } catch (e) { return; }
+          if (!absUrl.includes('ibc24.in/') || !/-\d+\.html$/i.test(absUrl)) return;
+          const title = anchor.textContent.replace(/\s+/g, ' ').trim();
+          if (title.length < 22) return;
+          const card = anchor.closest('div, article, li');
+          const imgEl = card ? card.querySelector('img') : null;
+          const rawImg = imgEl ? (imgEl.getAttribute('data-src') || imgEl.getAttribute('src') || '') : '';
+          out.push({
+            title,
+            url: safeNewsUrl(absUrl),
+            date: 'IBC24 नारायणपुर • ताज़ा अपडेट',
+            image: safeImageUrl(rawImg),
+            category: 'Narayanpur',
+            source: 'IBC24 Direct'
+          });
+        });
+        return out;
+      }
+
+      const ibcStatus = document.getElementById('ibcFeedStatus');
+      if (ibcStatus) ibcStatus.textContent = '🔄 मल्टी-सोर्स IBC24 नारायणपुर खबरें सिंक हो रही हैं...';
       try {
-        const rssRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur/feed'));
-        if (rssRes.ok) {
-          const rssData = await rssRes.json();
-          if (rssData.status === 'ok' && Array.isArray(rssData.items) && rssData.items.length > 0) {
-            const liveItems = rssData.items.map(it => ({
-              title: String(it.title || '').trim(),
-              url: safeNewsUrl(it.link),
-              date: it.pubDate ? new Date(it.pubDate).toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'IBC24 ताज़ा',
-              image: safeImageUrl(it.thumbnail || it.enclosure?.link || ''),
-              category: 'Narayanpur',
-              source: 'IBC24 Live RSS'
-            })).filter(it => it.title && it.url);
-            liveFeed.ibc24_narayanpur = mergeIbcNewsList(liveItems, liveFeed.ibc24_narayanpur);
-            try { localStorage.setItem('cached_ibc24_news', JSON.stringify(liveFeed.ibc24_narayanpur.slice(0, 60))); } catch (e) {}
-            const ibcStatus = document.getElementById('ibcFeedStatus');
-            if (ibcStatus) ibcStatus.textContent = `● लाइव IBC24 RSS सिंक सफल • कुल ${liveFeed.ibc24_narayanpur.length} नारायणपुर खबरें उपलब्ध`;
-            renderIbcNews();
-            updateNewsTicker();
-            runAutoFixer();
-            syncOk = true;
-          }
+        const [r1, r2, r3] = await Promise.allSettled([
+          fetchIbc24RssDirect(),
+          fetchGoogleNewsIBC24(),
+          scrapeDirectIBC24()
+        ]);
+        const liveMerged = [
+          ...(r1.status === 'fulfilled' ? r1.value : []),
+          ...(r2.status === 'fulfilled' ? r2.value : []),
+          ...(r3.status === 'fulfilled' ? r3.value : [])
+        ];
+        if (liveMerged.length > 0) {
+          liveFeed.ibc24_narayanpur = mergeIbcNewsList(liveMerged, liveFeed.ibc24_narayanpur);
+          try { localStorage.setItem('cached_ibc24_news', JSON.stringify(liveFeed.ibc24_narayanpur.slice(0, 80))); } catch (e) {}
+          syncOk = true;
+        } else if (!liveFeed.ibc24_narayanpur || liveFeed.ibc24_narayanpur.length === 0) {
+          try {
+            const cached = JSON.parse(localStorage.getItem('cached_ibc24_news') || '[]');
+            if (Array.isArray(cached) && cached.length) liveFeed.ibc24_narayanpur = cached;
+          } catch (e) {}
         }
+        const nowTime = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit' });
+        if (ibcStatus) ibcStatus.textContent = `✔ लाइव अपडेटेड (${nowTime}) • कुल ${(liveFeed.ibc24_narayanpur || []).length} नारायणपुर खबरें उपलब्ध`;
+        renderIbcNews();
+        updateNewsTicker();
+        runAutoFixer();
       } catch (e) {}
 
       const tv = liveFeed.videos.reduce((a, v) => a + (Number(v.views) || 0), 0);
