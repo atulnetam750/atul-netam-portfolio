@@ -49,6 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -780,76 +781,156 @@
 
     /* ── BOTTOM PERSONAL & CONTACT COMMAND CENTER ── */
     .bottom-profile-section {
-      background: linear-gradient(145deg, rgba(21, 24, 34, 0.94) 0%, rgba(11, 13, 20, 0.98) 100%);
-      backdrop-filter: blur(16px);
+      background: linear-gradient(145deg, rgba(19, 21, 32, 0.94) 0%, rgba(10, 11, 18, 0.98) 100%);
+      backdrop-filter: blur(18px);
       border: 1px solid var(--border-gold);
-      border-radius: var(--r-lg);
-      padding: 22px;
-      margin-bottom: 16px;
+      border-radius: 22px;
+      padding: 26px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cmd-orb-top {
+      position: absolute; top: -90px; right: -90px; width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--gold) 18%, transparent), transparent 70%);
+      filter: blur(24px); pointer-events: none; z-index: 0;
+    }
+    .cmd-orb-bot {
+      position: absolute; bottom: -90px; left: -90px; width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--red) 14%, transparent), transparent 70%);
+      filter: blur(24px); pointer-events: none; z-index: 0;
+    }
+    .cmd-head-bar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      padding-bottom: 16px; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .cmd-head-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .cmd-accent-bar { width: 5px; height: 26px; background: var(--gold); border-radius: 99px; box-shadow: 0 0 12px var(--gold); }
+    .cmd-head-title { font-size: 1.18rem; font-weight: 800; color: #fff; letter-spacing: 0.2px; }
+    .cmd-head-title span { color: var(--gold); }
+    .cmd-sync-pill {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 600;
+      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.34);
+      color: #4ade80; padding: 6px 12px; border-radius: 999px;
+    }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #4ade80;
+      animation: pulseDot 1.6s infinite;
+    }
+    @keyframes pulseDot {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
     }
     .profile-bottom-grid {
-      display: grid; grid-template-columns: 1.05fr 1fr; gap: 22px; align-items: start;
+      display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; align-items: start;
     }
     .cmd-identity-head {
-      display: flex; align-items: center; gap: 16px; margin-bottom: 14px;
+      display: flex; align-items: flex-start; gap: 18px; margin-bottom: 14px;
     }
-    .bottom-photo-wrap { position: relative; flex-shrink: 0; padding: 3px; border-radius: 16px; overflow: hidden; }
-    .bottom-photo-wrap::before {
+    .bottom-photo-wrap { position: relative; flex-shrink: 0; padding: 3px; border-radius: 18px; overflow: visible; }
+    .bottom-photo-ring {
+      position: relative; padding: 3px; border-radius: 17px; overflow: hidden;
+    }
+    .bottom-photo-ring::before {
       content: ''; position: absolute; inset: -50%; z-index: 0;
       background: conic-gradient(from 0deg, var(--gold), var(--red), transparent 45%, var(--gold));
       animation: holoSpin 5s linear infinite;
     }
     .bottom-photo {
       position: relative; z-index: 1;
-      width: 108px; height: 126px; border-radius: 13px; overflow: hidden;
-      background: #0d0f17; box-shadow: 0 10px 26px rgba(0,0,0,0.65);
+      width: 126px; height: 152px; border-radius: 14px; overflow: hidden;
+      background: #0d0f17; box-shadow: 0 12px 28px rgba(0,0,0,0.7);
     }
     .bottom-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
     .photo-live-tag {
-      position: absolute; bottom: 5px; right: 5px; z-index: 2;
-      background: var(--red); color: #fff; font-size: 0.56rem; font-weight: 800;
-      padding: 2px 6px; border-radius: 10px; letter-spacing: 0.4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%); z-index: 3;
+      background: var(--red); color: #fff; font-size: 0.62rem; font-weight: 800;
+      padding: 2px 10px; border-radius: 999px; letter-spacing: 0.6px; white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(229, 57, 53, 0.55); border: 1px solid rgba(255,255,255,0.25);
     }
-    .bottom-bio h2 { font-size: 1.48rem; font-weight: 800; color: #fff; line-height: 1.2; }
-    .bottom-bio h2 span { color: var(--gold); }
-    .bottom-role { font-size: 0.84rem; color: var(--gold-light); font-weight: 700; margin: 4px 0 6px; }
-    .bottom-text { font-size: 0.8rem; color: #d1d5db; line-height: 1.55; margin-bottom: 12px; }
+    .bottom-bio h2 { font-size: 1.65rem; font-weight: 800; color: var(--gold); line-height: 1.18; }
+    .bottom-bio h2 span { color: #fff; font-size: 1.25rem; font-weight: 700; }
+    .bottom-role { font-size: 0.86rem; color: #e5e7eb; font-weight: 600; margin: 5px 0 8px; }
+    .bottom-text { font-size: 0.8rem; color: #9ca3af; line-height: 1.58; margin-bottom: 10px; }
     .bottom-meta-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
     .bm-pill {
-      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-      padding: 4px 9px; border-radius: 16px; font-size: 0.7rem; color: #e5e7eb;
+      background: rgba(255,255,255,0.045); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 16px; font-size: 0.7rem; color: #e5e7eb;
     }
     .bm-pill b { color: var(--gold); }
 
-    .cmd-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .cmd-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
     .cmd-mini-card {
-      background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--r-md); padding: 11px 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px; padding: 11px 13px; display: flex; align-items: center; gap: 11px;
     }
-    .cmd-mini-title { font-size: 0.68rem; font-weight: 800; color: var(--gold); text-transform: uppercase; margin-bottom: 3px; }
-    .cmd-mini-body { font-size: 0.74rem; color: #e5e7eb; line-height: 1.4; }
+    .cmd-mini-icon { font-size: 1.15rem; flex-shrink: 0; }
+    .cmd-mini-title { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
+    .cmd-mini-body { font-size: 0.76rem; color: #fff; font-weight: 700; line-height: 1.35; }
+
+    .contact-nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 14px; }
+    .c-btn {
+      background: var(--gold); color: #000; text-decoration: none; font-weight: 800;
+      font-size: 0.74rem; padding: 9px 10px; border-radius: 11px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      transition: var(--ease); border: none; box-shadow: 0 6px 16px color-mix(in srgb, var(--gold) 22%, transparent);
+    }
+    .c-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .c-btn.alt { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); box-shadow: none; font-weight: 700; }
+    .c-btn.alt:hover { border-color: var(--gold); color: var(--gold-light); background: color-mix(in srgb, var(--gold) 12%, transparent); }
+
+    /* Categorized Social Links Box inside Command Center */
+    .cmd-social-box {
+      background: rgba(0, 0, 0, 0.36); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px; padding: 14px;
+    }
+    .cmd-social-top {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .cmd-social-lbl { font-size: 0.72rem; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.4px; }
+    .cmd-tab-bar {
+      display: inline-flex; gap: 4px; background: rgba(255,255,255,0.05); padding: 3px; border-radius: 9px;
+    }
+    .cmd-tab-btn {
+      background: transparent; border: none; color: #d1d5db; font-size: 0.68rem; font-weight: 600;
+      padding: 4px 10px; border-radius: 7px; cursor: pointer; font-family: inherit; transition: var(--ease);
+    }
+    .cmd-tab-btn:hover { color: #fff; }
+    .cmd-tab-btn.active { background: var(--gold); color: #000; font-weight: 800; }
+    .cmd-social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .cmd-social-pill {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+      color: #fff; text-decoration: none; padding: 8px 10px; border-radius: 10px;
+      font-size: 0.74rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cmd-social-pill:hover {
+      border-color: var(--gold); background: color-mix(in srgb, var(--gold) 12%, transparent);
+      transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+    }
 
     .bottom-contact-panel {
-      background: rgba(15, 17, 25, 0.86); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 18px;
+      background: rgba(0, 0, 0, 0.48); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px; padding: 20px;
     }
-    .contact-nums { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
-    .c-btn {
-      background: var(--gold); color: #000; text-decoration: none; font-weight: 700;
-      font-size: 0.76rem; padding: 7px 12px; border-radius: var(--r-sm);
-      display: inline-flex; align-items: center; gap: 5px; transition: var(--ease); border: none;
+    .cmd-desk-foot {
+      margin-top: 14px; padding-top: 11px; border-top: 1px solid rgba(255,255,255,0.09);
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 0.7rem; color: var(--text-muted);
     }
-    .c-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
-    .c-btn.alt { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid var(--border); }
-    .c-btn.alt:hover { border-color: var(--gold); color: var(--gold); }
-    .links-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
-    .w-link {
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-      color: #e5e7eb; text-decoration: none; padding: 6px 6px; border-radius: 6px;
-      font-size: 0.7rem; font-weight: 600; text-align: center; transition: var(--ease);
+    .cmd-bottom-bar {
+      margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.09);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+      font-size: 0.72rem; color: var(--text-muted);
     }
-    .w-link:hover { border-color: var(--gold); color: var(--gold-light); background: color-mix(in srgb, var(--gold) 8%, transparent); transform: translateY(-1px); }
+    @keyframes fxShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .fx-shake { animation: fxShake 0.36s ease; border-color: var(--red) !important; }
 
     /* Toast */
     #toast {
@@ -871,14 +952,14 @@
       .ab-kpis { grid-template-columns: repeat(2, 1fr); }
       .ibc-news-grid { grid-template-columns: repeat(2, 1fr); }
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
-      .links-mini-grid { grid-template-columns: repeat(3, 1fr); }
+      .contact-nums { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 600px) {
       .np-analytics-strip { grid-template-columns: repeat(2, 1fr); }
       .ibc-news-grid, .projects-grid, .skills-grid, .cmd-info-grid { grid-template-columns: 1fr; }
-      .cmd-identity-head { flex-direction: column; text-align: center; }
+      .cmd-identity-head { flex-direction: column; align-items: center; text-align: center; }
       .ab-kpis { grid-template-columns: 1fr 1fr; }
-      .links-mini-grid { grid-template-columns: repeat(2, 1fr); }
+      .cmd-social-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -1404,108 +1485,174 @@
 
     <!-- SECTION 5 (AT THE VERY BOTTOM): PERSONAL & CONTACT COMMAND CENTER -->
     <section class="bottom-profile-section fx-reveal" id="my-details">
-      <div class="section-head" style="border-color:rgba(245,192,66,0.2)">
-        <h2 class="sec-title">मेरा व्यक्तिगत विवरण एवं संपर्क (Personal &amp; Contact Command Center)</h2>
+      <div class="cmd-orb-top" aria-hidden="true"></div>
+      <div class="cmd-orb-bot" aria-hidden="true"></div>
+
+      <!-- Top Header Bar -->
+      <div class="cmd-head-bar">
+        <div class="cmd-head-title-wrap">
+          <span class="cmd-accent-bar"></span>
+          <h2 class="cmd-head-title">मेरा व्यक्तिगत विवरण, परिचय एवं संपर्क <span>(Atul Netam)</span></h2>
+        </div>
+        <div class="cmd-sync-pill">
+          <span class="live-dot"></span>
+          <span>ऑटो-सिंक सक्रिय • <span id="cmd-live-time">लोड हो रहा है...</span></span>
+        </div>
       </div>
+
+      <!-- 2-COLUMN COMMAND CENTER LAYOUT -->
       <div class="profile-bottom-grid">
-        <!-- Left Column: Identity, Location, Expertise & Quick Actions -->
+        <!-- Left Column: Identity, Bio, Location, Action Buttons & Categorized Social Links -->
         <div class="bottom-bio">
           <div class="cmd-identity-head">
             <div class="bottom-photo-wrap">
-              <div class="bottom-photo">
-                <img src="atul-photo.jpg" alt="Atul Netam - IBC24 Journalist"/>
-                <span class="photo-live-tag">IBC24 LIVE</span>
+              <div class="bottom-photo-ring">
+                <div class="bottom-photo">
+                  <img src="atul-photo.jpg" alt="Atul Netam - IBC24 Journalist"/>
+                </div>
               </div>
+              <span class="photo-live-tag">IBC24 LIVE</span>
             </div>
             <div>
-              <h2>अतुल <span>नेताम</span> (Atul Netam)</h2>
+              <h2>अतुल नेताम <span>(Atul Netam)</span></h2>
               <div class="bottom-role">कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network) | डिजिटल क्रिएटर | रीजनल टेक डेवलपर</div>
+              <p class="bottom-text">
+                मैं अतुल नेताम, नारायणपुर (बस्तर, छत्तीसगढ़) से एक सक्रिय वीडियो जर्नलिस्ट, कैमरामैन और डिजिटल कंटेंट क्रिएटर हूँ। 27 दिसंबर 2024 से IBC24 न्यूज़ नेटवर्क के साथ जुड़कर नारायणपुर और अबूझमाड़ के दुर्गम इलाकों से ग्राउंड रिपोर्टिंग, ब्रेकिंग न्यूज़ और मोबाइल जर्नलिज्म (MoJo) के माध्यम से जन-सरोकार की खबरें सामने ला रहा हूँ।
+              </p>
             </div>
           </div>
-
-          <p class="bottom-text">
-            मैं अतुल नेताम, नारायणपुर (बस्तर, छत्तीसगढ़) से एक सक्रिय वीडियो जर्नलिस्ट, कैमरामैन और AI/डिजिटल कंटेंट क्रिएटर हूँ। 27 दिसंबर 2024 से IBC24 न्यूज़ नेटवर्क के साथ जुड़कर मैं नारायणपुर और अबूझमाड़ के दुर्गम इलाकों से ग्राउंड रिपोर्टिंग, ब्रेकिंग न्यूज़ और मोबाइल जर्नलिज्म (MoJo) के माध्यम से जन-सरोकार की खबरें सामने ला रहा हूँ।
-          </p>
 
           <div class="bottom-meta-pills">
             <span class="bm-pill">📍 <b>कार्य क्षेत्र:</b> नारायणपुर, बस्तर, छत्तीसगढ़</span>
             <span class="bm-pill">🎥 <b>कार्य:</b> वीडियो जर्नलिज्म, फोटोग्राफी एवं AI ऑटोमेशन</span>
           </div>
 
+          <!-- Location & Expertise Mini Cards -->
           <div class="cmd-info-grid">
             <div class="cmd-mini-card">
-              <div class="cmd-mini-title">📍 लोकेशन (Location)</div>
-              <div class="cmd-mini-body">बंगालापारा, वार्ड क्र. 4, नारायणपुर, बस्तर, छत्तीसगढ़ - 494661</div>
+              <i class="fas fa-location-dot cmd-mini-icon" style="color:#ef4444"></i>
+              <div>
+                <div class="cmd-mini-title">कार्य क्षेत्र (Location)</div>
+                <div class="cmd-mini-body">बंगालापारा, वार्ड नं. 4, नारायणपुर, बस्तर (छ.ग.) - 494661</div>
+              </div>
             </div>
             <div class="cmd-mini-card">
-              <div class="cmd-mini-title">🎬 विशेषज्ञता (Expertise)</div>
-              <div class="cmd-mini-body">MoJo, Broadcast Camera, AI Automation &amp; Web Dev</div>
+              <i class="fas fa-briefcase cmd-mini-icon" style="color:var(--gold)"></i>
+              <div>
+                <div class="cmd-mini-title">विशेषज्ञता (Expertise)</div>
+                <div class="cmd-mini-body">वीडियो जर्नलिज्म, सिनेमैटोग्राफी &amp; AI Automation</div>
+              </div>
             </div>
           </div>
 
+          <!-- 4 Quick Action Buttons (Call, vCard, QR) -->
           <div class="contact-nums">
-            <a href="tel:+917587776030" class="c-btn">📞 +91 7587776030</a>
-            <a href="tel:+917489300076" class="c-btn">📞 +91 7489300076</a>
-            <button type="button" onclick="toggleIdModal()" class="c-btn alt" style="cursor:pointer">🪪 QR प्रेस कार्ड</button>
-            <button type="button" onclick="downloadVCard()" class="c-btn alt" style="cursor:pointer">📇 नंबर सेव (.vcf)</button>
+            <a href="tel:+917587776030" class="c-btn"><i class="fas fa-phone"></i> 7587776030</a>
+            <a href="tel:+917489300076" class="c-btn"><i class="fas fa-phone-alt"></i> 7489300076</a>
+            <button type="button" onclick="downloadVCard()" class="c-btn alt" style="cursor:pointer"><i class="fas fa-address-book" style="color:var(--gold)"></i> नंबर सेव (.vcf)</button>
+            <button type="button" onclick="toggleIdModal()" class="c-btn alt" style="cursor:pointer"><i class="fas fa-qrcode" style="color:var(--gold)"></i> QR प्रेस कार्ड</button>
           </div>
 
-          <div class="links-mini-grid">
-            <a href="https://avsbastar.com" target="_blank" rel="noopener noreferrer" class="w-link">avsbastar.com</a>
-            <a href="https://bastarsandesh8.wordpress.com" target="_blank" rel="noopener noreferrer" class="w-link">बस्तर संदेश</a>
-            <a href="https://linktr.ee/Atulnetam" target="_blank" rel="noopener noreferrer" class="w-link">Linktree</a>
-            <a href="https://instagram.com/atul.netam" target="_blank" rel="noopener noreferrer" class="w-link">@atul.netam</a>
-            <a href="https://instagram.com/hans_n.21" target="_blank" rel="noopener noreferrer" class="w-link">@hans_n.21</a>
-            <a href="https://instagram.com/top_star_model_of_cg" target="_blank" rel="noopener noreferrer" class="w-link">@top_star_model_of_cg</a>
-            <a href="https://t.me/atulnetam21" target="_blank" rel="noopener noreferrer" class="w-link">Telegram</a>
-            <a href="https://www.pinterest.com/Its_atul_official_750" target="_blank" rel="noopener noreferrer" class="w-link">Pinterest</a>
-            <a href="https://linkedin.com/in/atul-singh-netam-933ab6211" target="_blank" rel="noopener noreferrer" class="w-link">LinkedIn</a>
-            <a href="https://x.com/Atulnetam21" target="_blank" rel="noopener noreferrer" class="w-link">X (@Atulnetam21)</a>
-            <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" class="w-link">GitHub</a>
-            <a href="https://youtube.com/@AtulNetam" target="_blank" rel="noopener noreferrer" class="w-link">YouTube</a>
+          <!-- Categorized Social Media Tabs Box -->
+          <div class="cmd-social-box">
+            <div class="cmd-social-top">
+              <span class="cmd-social-lbl"><i class="fas fa-share-nodes" style="margin-right:4px"></i> सोशल मीडिया एवं प्रोफाइल्स</span>
+              <div class="cmd-tab-bar">
+                <button type="button" onclick="filterCmdSocial('all')" id="cmd-stab-all" class="cmd-tab-btn active">सभी</button>
+                <button type="button" onclick="filterCmdSocial('insta')" id="cmd-stab-insta" class="cmd-tab-btn">Instagram</button>
+                <button type="button" onclick="filterCmdSocial('media')" id="cmd-stab-media" class="cmd-tab-btn">Media &amp; Tech</button>
+              </div>
+            </div>
+            <div id="cmd-social-grid" class="cmd-social-grid">
+              <a href="https://www.instagram.com/atul.netam" target="_blank" rel="noopener noreferrer" data-cat="insta" class="cmd-social-pill">
+                <i class="fab fa-instagram" style="color:#ec4899"></i> @atul.netam
+              </a>
+              <a href="https://www.instagram.com/hans_n.21" target="_blank" rel="noopener noreferrer" data-cat="insta" class="cmd-social-pill">
+                <i class="fab fa-instagram" style="color:#c084fc"></i> @hans_n.21
+              </a>
+              <a href="https://www.instagram.com/top_star_model_of_cg" target="_blank" rel="noopener noreferrer" data-cat="insta" class="cmd-social-pill">
+                <i class="fab fa-instagram" style="color:#fbbf24"></i> @top_star_model
+              </a>
+              <a href="https://youtube.com/@AtulNetam" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-youtube" style="color:#ef4444"></i> YouTube
+              </a>
+              <a href="https://x.com/Atulnetam21" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-x-twitter" style="color:#fff"></i> @Atulnetam21
+              </a>
+              <a href="https://linkedin.com/in/atul-singh-netam-933ab6211" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-linkedin" style="color:#60a5fa"></i> LinkedIn
+              </a>
+              <a href="https://t.me/atulnetam21" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-telegram" style="color:#38bdf8"></i> Telegram
+              </a>
+              <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-github" style="color:#d1d5db"></i> GitHub
+              </a>
+              <a href="https://linktr.ee/Atulnetam" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill" style="color:var(--gold-light)">
+                <i class="fas fa-link" style="color:var(--gold)"></i> Linktree
+              </a>
+              <a href="https://avsbastar.com" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fas fa-globe" style="color:#4ade80"></i> avsbastar.com
+              </a>
+              <a href="https://bastarsandesh8.wordpress.com" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fas fa-newspaper" style="color:#fb923c"></i> बस्तर संदेश
+              </a>
+              <a href="https://www.pinterest.com/Its_atul_official_750" target="_blank" rel="noopener noreferrer" data-cat="media" class="cmd-social-pill">
+                <i class="fab fa-pinterest" style="color:#f43f5e"></i> Pinterest
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Right Column: Unified Smart Auto-Routing Contact Box -->
+        <!-- Right Column: Unified Smart Auto-Routing Contact Box (24×7 Automated Desk) -->
         <div class="bottom-contact-panel glow-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;">
-            <div style="font-size:0.95rem;font-weight:800;color:#fff;">💬 त्वरित संदेश एवं संपर्क बॉक्स</div>
-            <span style="font-size:0.64rem;font-weight:700;padding:2px 8px;border-radius:12px;background:rgba(22,163,74,0.16);color:#4ade80;border:1px solid rgba(74,222,128,0.3);">Smart Auto-Route</span>
+          <div>
+            <span style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:#4ade80;">24×7 Automated Desk</span>
+            <h3 style="font-size:1.15rem;font-weight:800;color:#fff;margin-top:2px;">सीधा संदेश भेजें (Instant Connect)</h3>
+            <p style="font-size:0.74rem;color:var(--text-muted);margin:4px 0 14px;line-height:1.45;">
+              समाचार सूचना, इवेंट शूटिंग या प्रोजेक्ट के लिए नीचे विवरण भरें—एक क्लिक में सीधे WhatsApp या Email पर जाएगा।
+            </p>
           </div>
-          <p style="font-size:0.74rem;color:var(--text-muted);margin-bottom:12px;">
-            अपनी जानकारी भरें और सीधे WhatsApp (+91 7587776030) या Email (atulnetam5@gmail.com) से संपर्क करें।
-          </p>
           <form id="smart-contact-form" class="wa-form-box" onsubmit="event.preventDefault(); sendViaWhatsApp();">
+            <div style="margin-bottom:10px;">
+              <label class="wa-field-lbl" for="user-name">आपका नाम / संस्था *</label>
+              <input type="text" id="user-name" class="wa-input" required placeholder="उदा. राजेश शर्मा / प्रेस क्लब"/>
+            </div>
             <div class="wa-form-grid">
               <div>
-                <label class="wa-field-lbl" for="user-name">आपका नाम / संस्था *</label>
-                <input type="text" id="user-name" class="wa-input" required placeholder="जैसे: राहुल वर्मा"/>
+                <label class="wa-field-lbl" for="user-contact">मोबाइल / ईमेल (वैकल्पिक)</label>
+                <input type="text" id="user-contact" class="wa-input" placeholder="आपका नंबर या ईमेल"/>
               </div>
               <div>
-                <label class="wa-field-lbl" for="user-contact">आपका नंबर / ईमेल (वैकल्पिक)</label>
-                <input type="text" id="user-contact" class="wa-input" placeholder="+91 98XXXXXXXX / email"/>
+                <label class="wa-field-lbl" for="user-topic">विषय चुनें *</label>
+                <select id="user-topic" class="wa-input">
+                  <option value="समाचार कवरेज (News Tip)">समाचार कवरेज (News Tip)</option>
+                  <option value="वीडियो / वेडिंग शूटिंग">वीडियो / वेडिंग शूटिंग</option>
+                  <option value="Instagram / Social Promotion">Instagram / Social Promotion</option>
+                  <option value="AI / वेबसाइट प्रोजेक्ट">AI / वेबसाइट प्रोजेक्ट</option>
+                </select>
               </div>
             </div>
-            <div style="margin-bottom:10px;">
-              <label class="wa-field-lbl" for="user-topic">संपर्क का विषय</label>
-              <select id="user-topic" class="wa-input">
-                <option value="समाचार कवरेज (News Tip)">📰 समाचार कवरेज / ग्राउंड रिपोर्ट (News Tip)</option>
-                <option value="Instagram / Social Media Promotion">📢 Instagram / Social Media Promotion</option>
-                <option value="वीडियो / वेडिंग शूटिंग">🎥 वीडियो एडिटिंग / वेडिंग / इलेक्शन शूटिंग</option>
-                <option value="AI / वेबसाइट प्रोजेक्ट">🤖 AI ऑटोमेशन / वेबसाइट डेवलपमेंट</option>
-                <option value="अन्य संपर्क">📩 अन्य संपर्क / सुझाव</option>
-              </select>
-            </div>
             <div style="margin-bottom:12px;">
-              <label class="wa-field-lbl" for="user-message">अपना संदेश या लोकेशन विस्तार से लिखें *</label>
-              <textarea id="user-message" rows="3" class="wa-input" required placeholder="अपना संदेश यहाँ लिखें..." style="resize:vertical"></textarea>
+              <label class="wa-field-lbl" for="user-message">आपका संदेश व लोकेशन *</label>
+              <textarea id="user-message" rows="4" class="wa-input" required placeholder="अपना संदेश यहाँ विस्तार से लिखें..." style="resize:vertical"></textarea>
             </div>
             <div class="smart-btn-grid">
-              <button type="button" onclick="sendViaWhatsApp()" class="wa-submit-btn">💬 WhatsApp पर भेजें ↗</button>
-              <button type="button" onclick="sendViaEmail()" class="email-submit-btn">✉️ Email पर भेजें ↗</button>
+              <button type="button" onclick="sendViaWhatsApp()" class="wa-submit-btn"><i class="fab fa-whatsapp" style="font-size:1rem"></i> WhatsApp पर भेजें</button>
+              <button type="button" onclick="sendViaEmail()" class="email-submit-btn"><i class="fas fa-envelope"></i> Email पर भेजें</button>
             </div>
           </form>
+          <div class="cmd-desk-foot">
+            <span><i class="fas fa-envelope" style="color:var(--gold);margin-right:4px"></i> atulnetam5@gmail.com</span>
+            <span>नारायणपुर प्रेस क्लब</span>
+          </div>
         </div>
+      </div>
+
+      <!-- Command Center Bottom Strip -->
+      <div class="cmd-bottom-bar">
+        <span>© <span id="cmd-auto-year">2026</span> अतुल नेताम (Atul Netam) • कैमरामैन एवं वीडियो जर्नलिस्ट (IBC24 News Network)</span>
+        <span style="color:#4ade80"><i class="fas fa-bolt" style="margin-right:4px"></i> ऑटो-सिंक सफल • डेटा स्रोत उपलब्ध</span>
       </div>
     </section>
 
@@ -2063,7 +2210,7 @@
 
       if (!reducedMotion) {
         document.addEventListener('click', e => {
-          const btn = e.target.closest('.c-btn, .wa-submit-btn, .email-submit-btn, .f-pill, .social-tab-btn, .ctrl-btn');
+          const btn = e.target.closest('.c-btn, .wa-submit-btn, .email-submit-btn, .f-pill, .social-tab-btn, .ctrl-btn, .cmd-social-pill, .cmd-tab-btn');
           if (!btn) return;
           const rgb = getAccentRgb();
           for (let k = 0; k < 8; k++) {
@@ -2175,41 +2322,62 @@
       if (savedTheme) setTheme(savedTheme);
     } catch (e) {}
 
-    // 6. Unified Smart Auto-Routing Contact Box (WhatsApp +91 7587776030 & Email atulnetam5@gmail.com)
+    // 6. Unified Smart Auto-Routing Contact Box & Command Center Filter
+    function filterCmdSocial(category) {
+      document.querySelectorAll('.cmd-tab-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('cmd-stab-' + category);
+      if (activeBtn) activeBtn.classList.add('active');
+      document.querySelectorAll('#cmd-social-grid a').forEach(link => {
+        link.style.display = (category === 'all' || link.dataset.cat === category) ? 'flex' : 'none';
+      });
+    }
+    function triggerFieldShake(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('fx-shake');
+      void el.offsetWidth;
+      el.classList.add('fx-shake');
+      el.focus();
+    }
     function collectContactFields() {
       const name = document.getElementById('user-name')?.value.trim() || '';
       const contact = document.getElementById('user-contact')?.value.trim() || '';
       const topic = document.getElementById('user-topic')?.value.trim() || 'सामान्य संपर्क';
       const message = document.getElementById('user-message')?.value.trim() || '';
-      if (!name || !message) {
-        showToast('कृपया अपना नाम और संदेश भरें!');
-        return null;
-      }
+      if (!name) { triggerFieldShake('user-name'); showToast('कृपया अपना नाम लिखें!'); return null; }
+      if (!message) { triggerFieldShake('user-message'); showToast('कृपया अपना संदेश लिखें!'); return null; }
       return { name, contact, topic, message };
     }
     function sendViaWhatsApp() {
       const data = collectContactFields();
       if (!data) return;
-      const contactLine = data.contact ? `%0A*संपर्क:* ${encodeURIComponent(data.contact)}` : '';
-      const text = `*नया पोर्टफोलियो संदेश (Atul Netam)*%0A%0A*नाम:* ${encodeURIComponent(data.name)}${contactLine}%0A*विषय:* ${encodeURIComponent(data.topic)}%0A*संदेश:* ${encodeURIComponent(data.message)}`;
+      const contactLine = `%0A*संपर्क:* ${encodeURIComponent(data.contact || 'नहीं दिया')}`;
+      const text = `*पोर्टफोलियो से नया संदेश (Atul Netam)*%0A%0A*नाम:* ${encodeURIComponent(data.name)}${contactLine}%0A*विषय:* ${encodeURIComponent(data.topic)}%0A*संदेश:* ${encodeURIComponent(data.message)}`;
       window.open(`https://wa.me/917587776030?text=${text}`, '_blank', 'noopener,noreferrer');
       showToast('WhatsApp चैट खुल रही है!');
     }
     function sendViaEmail() {
       const data = collectContactFields();
       if (!data) return;
-      const subject = encodeURIComponent(`[Atul Netam Portfolio] ${data.topic} - ${data.name}`);
-      const contactLine = data.contact ? `संपर्क (Phone/Email): ${data.contact}\n` : '';
+      const subject = encodeURIComponent(`[Portfolio] ${data.topic} - ${data.name}`);
+      const contactLine = `संपर्क: ${data.contact || 'नहीं दिया'}\n`;
       const body = encodeURIComponent(`नमस्ते अतुल नेताम जी,\n\nनाम: ${data.name}\n${contactLine}विषय: ${data.topic}\n\nसंदेश:\n${data.message}`);
       window.location.href = `mailto:atulnetam5@gmail.com?subject=${subject}&body=${body}`;
       showToast('Email ऐप खुल रहा है!');
     }
 
-    // 7. Live Clock & Narayanpur Weather (Open-Meteo Free API)
+    // 7. Live Clock, Command Center Year & Narayanpur Weather (Open-Meteo Free API)
+    const cmdYearEl = document.getElementById('cmd-auto-year');
+    if (cmdYearEl) cmdYearEl.textContent = new Date().getFullYear();
     function updateLiveClock() {
+      const now = new Date();
       const el = document.getElementById('live-clock');
       if (el) {
-        el.textContent = new Date().toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        el.textContent = now.toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+      const cmdTimeEl = document.getElementById('cmd-live-time');
+      if (cmdTimeEl) {
+        cmdTimeEl.textContent = now.toLocaleString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       }
     }
     updateLiveClock();
