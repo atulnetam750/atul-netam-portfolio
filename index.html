@@ -76,6 +76,36 @@
       --ease: all 0.2s ease-out;
     }
 
+    /* 3-Theme Switcher Palettes */
+    body.theme-emerald {
+      --bg: #040d0a;
+      --surface: #091914;
+      --surface-card: #0e241d;
+      --surface-hover: #14332a;
+      --border-gold: rgba(16, 185, 129, 0.36);
+      --gold: #10b981;
+      --gold-light: #6ee7b7;
+    }
+    body.theme-crimson {
+      --bg: #0d0507;
+      --surface: #180a0e;
+      --surface-card: #220e14;
+      --surface-hover: #2d131b;
+      --border-gold: rgba(244, 63, 94, 0.36);
+      --gold: #f43f5e;
+      --gold-light: #fda4af;
+    }
+    .theme-dots {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(0, 0, 0, 0.45); border: 1px solid var(--border);
+      padding: 4px 8px; border-radius: 20px;
+    }
+    .theme-dot {
+      width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.4);
+      cursor: pointer; transition: transform 0.2s ease;
+    }
+    .theme-dot:hover { transform: scale(1.28); }
+
     html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -833,6 +863,11 @@
         <li><a href="#my-details">मेरा विवरण / संपर्क</a></li>
       </ul>
       <div class="nav-right">
+        <div class="theme-dots" title="थीम बदलें (Broadcast Gold / Bastar Emerald / Newsroom Crimson)">
+          <button type="button" class="theme-dot" style="background:#f5c042" onclick="setTheme('default')" aria-label="Broadcast Gold Theme"></button>
+          <button type="button" class="theme-dot" style="background:#10b981" onclick="setTheme('theme-emerald')" aria-label="Bastar Emerald Theme"></button>
+          <button type="button" class="theme-dot" style="background:#f43f5e" onclick="setTheme('theme-crimson')" aria-label="Newsroom Crimson Theme"></button>
+        </div>
         <button class="id-card-btn" onclick="toggleIdModal()" title="डिजिटल प्रेस एवं विजिटिंग कार्ड">
           🪪 डिजिटल कार्ड
         </button>
@@ -1100,10 +1135,10 @@
           <div class="proj-item">
             <div>
               <span class="p-cat">एआई ऑटोमेशन</span>
-              <h4 class="p-name">दैनिक बोर्ड & न्यूज़ बॉट</h4>
-              <p class="p-summary">खबर संकलन व कंटेंट मैनेजमेंट के लिए Python, Google AI Studio और n8n ऑटोमेशन।</p>
+              <h4 class="p-name">दैनिक बोर्ड, न्यूज़ बॉट & JARVIS असिस्टेंट</h4>
+              <p class="p-summary">खबर संकलन व ऑटोमेशन के लिए Python, Google AI Studio, n8n वर्कफ़्लो और JARVIS असिस्टेंट सिस्टम।</p>
             </div>
-            <div class="p-pills"><span class="p-pill">Python</span><span class="p-pill">n8n</span></div>
+            <div class="p-pills"><span class="p-pill">Python</span><span class="p-pill">n8n</span><span class="p-pill">JARVIS AI</span></div>
           </div>
           <div class="proj-item">
             <div>
@@ -1179,7 +1214,10 @@
     <section class="gh-section fx-reveal" id="github-projects">
       <div class="section-head">
         <h2 class="sec-title">लाइव टेक प्रोजेक्ट्स — GitHub ऑटो-सिंक (<span id="ghRepoCount">--</span>)</h2>
-        <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" class="sec-action">GitHub प्रोफ़ाइल ↗</a>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <input type="text" id="repo-search" class="search-input" placeholder="🔍 GitHub प्रोजेक्ट खोजें..." style="min-width:190px"/>
+          <a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer" class="sec-action">GitHub प्रोफ़ाइल ↗</a>
+        </div>
       </div>
       <div class="gh-repos-grid" id="githubProjectsGrid">
         <div class="gh-repo-card" style="color:var(--text-muted);font-size:0.8rem;">GitHub रिपोज़िटरीज़ लोड हो रही हैं...</div>
@@ -1936,44 +1974,81 @@
       });
     })();
 
-    // 5. Auto-Fetch Live GitHub Repositories (Atul Netam - atulnetam750)
+    // 5. Auto-Fetch Live GitHub Repositories + Search Filter (Atul Netam - atulnetam750)
+    let allGithubRepos = [];
+    function renderGithubRepos(repoList) {
+      const grid = document.getElementById('githubProjectsGrid');
+      if (!grid) return;
+      if (!repoList.length) {
+        grid.innerHTML = `<div class="gh-repo-card" style="color:var(--text-muted);font-size:0.8rem;">कोई प्रोजेक्ट नहीं मिला।</div>`;
+        return;
+      }
+      grid.innerHTML = repoList.map(repo => {
+        const desc = escapeHTML(repo.description || 'AI, न्यूज़ ऑटोमेशन एवं डिजिटल प्रोजेक्ट — अतुल नेताम (Atul Netam)');
+        const lang = escapeHTML(repo.language || 'Web / Code');
+        const name = escapeHTML(repo.name);
+        const repoUrl = safeNewsUrl(repo.html_url);
+        const liveUrl = safeNewsUrl(repo.homepage || repo.html_url);
+        return `
+          <div class="gh-repo-card glow-card">
+            <div>
+              <div class="gh-repo-top">
+                <span class="gh-lang-badge">${lang}</span>
+                <span style="font-size:0.72rem;color:var(--gold)">★ ${Number(repo.stargazers_count) || 0}</span>
+              </div>
+              <div class="gh-repo-name">${name}</div>
+              <div class="gh-repo-desc">${desc}</div>
+            </div>
+            <div class="gh-repo-foot">
+              <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted)">GitHub कोड</a>
+              <a href="${liveUrl}" target="_blank" rel="noopener noreferrer">खोलें ↗</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     async function loadGitHubProjects() {
       const grid = document.getElementById('githubProjectsGrid');
       const countEl = document.getElementById('ghRepoCount');
       if (!grid) return;
       try {
-        const res = await fetch('https://api.github.com/users/atulnetam750/repos?sort=updated&per_page=6');
+        const res = await fetch('https://api.github.com/users/atulnetam750/repos?sort=updated&per_page=12');
         const repos = await res.json();
         if (Array.isArray(repos) && repos.length > 0) {
+          allGithubRepos = repos;
           if (countEl) countEl.textContent = String(repos.length);
-          grid.innerHTML = repos.map(repo => {
-            const desc = escapeHTML(repo.description || 'AI, न्यूज़ ऑटोमेशन एवं डिजिटल प्रोजेक्ट — अतुल नेताम (Atul Netam)');
-            const lang = escapeHTML(repo.language || 'Web / Code');
-            const name = escapeHTML(repo.name);
-            const repoUrl = safeNewsUrl(repo.html_url);
-            const liveUrl = safeNewsUrl(repo.homepage || repo.html_url);
-            return `
-              <div class="gh-repo-card glow-card">
-                <div>
-                  <div class="gh-repo-top">
-                    <span class="gh-lang-badge">${lang}</span>
-                    <span style="font-size:0.72rem;color:var(--gold)">★ ${Number(repo.stargazers_count) || 0}</span>
-                  </div>
-                  <div class="gh-repo-name">${name}</div>
-                  <div class="gh-repo-desc">${desc}</div>
-                </div>
-                <div class="gh-repo-foot">
-                  <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted)">GitHub कोड</a>
-                  <a href="${liveUrl}" target="_blank" rel="noopener noreferrer">खोलें ↗</a>
-                </div>
-              </div>
-            `;
-          }).join('');
+          renderGithubRepos(allGithubRepos.slice(0, 6));
         }
       } catch (e) {
         grid.innerHTML = `<div class="gh-repo-card"><div class="gh-repo-name">atul-netam-portfolio</div><div class="gh-repo-desc">IBC24 बस्तर न्यूज़ हब व लाइव एनालिटिक्स पोर्टफोलियो</div><div class="gh-repo-foot"><a href="https://github.com/atulnetam750" target="_blank" rel="noopener noreferrer">GitHub देखें ↗</a></div></div>`;
       }
     }
+
+    const repoSearchInput = document.getElementById('repo-search');
+    if (repoSearchInput) {
+      repoSearchInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase();
+        const filtered = allGithubRepos.filter(r =>
+          (r.name && r.name.toLowerCase().includes(q)) ||
+          (r.description && r.description.toLowerCase().includes(q))
+        );
+        renderGithubRepos(filtered.slice(0, 6));
+      });
+    }
+
+    // 5b. 3-Theme Switcher with LocalStorage Persistence
+    function setTheme(themeName) {
+      document.body.classList.remove('theme-emerald', 'theme-crimson');
+      if (themeName && themeName !== 'default') {
+        document.body.classList.add(themeName);
+      }
+      try { localStorage.setItem('portfolio_theme', themeName); } catch (e) {}
+    }
+    try {
+      const savedTheme = localStorage.getItem('portfolio_theme');
+      if (savedTheme) setTheme(savedTheme);
+    } catch (e) {}
 
     // 6. Direct WhatsApp Auto-Send Form (+91 7587776030)
     const waForm = document.getElementById('whatsapp-auto-form');
