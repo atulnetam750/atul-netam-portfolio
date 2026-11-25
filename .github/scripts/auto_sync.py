@@ -2,23 +2,30 @@
 """Auto-sync script for Atul Netam portfolio: fetches live YouTube analytics & IBC24 Narayanpur news."""
 
 import concurrent.futures
+import html as html_lib
 import json
 import os
 import re
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 # Keep the last successful measurements when an upstream page temporarily blocks scraping.
 PREVIOUS_STATS = {}
+PREVIOUS_NEWS = []
 
 
 def load_previous_stats():
+    global PREVIOUS_NEWS
     try:
         with open("data/live-feed.json", "r", encoding="utf-8") as f:
             previous = json.load(f)
         for item in previous.get("videos", []):
             if item.get("id"):
                 PREVIOUS_STATS[item["id"]] = item
+        if isinstance(previous.get("ibc24_narayanpur"), list):
+            PREVIOUS_NEWS = previous["ibc24_narayanpur"]
     except (OSError, ValueError, TypeError):
         pass
 
@@ -146,40 +153,150 @@ def fetch_video_stats(video):
     return entry
 
 
+def article_key(url):
+    m = re.search(r"-(\d+)\.html", url or "")
+    return m.group(1) if m else (url or "").rstrip("/").lower()
+
+
+def parse_ibc_timestamp(date_str):
+    if not date_str:
+        return 0.0
+    s = date_str.strip()
+    try:
+        return parsedate_to_datetime(s).timestamp()
+    except Exception:
+        pass
+    cleaned = re.sub(r"\s*\|\s*", " ", s)
+    for fmt in ("%d %b %Y %I:%M %p", "%d %B %Y %I:%M %p", "%d %b %Y"):
+        try:
+            return datetime.strptime(cleaned, fmt).replace(tzinfo=timezone.utc).timestamp()
+        except ValueError:
+            continue
+    return 0.0
+
+
+def format_pubdate(pub_raw):
+    try:
+        dt = parsedate_to_datetime(pub_raw)
+        return dt.strftime("%d %b %Y | %-I:%M %p").lower().replace(" jan ", " Jan ").replace(" feb ", " Feb ").replace(" mar ", " Mar ").replace(" apr ", " Apr ").replace(" may ", " May ").replace(" jun ", " Jun ").replace(" jul ", " Jul ").replace(" aug ", " Aug ").replace(" sep ", " Sep ").replace(" oct ", " Oct ").replace(" nov ", " Nov ").replace(" dec ", " Dec ")
+    except Exception:
+        return pub_raw or "IBC24 ताज़ा खबर"
+
+
+def merge_article(store, art):
+    key = article_key(art.get("url", ""))
+    if not key:
+        return
+    ts = parse_ibc_timestamp(art.get("pub_iso") or art.get("date", ""))
+    art["_ts"] = max(ts, store.get(key, {}).get("_ts", 0.0))
+    existing = store.get(key)
+    if not existing:
+        store[key] = art
+        return
+    # Keep richest fields while preserving newer date/image
+    if len(art.get("title", "")) > len(existing.get("title", "")):
+        existing["title"] = art["title"]
+    if not existing.get("image") and art.get("image"):
+        existing["image"] = art["image"]
+    if existing.get("date") in ("", "IBC24 ताज़ा खबर") and art.get("date"):
+        existing["date"] = art["date"]
+    if art.get("url", "").startswith("https://www.ibc24.in/narayanpur/"):
+        existing["url"] = art["url"]
+    existing["_ts"] = max(existing.get("_ts", 0.0), art.get("_ts", 0.0))
+
+
 def fetch_ibc24_narayanpur():
-    """Scrape latest Narayanpur news articles from IBC24 city portal."""
-    articles = []
-    seen = set()
-    urls = [
+    """Fetch all available Narayanpur news articles from IBC24 RSS feeds, city/topic pages, and prior archive."""
+    store = {}
+
+    # 1. Seed with previously archived Narayanpur articles so historical items are preserved
+    for prev in PREVIOUS_NEWS:
+        if isinstance(prev, dict) and prev.get("url") and prev.get("title"):
+            merge_article(store, dict(prev))
+
+    # 2. Fetch official IBC24 Narayanpur RSS feeds (~60+ latest items each)
+    rss_urls = [
+        "https://www.ibc24.in/city/narayanpur/feed",
+        "https://www.ibc24.in/narayanpur/feed",
+    ]
+    for rss_url in rss_urls:
+        try:
+            xml_text = fetch_url(rss_url, timeout=16)
+            root = ET.fromstring(xml_text)
+            for idx, item in enumerate(root.findall(".//item")):
+                title = html_lib.unescape((item.findtext("title") or "").strip())
+                link = (item.findtext("link") or "").strip()
+                pub_raw = (item.findtext("pubDate") or "").strip()
+                if not title or not link:
+                    continue
+                img_url = ""
+                enc = item.find("enclosure")
+                if enc is not None and enc.attrib.get("url"):
+                    img_url = enc.attrib["url"]
+                if not img_url:
+                    for child in item:
+                        tag = child.tag.lower()
+                        if tag.endswith("content") or tag.endswith("thumbnail"):
+                            cand = child.attrib.get("url", "")
+                            if cand:
+                                img_url = cand
+                                break
+                if not img_url:
+                    desc_html = " ".join((child.text or "") for child in item)
+                    img_m = re.search(r'(https://images\.ibc24\.in/[^\s"\'<>]+)', desc_html)
+                    if img_m:
+                        img_url = img_m.group(1)
+                parts = link.replace("https://www.ibc24.in", "").strip("/").split("/")
+                category = parts[0].replace("-", " ").title() if parts else "Narayanpur"
+                if "narayanpur" in link.lower():
+                    category = "Narayanpur"
+                merge_article(store, {
+                    "title": title,
+                    "url": link,
+                    "date": format_pubdate(pub_raw),
+                    "pub_iso": pub_raw,
+                    "image": img_url,
+                    "category": category,
+                    "source": "IBC24 News RSS",
+                    "_order": idx,
+                })
+        except Exception as exc:
+            print(f"Warning fetching RSS {rss_url}: {exc}")
+
+    # 3. Scrape paginated IBC24 Narayanpur web pages (pages 1..5)
+    html_urls = [
         "https://www.ibc24.in/city/narayanpur",
         "https://www.ibc24.in/city/narayanpur?page=2",
+        "https://www.ibc24.in/city/narayanpur?page=3",
+        "https://www.ibc24.in/city/narayanpur?page=4",
+        "https://www.ibc24.in/city/narayanpur?page=5",
+        "https://www.ibc24.in/narayanpur",
+        "https://www.ibc24.in/narayanpur?page=2",
+        "https://www.ibc24.in/narayanpur?page=3",
     ]
-    for page_url in urls:
+    for page_url in html_urls:
         try:
-            html = fetch_url(page_url, timeout=14)
-            cards = re.findall(r'<a href="(/[^"]+-\d+\.html)"[^>]*>(.*?)</a>', html, re.S)
+            page_html = fetch_url(page_url, timeout=14)
+            cards = re.findall(r'<a href="(/[^"]+-\d+\.html)"[^>]*>(.*?)</a>', page_html, re.S)
             for href, inner in cards:
                 full_url = "https://www.ibc24.in" + href
-                if full_url in seen:
-                    continue
-                seen.add(full_url)
                 title_m = re.search(r"<p[^>]*>(.*?)</p>", inner, re.S)
                 alt_m = re.search(r'alt="([^"]+)"', inner)
                 date_m = re.search(
                     r"(\d{1,2}\s+[A-Za-z]+\s+\d{4}\s*\|\s*\d{1,2}:\d{2}\s*[ap]m)", inner, re.I
                 )
                 img_m = re.search(r'(https://images\.ibc24\.in/[^\s"\',]+)', inner)
-                title = (
+                raw_title = (
                     re.sub(r"<[^>]+>", "", title_m.group(1)).strip()
                     if title_m
                     else (alt_m.group(1).strip() if alt_m else "")
                 )
+                title = html_lib.unescape(raw_title)
                 if not title or len(title) < 10:
                     continue
-                # Extract category from href path
                 parts = href.strip("/").split("/")
                 category = parts[0].replace("-", " ").title() if parts else "Narayanpur"
-                articles.append({
+                merge_article(store, {
                     "title": title,
                     "url": full_url,
                     "date": date_m.group(1).strip() if date_m else "IBC24 ताज़ा खबर",
@@ -190,7 +307,19 @@ def fetch_ibc24_narayanpur():
         except Exception as exc:
             print(f"Warning fetching {page_url}: {exc}")
 
-    return articles[:24]
+    # Sort newest-first by timestamp, then clean internal helper keys
+    ranked = sorted(store.values(), key=lambda x: (x.get("_ts", 0.0), int(article_key(x.get("url", "")) or 0) if article_key(x.get("url", "")).isdigit() else 0), reverse=True)
+    cleaned = []
+    for item in ranked[:120]:
+        cleaned.append({
+            "title": item["title"],
+            "url": item["url"],
+            "date": item.get("date") or "IBC24 ताज़ा खबर",
+            "image": item.get("image") or "",
+            "category": item.get("category") or "Narayanpur",
+            "source": item.get("source") or "IBC24 News Portal",
+        })
+    return cleaned
 
 
 def main():

@@ -2,8 +2,8 @@ name: Auto Update, Sync & Auto Fixer
 
 on:
   schedule:
-    # Automatically fetches IBC24 Narayanpur news & YouTube Analytics every 2 hours
-    - cron: '0 */2 * * *'
+    # Automatically fetches ALL IBC24 Narayanpur news & YouTube Analytics every 1 hour
+    - cron: '0 * * * *'
   workflow_dispatch:
   push:
     branches: [ master ]

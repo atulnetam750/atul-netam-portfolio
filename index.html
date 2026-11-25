@@ -725,7 +725,7 @@
     }
     .ibc-news-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-      max-height: 540px; overflow-y: auto; padding-right: 4px;
+      max-height: 760px; overflow-y: auto; padding-right: 4px;
     }
     .ibc-card {
       background: var(--surface-card); border: 1px solid var(--border);
@@ -1215,15 +1215,26 @@
 
     <!-- SECTION 3: IBC24 NEWS PORTAL NARAYANPUR LIVE FEED -->
     <section id="ibc-portal" class="ibc-portal-box fx-reveal">
-      <div class="section-head">
-        <h2 class="sec-title">IBC24 न्यूज़ पोर्टल — नारायणपुर की ताज़ा खबरें (Auto-Updated)</h2>
-        <a href="https://www.ibc24.in/city/narayanpur" target="_blank" rel="noopener noreferrer" class="sec-action">ibc24.in/city/narayanpur पर जाएं ↗</a>
+      <div class="section-head" style="flex-wrap:wrap;gap:8px;">
+        <h2 class="sec-title">IBC24 न्यूज़ पोर्टल — नारायणपुर की सभी ताज़ा खबरें (<span id="ibcAllCount">60+</span>)</h2>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <button type="button" onclick="syncLiveData(true)" class="add-proj-btn" style="background:rgba(16,185,129,0.16);color:#4ade80;border:1px solid rgba(74,222,128,0.35);">
+            🔄 अभी लाइव सिंक करें
+          </button>
+          <a href="https://www.ibc24.in/city/narayanpur" target="_blank" rel="noopener noreferrer" class="sec-action">ibc24.in/city/narayanpur पर जाएं ↗</a>
+        </div>
       </div>
       <div class="toolbar-row">
-        <span style="font-size:0.75rem;color:var(--green);font-weight:600" id="ibcFeedStatus">
-          ● ऑटो-अपडेट इनेबल्ड: हर 2 घंटे में IBC24 पोर्टल से नारायणपुर की नई खबरें स्वतः अपलोड होती हैं
-        </span>
+        <div class="filter-pills" id="ibcCatPills">
+          <button type="button" class="f-pill active" onclick="setIbcCatFilter('all', this)">सभी खबरें</button>
+          <button type="button" class="f-pill" onclick="setIbcCatFilter('narayanpur', this)">📍 नारायणपुर ब्यूरो</button>
+          <button type="button" class="f-pill" onclick="setIbcCatFilter('naxal', this)">🛡️ नक्सल व सुरक्षा</button>
+          <button type="button" class="f-pill" onclick="setIbcCatFilter('chhattisgarh', this)">🗺️ छत्तीसगढ़</button>
+        </div>
         <input type="text" class="search-input" id="ibcSearchInput" placeholder="🔍 नारायणपुर की खबर खोजें..." oninput="renderIbcNews()"/>
+      </div>
+      <div style="font-size:0.73rem;color:var(--green);font-weight:600;margin-bottom:10px;" id="ibcFeedStatus">
+        ● डबल ऑटो-अपडेट इनेबल्ड: हर 1 घंटे सर्वर सिंक + ब्राउज़र में हर 5 मिनट लाइव IBC24 RSS अपडेट
       </div>
       <div class="ibc-news-grid" id="ibcNewsGrid"></div>
     </section>
@@ -1974,14 +1985,54 @@
       }).join('');
     }
 
+    let activeIbcCat = 'all';
+    function setIbcCatFilter(cat, btn) {
+      activeIbcCat = cat;
+      document.querySelectorAll('#ibcCatPills .f-pill').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderIbcNews();
+    }
+    function extractIbcArticleKey(url) {
+      const m = String(url || '').match(/-(\d+)\.html/);
+      return m ? m[1] : String(url || '').replace(/\/+$/, '').toLowerCase();
+    }
+    function mergeIbcNewsList(primaryList, secondaryList) {
+      const map = new Map();
+      [...(primaryList || []), ...(secondaryList || [])].forEach(n => {
+        if (!n || !n.title || !n.url) return;
+        const key = extractIbcArticleKey(n.url);
+        if (!map.has(key)) map.set(key, n);
+      });
+      return Array.from(map.values());
+    }
+    function updateNewsTicker() {
+      const wrap = document.getElementById('liveTickerItems');
+      const items = (liveFeed.ibc24_narayanpur || []).slice(0, 5);
+      if (!wrap || !items.length) return;
+      const chunks = items.map(n => `<span><b>IBC24 ताज़ा:</b> ${escapeHTML(n.title)}</span>`).join('');
+      wrap.innerHTML = chunks + chunks;
+    }
+
     function renderIbcNews() {
-      const q = (document.getElementById('ibcSearchInput').value || '').trim().toLowerCase();
-      const news = (liveFeed.ibc24_narayanpur || []).filter(n =>
-        !q || n.title.toLowerCase().includes(q) || (n.category || '').toLowerCase().includes(q) || (n.date || '').toLowerCase().includes(q)
-      );
+      const allNews = liveFeed.ibc24_narayanpur || [];
+      const countBadge = document.getElementById('ibcAllCount');
+      const topCount = document.getElementById('topIbcCount');
+      if (countBadge) countBadge.textContent = String(allNews.length);
+      if (topCount) topCount.textContent = String(allNews.length);
+
+      const q = (document.getElementById('ibcSearchInput')?.value || '').trim().toLowerCase();
+      const news = allNews.filter(n => {
+        const hay = `${n.title || ''} ${n.category || ''} ${n.date || ''} ${n.url || ''}`.toLowerCase();
+        if (q && !hay.includes(q)) return false;
+        if (activeIbcCat === 'narayanpur') return hay.includes('narayanpur') || hay.includes('नारायणपुर') || hay.includes('अबूझमाड़');
+        if (activeIbcCat === 'naxal') return hay.includes('naxal') || hay.includes('नक्सल') || hay.includes('सरेंडर') || hay.includes('पुलिस') || hay.includes('bsf') || hay.includes('drg') || hay.includes('जवान');
+        if (activeIbcCat === 'chhattisgarh') return (n.category || '').toLowerCase().includes('chhattisgarh') || hay.includes('छत्तीसगढ़') || hay.includes('बस्तर');
+        return true;
+      });
+
       const grid = document.getElementById('ibcNewsGrid');
       if (news.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--text-muted)">नारायणपुर की खबरें लोड हो रही हैं या उपलब्ध नहीं हैं — <a href="https://www.ibc24.in/city/narayanpur" target="_blank" style="color:var(--gold)">सीधे IBC24 पोर्टल पर देखें ↗</a></div>`;
+        grid.innerHTML = `<div style="grid-column:1/-1;padding:24px;text-align:center;color:var(--text-muted)">इस श्रेणी में कोई खबर नहीं मिली — <a href="https://www.ibc24.in/city/narayanpur" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">सीधे IBC24 पोर्टल पर देखें ↗</a></div>`;
         return;
       }
       grid.innerHTML = news.map(n => `
@@ -2125,8 +2176,35 @@
       renderPlaylist();
       renderAnalyticsBoard();
       renderIbcNews();
+      updateNewsTicker();
       selectVideo(currentVideoId, false);
       runAutoFixer();
+
+      // Live in-browser IBC24 Narayanpur RSS sync so breaking stories appear within seconds
+      try {
+        const rssRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur/feed'));
+        if (rssRes.ok) {
+          const rssData = await rssRes.json();
+          if (rssData.status === 'ok' && Array.isArray(rssData.items) && rssData.items.length > 0) {
+            const liveItems = rssData.items.map(it => ({
+              title: String(it.title || '').trim(),
+              url: safeNewsUrl(it.link),
+              date: it.pubDate ? new Date(it.pubDate).toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'IBC24 ताज़ा',
+              image: safeImageUrl(it.thumbnail || it.enclosure?.link || ''),
+              category: 'Narayanpur',
+              source: 'IBC24 Live RSS'
+            })).filter(it => it.title && it.url);
+            liveFeed.ibc24_narayanpur = mergeIbcNewsList(liveItems, liveFeed.ibc24_narayanpur);
+            try { localStorage.setItem('cached_ibc24_news', JSON.stringify(liveFeed.ibc24_narayanpur.slice(0, 60))); } catch (e) {}
+            const ibcStatus = document.getElementById('ibcFeedStatus');
+            if (ibcStatus) ibcStatus.textContent = `● लाइव IBC24 RSS सिंक सफल • कुल ${liveFeed.ibc24_narayanpur.length} नारायणपुर खबरें उपलब्ध`;
+            renderIbcNews();
+            updateNewsTicker();
+            runAutoFixer();
+            syncOk = true;
+          }
+        }
+      } catch (e) {}
 
       const tv = liveFeed.videos.reduce((a, v) => a + (Number(v.views) || 0), 0);
       const tl = liveFeed.videos.reduce((a, v) => a + (typeof v.likes === 'number' ? v.likes : 0), 0);
