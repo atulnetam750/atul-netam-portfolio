@@ -1,11 +1,47 @@
 {
-  "name": "Atul Netam | Professional Portfolio",
-  "short_name": "Atul Portfolio",
-  "description": "Professional portfolio, video archive and projects",
+  "name": "Atul Netam | IBC24 Bastar News & Portfolio",
+  "short_name": "Atul Netam",
+  "description": "अतुल नेताम (IBC24 News) — 22+ ग्राउंड वीडियो रिपोर्ट्स, लाइव YouTube एनालिटिक्स एवं नारायणपुर ताज़ा खबरें।",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#090a0f",
   "theme_color": "#0b0c10",
-  "lang": "hi"
+  "lang": "hi",
+  "categories": ["news", "entertainment", "productivity"],
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "वीडियो रिपोर्ट्स (22+)",
+      "short_name": "वीडियो",
+      "url": "./#videos",
+      "icons": [{ "src": "./assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "IBC24 नारायणपुर न्यूज़",
+      "short_name": "ताज़ा खबरें",
+      "url": "./#ibc-portal",
+      "icons": [{ "src": "./assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "संपर्क & QR कार्ड",
+      "short_name": "संपर्क",
+      "url": "./#my-details",
+      "icons": [{ "src": "./assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
 }

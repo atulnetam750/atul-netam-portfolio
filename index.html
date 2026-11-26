@@ -13,6 +13,8 @@
   <meta property="og:url" content="https://atulnetam750.github.io/atul-netam-portfolio/"/>
   <link rel="canonical" href="https://atulnetam750.github.io/atul-netam-portfolio/"/>
   <link rel="manifest" href="./manifest.webmanifest"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png"/>
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="keywords" content="Atul Netam, Atul Netam IBC24, Narayanpur Journalist, Bastar Sandesh, AVS Bastar, Video Journalist Chhattisgarh"/>
@@ -1095,6 +1097,9 @@
           <button type="button" class="theme-dot" style="background:#10b981" onclick="setTheme('theme-emerald', true)" aria-label="Bastar Emerald Theme"></button>
           <button type="button" class="theme-dot" style="background:#f43f5e" onclick="setTheme('theme-crimson', true)" aria-label="Newsroom Crimson Theme"></button>
         </div>
+        <button type="button" id="pwaInstallBtn" class="id-card-btn" onclick="triggerPwaInstall()" title="फ़ोन / डेस्कटॉप पर ऐप के रूप में इंस्टॉल करें">
+          📲 ऐप इंस्टॉल
+        </button>
         <button class="id-card-btn" onclick="toggleIdModal()" title="डिजिटल प्रेस एवं विजिटिंग कार्ड">
           🪪 डिजिटल कार्ड
         </button>
@@ -2927,9 +2932,53 @@
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && navigator.onLine) syncLiveData(false);
     });
+    // PWA Install Add-on & Offline Service Worker Engine
+    let deferredInstallPrompt = null;
+    const pwaBtn = document.getElementById('pwaInstallBtn');
+    const isStandalone = window.matchMedia && (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true);
+    if (isStandalone && pwaBtn) pwaBtn.style.display = 'none';
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if (pwaBtn) {
+        pwaBtn.style.display = 'inline-flex';
+        pwaBtn.textContent = '📲 इंस्टॉल करें';
+      }
+    });
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      if (pwaBtn) pwaBtn.style.display = 'none';
+      showToast('ऐप सफलतापूर्वक इंस्टॉल हो गया!');
+    });
+    async function triggerPwaInstall() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+        if (choice && choice.outcome === 'accepted') showToast('ऐप इंस्टॉल हो रहा है...');
+        deferredInstallPrompt = null;
+        return;
+      }
+      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      if (isIos) {
+        showToast('iPhone/iPad: Share (⬆️) -> "Add to Home Screen" चुनें!');
+      } else {
+        showToast('ब्राउज़र मेन्यू (⋮) -> "Add to Home screen / Install app" चुनें!');
+      }
+    }
+
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Offline mode unavailable:', err));
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            if (nw) nw.addEventListener('statechange', () => {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                showToast('नया अपडेट तैयार है — पेज रीफ्रेश करें!');
+              }
+            });
+          });
+        }).catch(err => console.warn('Offline mode unavailable:', err));
       }, { once: true });
     }
   </script>
