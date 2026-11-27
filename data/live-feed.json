@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-11-27T07:32:14Z",
+  "updated_at": "2026-11-27T17:57:01Z",
   "summary": {
     "total_videos": 22,
-    "total_views": 67776,
+    "total_views": 67777,
     "total_likes": 325,
     "likes_tracked_videos": 11,
     "ibc24_news_count": 80
@@ -186,7 +186,7 @@
       "channel": "IBC24",
       "cat": "चुनाव कवरेज",
       "mention": false,
-      "views": 408,
+      "views": 409,
       "likes": 9,
       "likes_display": "9",
       "duration_sec": 1496,
