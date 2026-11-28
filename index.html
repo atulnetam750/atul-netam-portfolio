@@ -1121,10 +1121,10 @@
         <p id="syncMetaLine">कैमरामैन अतुल नेताम की 22+ वीडियो रिपोर्ट्स, लाइव YouTube Likes/Views एनालिटिक्स एवं IBC24 पोर्टल से ऑटो-अपडेटेड खबरें</p>
       </div>
       <div class="hub-quick-kpis">
-        <div class="kpi-chip"><strong id="topTotalVideos">22</strong><span>रिपोर्ट्स</span></div>
-        <div class="kpi-chip"><strong id="topTotalViews">67,729</strong><span>कुल Views</span></div>
+        <div class="kpi-chip"><strong id="topTotalVideos">23</strong><span>रिपोर्ट्स</span></div>
+        <div class="kpi-chip"><strong id="topTotalViews">67,778</strong><span>कुल Views</span></div>
         <div class="kpi-chip"><strong id="topTotalLikes">325</strong><span>कुल Likes</span></div>
-        <div class="kpi-chip"><strong id="topIbcCount">24</strong><span>IBC24 खबरें</span></div>
+        <div class="kpi-chip"><strong id="topIbcCount">80</strong><span>IBC24 खबरें</span></div>
       </div>
     </div>
 
@@ -1811,8 +1811,22 @@
         {"id":"Kko20g5ALiE","num":21,"title":"बालेबेड़ा बीएसएफ कैम्प में अचानक बाढ़ — 10 जवानों का रेस्क्यू","date":"30 जुलाई 2026","channel":"IBC24","cat":"बाढ़ एवं आपदा","mention":false,"views":3212,"likes":null,"likes_display":"—","duration_sec":205},
         {"id":"6KJ_8Xw2AC4","num":22,"title":"बाढ़ में घिरे चिकपाल गांव से 16 ग्रामीणों का सफल रेस्क्यू","date":"30 जुलाई 2026","channel":"IBC24","cat":"बाढ़ एवं आपदा","mention":false,"views":1140,"likes":null,"likes_display":"—","duration_sec":185}
       ],
-      ibc24_narayanpur: []
+      ibc24_narayanpur: [
+        {"title":"Chhattisgarh Thana Incharge Arrested: नारायणपुर जिले में थाना प्रभारी गिरफ्तार, ज्यूडिशियल कस्टडी में जेल दाखिल","url":"https://www.ibc24.in/narayanpur/chhattisgarh-thana-incharge-suresh-chandra-yadav-arrested-3681774.html","date":"IBC24 ताज़ा","image":"https://images.ibc24.in/wp-content/uploads/2026/07/Chhattisgarh-Thana-Incharge-Suresh-Chandra-Yadav-Arrested_V_jpeg--340x200-4g.webp","category":"Narayanpur"},
+        {"title":"छत्तीसगढ़ के नारायणपुर में धर्म परिवर्तन के विवाद पर कार्रवाई व प्रशासनिक अपडेट","url":"https://www.ibc24.in/narayanpur/in-chhattisgarhs-narayanpur-a-tribal-family-was-evicted-from-the-village-over-a-dispute-over-religious-conversion-3657038.html","date":"IBC24 नारायणपुर","image":"https://images.ibc24.in/wp-content/uploads/storage/news/thumbs/pti_cg1_V_webp--340x200-4g.webp","category":"Narayanpur"},
+        {"title":"Narayanpur News: नक्सल क्षेत्र में सुरक्षाबलों की बड़ी कार्रवाई और ग्राउंड अपडेट","url":"https://www.ibc24.in/narayanpur/narayanpur-news-first-the-memorial-of-naxalites-was-demolished-something-was-made-which-will-burn-the-blood-of-those-who-disturb-the-peace-3339078.html","date":"IBC24 बस्तर","image":"https://images.ibc24.in/wp-content/uploads/2025/11/narayanpur-news_V_jpg--340x200-4g.webp","category":"Narayanpur"}
+      ]
     };
+
+    async function fetchWithTimeout(url, options = {}, ms = 6500) {
+      const ctrl = new AbortController();
+      const tid = window.setTimeout(() => ctrl.abort(), ms);
+      try {
+        return await fetch(url, { ...options, signal: ctrl.signal });
+      } finally {
+        window.clearTimeout(tid);
+      }
+    }
 
     let currentVideoId = "rZQpZJmWoqc";
     let activeFilter = "all";
@@ -1893,7 +1907,7 @@
       if (badge) badge.textContent = '🔄 वीडियो सिंक हो रहे हैं...';
       try {
         const feedUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`);
-        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`);
+        const res = await fetchWithTimeout(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`, {}, 6500);
         if (!res.ok) throw new Error('YT RSS HTTP ' + res.status);
         const data = await res.json();
         if (data.status === 'ok' && Array.isArray(data.items)) {
@@ -2362,7 +2376,7 @@
 
       // Live multi-source browser sync (IBC24 RSS + Google News site:ibc24.in + Direct AllOrigins scrape)
       async function fetchIbc24RssDirect() {
-        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur/feed'));
+        const res = await fetchWithTimeout('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur/feed'), {}, 6500);
         if (!res.ok) return [];
         const data = await res.json();
         if (data.status !== 'ok' || !Array.isArray(data.items)) return [];
@@ -2377,7 +2391,7 @@
       }
 
       async function fetchGoogleNewsIBC24() {
-        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=site:ibc24.in+narayanpur&hl=hi&gl=IN&ceid=IN:hi'));
+        const res = await fetchWithTimeout('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=site:ibc24.in+narayanpur&hl=hi&gl=IN&ceid=IN:hi'), {}, 6500);
         if (!res.ok) return [];
         const data = await res.json();
         if (data.status !== 'ok' || !Array.isArray(data.items)) return [];
@@ -2392,7 +2406,7 @@
       }
 
       async function scrapeDirectIBC24() {
-        const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur'));
+        const res = await fetchWithTimeout('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.ibc24.in/city/narayanpur'), {}, 6500);
         if (!res.ok) return [];
         const json = await res.json();
         if (!json.contents) return [];
@@ -2644,7 +2658,8 @@
       const countEl = document.getElementById('ghRepoCount');
       if (!grid) return;
       try {
-        const res = await fetch('https://api.github.com/users/atulnetam750/repos?sort=updated&per_page=12');
+        const res = await fetchWithTimeout('https://api.github.com/users/atulnetam750/repos?sort=updated&per_page=12', {}, 6500);
+        if (!res.ok) throw new Error('GitHub HTTP ' + res.status);
         const repos = await res.json();
         if (Array.isArray(repos) && repos.length > 0) {
           allGithubRepos = repos;
@@ -2868,7 +2883,8 @@
       const el = document.getElementById('live-weather');
       if (!el) return;
       try {
-        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.7167&longitude=81.25&current_weather=true');
+        const res = await fetchWithTimeout('https://api.open-meteo.com/v1/forecast?latitude=19.7167&longitude=81.25&current_weather=true', {}, 5500);
+        if (!res.ok) throw new Error('Weather HTTP ' + res.status);
         const data = await res.json();
         if (data?.current_weather?.temperature !== undefined) {
           el.textContent = `🌡️ नारायणपुर: ${Math.round(data.current_weather.temperature)}°C`;

@@ -36,6 +36,16 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     ),
     "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+    "Cookie": "CONSENT=YES+cb.20210328-17-p0.en+FX+667;",
+}
+
+DEFAULT_DURATIONS = {
+    "rZQpZJmWoqc": 1409, "clVJVPqR3dk": 794, "rjqJ6LEHvI0": 1462, "TvVsvxd3JwY": 1960,
+    "nG_WrINs7Xc": 653, "MgChUJknAlM": 175, "iteSkoeMiW4": 249, "LqjeIpjBqUs": 180,
+    "bFrQvd7bczw": 160, "2Y4tfLnULdI": 210, "xIIu44nAJAQ": 195, "vatiFZ1jc_E": 220,
+    "wzFw2Rga438": 240, "YWD5c-k6l4s": 185, "CZdfSLwGMXg": 170, "HIauWkdd1eA": 200,
+    "0ndXpLlI0nA": 190, "rdm41bY4z3s": 165, "j3jYKuVND7o": 150, "eWHFSFtjqXg": 175,
+    "Kko20g5ALiE": 205, "6KJ_8Xw2AC4": 185,
 }
 
 VIDEOS = [
@@ -97,45 +107,57 @@ def fetch_video_stats(video):
     entry["views"] = int(previous.get("views") or 0)
     entry["likes"] = previous.get("likes")
     entry["likes_display"] = previous.get("likes_display") or "—"
-    entry["duration_sec"] = int(previous.get("duration_sec") or 0)
+    entry["duration_sec"] = int(previous.get("duration_sec") or DEFAULT_DURATIONS.get(vid, 0))
     entry["stats_status"] = "stale"
     entry["yt_title"] = ""
     entry["thumbnail"] = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
     entry["url"] = f"https://www.youtube.com/watch?v={vid}"
 
-    try:
-        html = fetch_url(f"https://www.youtube.com/watch?v={vid}")
-        vm = re.search(r'"viewCount":"(\d+)"', html)
-        if vm:
-            entry["views"] = int(vm.group(1))
-            entry["stats_status"] = "fresh"
+    for attempt in range(2):
+        try:
+            html = fetch_url(f"https://www.youtube.com/watch?v={vid}", timeout=12)
+            vm = re.search(r'"viewCount":"(\d+)"', html)
+            if not vm:
+                vm2 = re.search(r'"viewCount":\{"simpleText":"([\d,]+)', html)
+                if vm2:
+                    entry["views"] = int(vm2.group(1).replace(",", ""))
+                    entry["stats_status"] = "fresh"
+            else:
+                entry["views"] = int(vm.group(1))
+                entry["stats_status"] = "fresh"
 
-        dur_m = re.search(r'"lengthSeconds":"(\d+)"', html)
-        if dur_m:
-            entry["duration_sec"] = int(dur_m.group(1))
+            dur_m = re.search(r'"lengthSeconds":"(\d+)"', html)
+            if dur_m:
+                entry["duration_sec"] = int(dur_m.group(1))
+            else:
+                dur_ms = re.search(r'"approxDurationMs":"(\d+)"', html)
+                if dur_ms:
+                    entry["duration_sec"] = max(1, int(dur_ms.group(1)) // 1000)
 
-        tm = re.search(r"<title>(.*?)</title>", html)
-        if tm:
-            entry["yt_title"] = tm.group(1).replace(" - YouTube", "").strip()
+            tm = re.search(r"<title>(.*?)</title>", html)
+            if tm:
+                entry["yt_title"] = tm.group(1).replace(" - YouTube", "").strip()
 
-        idx = html.find('"segmentedLikeDislikeButtonViewModel":{')
-        likes_val = None
-        if idx != -1:
-            sub = html[idx:idx + 2800]
-            lm = re.search(r'"likeButtonViewModel".*?"title":"([^"]+)"', sub)
-            if lm:
-                likes_val = parse_compact_number(lm.group(1))
-        if likes_val is None:
-            m2 = re.search(r'"likeCount":(\d+)', html)
-            if m2:
-                likes_val = int(m2.group(1))
+            idx = html.find('"segmentedLikeDislikeButtonViewModel":{')
+            likes_val = None
+            if idx != -1:
+                sub = html[idx:idx + 2800]
+                lm = re.search(r'"likeButtonViewModel".*?"title":"([^"]+)"', sub)
+                if lm:
+                    likes_val = parse_compact_number(lm.group(1))
+            if likes_val is None:
+                m2 = re.search(r'"likeCount":(\d+)', html)
+                if m2:
+                    likes_val = int(m2.group(1))
 
-        if likes_val is not None:
-            entry["likes"] = likes_val
-            entry["likes_display"] = f"{likes_val:,}"
-            entry["stats_status"] = "fresh"
-    except Exception as exc:
-        entry["error"] = str(exc)
+            if likes_val is not None:
+                entry["likes"] = likes_val
+                entry["likes_display"] = f"{likes_val:,}"
+                entry["stats_status"] = "fresh"
+            if entry["stats_status"] == "fresh":
+                break
+        except Exception as exc:
+            entry["error"] = str(exc)
 
     # Fallback via returnyoutubedislikeapi if likes still None
     if entry["likes"] is None:
