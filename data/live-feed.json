@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-11-28T05:00:30Z",
+  "updated_at": "2026-11-28T09:57:59Z",
   "summary": {
     "total_videos": 22,
-    "total_views": 67962,
+    "total_views": 67971,
     "total_likes": 325,
     "likes_tracked_videos": 11,
     "ibc24_news_count": 80
@@ -16,7 +16,7 @@
       "channel": "IBC24",
       "cat": "नक्सल एवं सुरक्षा",
       "mention": true,
-      "views": 12968,
+      "views": 12972,
       "likes": null,
       "likes_display": "—",
       "duration_sec": 1409,
@@ -101,7 +101,7 @@
       "channel": "IBC24",
       "cat": "जन-सरोकार",
       "mention": false,
-      "views": 3560,
+      "views": 3562,
       "likes": null,
       "likes_display": "—",
       "duration_sec": 175,
@@ -339,7 +339,7 @@
       "channel": "IBC24",
       "cat": "बाढ़ एवं आपदा",
       "mention": false,
-      "views": 9347,
+      "views": 9350,
       "likes": null,
       "likes_display": "—",
       "duration_sec": 37,
